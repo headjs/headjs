@@ -116,8 +116,13 @@
 	window.onresize = screenSize;	
 	
 	head.feature("script", true);
+
 	
+})(document);
+
 	
+(function(doc) {
+		
 	/* CSS modernizer */
 	var el = doc.createElement("i"),
 		 style = el.style,
@@ -176,11 +181,11 @@
 		},
 		
 		reflection: function() {
-      	return testAll("box-reflect:right 0");
+			return testAll("box-reflect:right 0");
       },
       
 		transform: function() {
-      	return testAll("transform:rotate(1deg)");
+			return testAll("transform:rotate(1deg)");
       }      
       
 	};
@@ -188,12 +193,9 @@
 		
 	for (var key in tests) {		
 		head.feature(key, tests[key].call());
-	}	
+	}
 	
-	
-})(document);
-
-
+})(document);	
 
 (function(doc) { 
 		
@@ -244,9 +246,9 @@
 		return api.js;		 
 	};
 		
-	api.wait = function(src, fn) {
-		var arr = waiters[src];
-		if (!arr) arr = waiters[src] = [fn];
+	api.wait = function(key, fn) {
+		var arr = waiters[key];
+		if (!arr) { arr = waiters[key] = [fn]; }
 		else arr.push[fn];
 		return api.js;
 	};
@@ -316,7 +318,7 @@
 				});					
 			}
 			
-			if (head.mozilla) {
+			if (head.browser.mozilla) {
 				var obj = doc.createElement('object');
 				obj.data = script.url;
 				obj.width  = 0;
@@ -363,7 +365,7 @@
 			//* console.info("    LOADED", script.name);
 			
 			// waiters for this script
-			each(waiters[script.url], function(fn) {
+			each(waiters[script.name], function(fn) {
 				fn.call();		
 			});
 
@@ -398,7 +400,7 @@
 				callback.call();
 				callback.done = true;
 			}
-			if (!api.msie) {			
+			if (!api.browser.msie) {			
 				head.removeChild(elem);
 			}
 		}; 

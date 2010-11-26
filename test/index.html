@@ -2,51 +2,34 @@
 
 <head class="no-script">
 	<title>Test page</title>
+	<!--[if IE 7 ]><script src=".ie.js"></script><![endif]-->
 	<script src="../head.js"></script>
 	<link rel="stylesheet" type="text/css" href="http://192.168.0.102:2000/style.css?time=1"/>	
 </head>
 
 <body>
-	<h2>headjs</h2>
 
-	<div id="info"></div>
+	<h2>headjs</h2>
 	
 	<script>
-	
-	// IE debugging
-	if (head.msie) {
-		var info = document.getElementById("info");
-		
-		var console = {
-			info: function(a, b, c)  {
-				info.innerHTML += "<p>" + [].join.call(arguments) + "</p>";  		
-			},
-			
-			log: function() {
-				console.info.apply(null, arguments);
-			}
-		};
-	}
-	
-	// feature("jooo", true);
 	var start = new Date(),
 		 server = "http://192.168.0.102:2000",
-		 num = 29;	
+		 num = 30;	
 		 
 	// head.preload( server + "/file1", server + "/file2", server + "/file3" );		
 	head.js(function() {
 		console.log("        -->last one", (new Date()).getTime() - start.getTime());		
 	});
 	
-	head.wait("foo", function() {
-				
+	head.wait("c", function() {
+		console.info("after C");		
 	});
 	
 	// will load but not execute. 
 	head.js(
-		server + "/A-" + num + "?time=100",
+		{a: server + "/A-" + num + "?time=100"},
 		server + "/B-" + num + "?time=200",
-		server + "/C-" + num + "?time=600",
+		{c: server + "/C-" + num + "?time=600"},
 		server + "/E-" + num + "?time=200",
 		server + "/F-" + num + "?time=600", // { tooltip: server + "/file2" + num + "?time=900" }, 
 		 function() {
