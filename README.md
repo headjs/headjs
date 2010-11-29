@@ -1,5 +1,5 @@
-## HEADJS
+### HEADJS
 
-### The only script in your HEAD
+#### The only script in your HEAD
 
-http://headjs.com
+[headjs.com](http://headjs.com)

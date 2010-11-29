@@ -1,4 +1,9 @@
-// head.loader.js. can be used as a standalone tool
+/**
+	Head Loader: The ultimate JavaScript loader. Can be used as a standalone tool. 
+	
+	copyright: "tipiirai" / Tero Piirainen
+	license: MIT
+*/ 
 (function(doc) { 
 		
 	var ready = false,

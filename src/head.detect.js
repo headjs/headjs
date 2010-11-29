@@ -1,4 +1,22 @@
-// https://github.com/Modernizr/Modernizr/blob/master/modernizr.js
+/**
+	headjs CSS3 feature detector
+	
+	copyright: "tipiirai" / Tero Piirainen
+	license: MIT
+*/
+
+/*
+	To add a new test:
+	
+	head.feature("video", function() {
+		var tag = document.createElement('video');
+		return !!tag.canPlayType;	
+	});
+
+	Good place to grab more tests
+	
+	https://github.com/Modernizr/Modernizr/blob/master/modernizr.js
+*/
 (function(doc) {
 		
 	/* CSS modernizer */
