@@ -3,7 +3,10 @@
 <head class="no-script">
 	<title>Test page</title>
 	<!--[if IE 7 ]><script src=".ie.js"></script><![endif]-->
+	<script>var head_conf = {screens: [100, 200, 2000], section: '-area', page: 'page'};</script>
 	<script src="../head.js"></script>
+	<script src="../head.detect.js"></script>
+	<script src="../head.loader.js"></script>
 	<link rel="stylesheet" type="text/css" href="http://192.168.0.102:2000/style.css?time=1"/>	
 </head>
 
@@ -17,11 +20,11 @@
 		 num = 30;	
 		 
 	// head.preload( server + "/file1", server + "/file2", server + "/file3" );		
-	head.js(function() {
+	head.ready(function() {
 		console.log("        -->last one", (new Date()).getTime() - start.getTime());		
 	});
 	
-	head.wait("c", function() {
+	head.ready("c", function() {
 		console.info("after C");		
 	});
 	
