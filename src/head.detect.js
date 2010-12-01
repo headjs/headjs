@@ -32,7 +32,7 @@
 	function testAll(definition)  {
 		style.cssText = prefs.join(definition + ";");
 		var len = style.cssText ? style.cssText.length : 0;
-		return len > 0 && len < 150;
+		return len > 0 && !style.cssText.split(";")[1];
 	}
 
 	var tests = {
@@ -85,7 +85,7 @@
 		},
 		
 		transitions: function() {
-			return testAll("transition:all .5s linear");
+			return testAll("transition:all .1s linear");
 		}
       
 	};

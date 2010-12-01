@@ -1,6 +1,7 @@
 
 var console = {
 	info: function(a, b, c)  {
+		var info = document.getElementById("info");
 		info.innerHTML += "<p>" + [].join.call(arguments) + "</p>";  		
 	},
 	
@@ -10,5 +11,4 @@ var console = {
 	
 };
 
-var info = document.createElement("info");
-document.body.appendChild(info);
+

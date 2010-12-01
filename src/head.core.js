@@ -57,7 +57,7 @@
 		/(msie) ([\w.]+)/.exec( ua ) ||
 		!/compatible/.test( ua ) && /(mozilla)(?:.*? rv:([\w.]+))?/.exec( ua ) || [];
 		
-	if (ua[1] == 'msie') ua[1] == 'ie';		
+	if (ua[1] == 'msie') ua[1] = 'ie';
 	addClass(ua[1]);
 	// addClass(ua[1] + ua[2].replace(/\./g, "").substring(0, 3));
 	
@@ -65,11 +65,11 @@
 	api.browser[ua[1]] = true;	
 	
 	// IE specific
-	if (head.browser.ie) {
+	if (api.browser.ie) {
 		
 		// IE versions
 		for (var ver = 3; ver < 11; ver++) {
-			if (parseFloat(ua[2]) <= ver) { addClass("lt-ie" + ver); } 			
+			if (parseFloat(ua[2]) < ver) { addClass("lt-ie" + ver); } 			
 		}
 	} 
 	

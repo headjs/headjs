@@ -47,28 +47,7 @@
 		addClass((enabled ? '' : 'no-') + key);
 		api[key] = !!enabled;
 		return api;
-	};
-	
-	api.cookie = function(name, val, expires) {
-		
-		if (val === undefined) {
-			var cook = document.cookie;
-			
-			if (cook) {
-			  var i = cook.indexOf(name + "=");
-			  if (i > -1) {
-				 var end = cook.indexOf(";", i);
-				 return cook.substring(i + name.length + 1, end > -1 ? end : cook.length);
-			  }
-			}
-		} else {
-			document.cookie = name +"="+ escape(val) + (
-				expires ? ";expires=" +(new Date((new Date()).getTime() + 100000000)).toUTCString() : ""
-			);
-		}
-		return api;
-	}; 			
-		
+	};	
 	
 	// browser type & version
 	var ua = navigator.userAgent.toLowerCase();
@@ -78,40 +57,39 @@
 		/(msie) ([\w.]+)/.exec( ua ) ||
 		!/compatible/.test( ua ) && /(mozilla)(?:.*? rv:([\w.]+))?/.exec( ua ) || [];
 		
-	if (ua[1] == 'msie') ua[1] == 'ie';		
+	if (ua[1] == 'msie') ua[1] = 'ie';
 	addClass(ua[1]);
-	addClass(ua[1] + ua[2].replace(".", "").substring(0, 2));
+	// addClass(ua[1] + ua[2].replace(/\./g, "").substring(0, 3));
 	
-	head.browser = { version: parseFloat(ua[2]) };
-	head.browser[ua[1]] = true;	
+	api.browser = { version: ua[2] };
+	api.browser[ua[1]] = true;	
 	
 	// IE specific
-	if (head.browser.ie) {
+	if (api.browser.ie) {
 		
 		// IE versions
 		for (var ver = 3; ver < 11; ver++) {
-			if (ua[2] <= ver) { addClass("lt-ie" + ver); } 			
+			if (parseFloat(ua[2]) < ver) { addClass("lt-ie" + ver); } 			
 		}
 	} 
 	
 	// HTML5 support
-	each("article|aside|footer|header|nav|section".split("|"), function(el) {		
+	each("abbr|article|aside|audio|canvas|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|summary|time|video".split("|"), function(el) {		
 		doc.createElement(el);
 	});
 		
 	// page class && id
-	var root = location.host,
-		 path = location.href.substring(location.href.indexOf(root) + root.length + 1),
+	var path = location.pathname,
 		 els = path.split("/"),
-		 section = els.slice(0, els.length -1).join("-") || "root";
+		 section = els.slice(0, els.length -1).join("-") || "root",
 		 pageId = els.slice(-1)[0] || "index",
 		 index = pageId.indexOf(".");
 	
 	if (index >= 0) { pageId = pageId.substring(0, index); }
 	
 	
-	head.section = section;	
-	head.pageId = pageId;	
+	api.section = section;	
+	api.pageId = pageId;	
 
 	addClass(section + conf.section);
 	html.id = pageId + conf.page;
@@ -154,7 +132,7 @@
 	function testAll(definition)  {
 		style.cssText = prefs.join(definition + ";");
 		var len = style.cssText ? style.cssText.length : 0;
-		return len > 0 && len < 150;
+		return len > 0 && !style.cssText.split(";")[1];
 	}
 
 	var tests = {
@@ -207,7 +185,7 @@
 		},
 		
 		transitions: function() {
-			return testAll("transition:all .5s linear");
+			return testAll("transition:all .1s linear");
 		}
       
 	};
@@ -229,9 +207,9 @@
 
 		 
 	/*** public API ***/
-	var head_var = window.head_conf ? head_conf.head : "head",
-		api = window[head_var] = (window[head_var] || {});
-
+	var head_var = window.head_conf && head_conf.head || "head",
+		 api = window[head_var] = (window[head_var] || {}); 
+	
 	api.js = function() {
 			
 		var args = arguments,
@@ -273,7 +251,7 @@
 		else arr.push[fn];
 		return api.js;
 	};
-		
+
 	/*
 	api.dump = function() {
 		console.info(scripts);
@@ -287,7 +265,7 @@
 		if (script) return script;
 		
 		if (typeof url == 'object')  {
-			for (key in url) {
+			for (var key in url) {
 				script = { name: key, url: url[key] };	
 			}
 		} else {
@@ -310,14 +288,14 @@
 	}
 	
 	function isFunc(el) {
-		return typeof el == 'function';	
+		return Object.prototype.toString.call(el) == '[object Function]';
 	} 
 	
 	function preloadAll() {
 		each(arguments, function(el) {
 			if (!isFunc(el)) {
 				preload(getScript(el));
-			}
+			} 
 		});		
 	}
 	
@@ -339,7 +317,11 @@
 				});					
 			}
 			
-			if (head.browser.mozilla) {
+			/*
+				Browser detection required. Firefox does not support script.type = text/cache
+				http://www.phpied.com/preload-cssjavascript-without-execution/				
+			*/	
+			if (/Firefox/.test(navigator.userAgent)) {
 				var obj = doc.createElement('object');
 				obj.data = script.url;
 				obj.width  = 0;
@@ -421,7 +403,9 @@
 				callback.call();
 				callback.done = true;
 			}
-			if (!api.browser.ie) {			
+			
+			// cleanup. IE runs into trouble
+			if (!document.all) {			
 				head.removeChild(elem);
 			}
 		}; 
