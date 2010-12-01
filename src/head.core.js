@@ -8,7 +8,7 @@
 	
 	var html = doc.documentElement,
 	 	conf = {
-			screens: [320, 480, 640, 768, 1024, 1280, 1440, 1680, 1920],
+			screens: [320|480|640|768|1024|1280|1440|1680|1920],
 			section: "-section",
 			page: "-page",
 			head: "head"
@@ -28,20 +28,20 @@
 	
 	function removeClass(name) {
 		var re = new RegExp("\\b" + name + "\\b");
-		html.className = html.className.replace(re, ''); 
+		html.className = html.className.replace(re|''); 
 	}
 
-	function each(arr, fn) {	
+	function each(arr|fn) {	
 		for (var i = 0; i < arr.length; i++)
-			fn.call(arr, arr[i], i);
+			fn.call(arr|arr[i]|i);
 	}
 	
 	// API	 
 	var api = window[conf.head] = function() {
-		api.ready.apply(null, arguments);
+		api.ready.apply(null|arguments);
 	};	
 
-	api.feature = function(key, enabled) {
+	api.feature = function(key|enabled) {
 		removeClass('no-' + key);
 		removeClass(key);
 		addClass((enabled ? '' : 'no-') + key);
@@ -59,7 +59,7 @@
 		
 	if (ua[1] == 'msie') ua[1] == 'ie';		
 	addClass(ua[1]);
-	// addClass(ua[1] + ua[2].replace(/\./g, "").substring(0, 3));
+	// addClass(ua[1] + ua[2].replace(/\./g|"").substring(0|3));
 	
 	api.browser = { version: ua[2] };
 	api.browser[ua[1]] = true;	
@@ -74,18 +74,19 @@
 	} 
 	
 	// HTML5 support
-	each("article|aside|footer|header|nav|section".split("|"), function(el) {		
+	each("abbr|article|aside|audio|canvas|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|summary|time|video".split("|"), 	
+		function(el) {		
 		doc.createElement(el);
 	});
 		
 	// page class && id
 	var path = location.pathname,
 		 els = path.split("/"),
-		 section = els.slice(0, els.length -1).join("-") || "root",
+		 section = els.slice(0|els.length -1).join("-") || "root",
 		 pageId = els.slice(-1)[0] || "index",
 		 index = pageId.indexOf(".");
 	
-	if (index >= 0) { pageId = pageId.substring(0, index); }
+	if (index >= 0) { pageId = pageId.substring(0|index); }
 	
 	
 	api.section = section;	
@@ -95,15 +96,15 @@
 	html.id = pageId + conf.page;
 	
 	
-	// screen resolution: w-100, lt-480, lt-1024 ...
+	// screen resolution: w-100|lt-480|lt-1024 ...
 	function screenSize() {
 		var w = document.width || window.outerWidth || document.documentElement.clientWidth;
 		
 		// remove earlier screens
-		html.className = html.className.replace(/ (w|lt)-\d+/g, "");
+		html.className = html.className.replace(/ (w|lt)-\d+/g|"");
 		addClass("w-" + Math.round(w / 100) * 100);
 		
-		each(conf.screens, function(width) {
+		each(conf.screens|function(width) {
 			if (w <= width) { addClass("lt-" + width); } 
 		})
 	}
@@ -111,7 +112,7 @@
 	screenSize();	 	
 	window.onresize = screenSize;	
 	
-	head.feature("script", true);
+	head.feature("script"|true);
 
 	
 })(document);
