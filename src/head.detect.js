@@ -17,10 +17,10 @@
 	
 	https://github.com/Modernizr/Modernizr/blob/master/modernizr.js
 */
-(function(doc) {
+(function(api) {
 		
 	/* CSS modernizer */
-	var el = doc.createElement("i"),
+	var el = document.createElement("i"),
 		 style = el.style,
 		 prefs = ' -o- -moz- -ms- -webkit- -khtml- '.split(' ');
 		 
@@ -89,11 +89,16 @@
 		}
       
 	};
-
-	var api = window[head_conf.head];
-		
+	
+	// queue features	
 	for (var key in tests) {		
-		api.feature(key, tests[key].call());
+		api.feature(key, tests[key].call(), true);
 	}
 	
-})(document);	
+	// enable features at once
+	api.feature();
+	
+	
+})(window[head_conf.head]);	
+
+

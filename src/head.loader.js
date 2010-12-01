@@ -6,7 +6,8 @@
 */ 
 (function(doc) { 
 		
-	var ready = false,
+	var head = doc.documentElement,
+		 ready = false,
 		 queue = [],
 		 thelast = [],		// functions to be executed last
 		 waiters = {},		// functions waiting for scripts
@@ -138,10 +139,10 @@
 					onload();
 					
 					// avoid spinning progress indicator with setTimeout
-					setTimeout(function() { doc.body.removeChild(obj); }, 1);
+					setTimeout(function() { head.removeChild(obj); }, 1);
 				};
 				
-				doc.body.appendChild(obj);
+				head.appendChild(obj);
 				
 			} else {
 				scriptTag({ src: script.url, type: 'cache'}, onload);	
@@ -199,9 +200,7 @@
 	// if callback == true --> preload
 	function scriptTag(src, callback)  {
 		
-		var head = doc.getElementsByTagName('head')[0],
-			elem = doc.createElement('script');
-		
+		var elem = doc.createElement('script');		
 		elem.type = 'text/' + (src.type || 'javascript');
 		elem.src = src.src || src;
 		
@@ -220,13 +219,16 @@
 		head.appendChild(elem); 
 	} 
 	
-	// DomContentLoaded no better	 
+	/*
+		This timer delays the start a little. All just become more robust. 
+		Still a bit of a mystery. Will investigate report when all clear.		
+		Not related to DomContentLoaded.	 
+	*/	
 	setTimeout(function() {
 		ready = true;
 		each(queue, function(fn) {
 			fn.call();			
 		});		
-	}, 50);
-	
+	}, 200);	
 		
 })(document);

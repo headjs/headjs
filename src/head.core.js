@@ -1,18 +1,19 @@
 /**
 	Head JS: The only script in your <HEAD>.
 	
-	copyright: "tipiirai" / Tero Piirainen
+	Copyright: "tipiirai" / Tero Piirainen
 	license: MIT
 */
 (function(doc) {
 	
 	var html = doc.documentElement,
-	 	conf = {
+	 	 conf = {
 			screens: [320, 480, 640, 768, 1024, 1280, 1440, 1680, 1920],
 			section: "-section",
 			page: "-page",
 			head: "head"
-		};
+		 },
+		 klass = [];
 		
 	if (typeof window.head_conf == 'object') {
 		for (var key in head_conf) {
@@ -22,13 +23,13 @@
 	
 	window.head_conf = conf;
 		
-	function addClass(name) { 
-		html.className += ' ' + name; 
+	function pushClass(name) {
+		klass.push(name); 
 	} 
 	
 	function removeClass(name) {
 		var re = new RegExp("\\b" + name + "\\b");
-		html.className = html.className.replace(re, ''); 
+		html.className = html.className.replace(re, '');
 	}
 
 	function each(arr, fn) {	
@@ -41,10 +42,18 @@
 		api.ready.apply(null, arguments);
 	};	
 
-	api.feature = function(key, enabled) {
-		removeClass('no-' + key);
-		removeClass(key);
-		addClass((enabled ? '' : 'no-') + key);
+	api.feature = function(key, enabled, queue) {
+		
+		/*% internal %*/
+		  if (!key) { 
+			 	html.className += ' ' + klass.join( ' ' );
+			 	klass = [];		  
+		  } else if (!queue) { 
+		  		removeClass('no-' + key); removeClass(key); 
+		  }
+		/*% endinternal %*/
+		
+		pushClass((enabled ? '' : 'no-') + key);
 		api[key] = !!enabled;
 		return api;
 	};	
@@ -58,8 +67,8 @@
 		!/compatible/.test( ua ) && /(mozilla)(?:.*? rv:([\w.]+))?/.exec( ua ) || [];
 		
 	if (ua[1] == 'msie') ua[1] = 'ie';
-	addClass(ua[1]);
-	// addClass(ua[1] + ua[2].replace(/\./g, "").substring(0, 3));
+	pushClass(ua[1]);
+	// pushClass(ua[1] + ua[2].replace(/\./g, "").substring(0, 3));
 	
 	api.browser = { version: ua[2] };
 	api.browser[ua[1]] = true;	
@@ -69,7 +78,7 @@
 		
 		// IE versions
 		for (var ver = 3; ver < 11; ver++) {
-			if (parseFloat(ua[2]) < ver) { addClass("lt-ie" + ver); } 			
+			if (parseFloat(ua[2]) < ver) { pushClass("lt-ie" + ver); } 			
 		}
 	} 
 	
@@ -91,7 +100,7 @@
 	api.section = section;	
 	api.pageId = pageId;	
 
-	addClass(section + conf.section);
+	pushClass(section + conf.section);
 	html.id = pageId + conf.page;
 	
 	
@@ -99,21 +108,22 @@
 	function screenSize() {
 		var w = document.width || window.outerWidth || document.documentElement.clientWidth;
 		
-		// remove earlier screens
+		// remove earlier widths
 		html.className = html.className.replace(/ (w|lt)-\d+/g, "");
-		addClass("w-" + Math.round(w / 100) * 100);
+		
+		// add new ones
+		pushClass("w-" + Math.round(w / 100) * 100);
 		
 		each(conf.screens, function(width) {
-			if (w <= width) { addClass("lt-" + width); } 
+			if (w <= width) { pushClass("lt-" + width); } 
 		})
 	}
 	
 	screenSize();	 	
-	window.onresize = screenSize;	
+	window.onresize = screenSize;
 	
-	head.feature("script", true);
-
-	
+	api.feature("script", true).feature();
+		
 })(document);
 
 
