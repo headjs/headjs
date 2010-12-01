@@ -73,11 +73,21 @@
 		if (script) return script;
 		
 		if (typeof url == 'object')  {
-			for (var key in url) {
-				script = { name: key, url: url[key] };	
+			if ( url.length > 1 ) {
+				script = { names: [] };
+				for (var key in url) {
+					if ( script.names.length == url.length - 1 )
+						script.url = url[key];
+					else
+						script.names.push(url[key]);
+				}
+			} else {
+				for (var key in url) {
+					script = { names: [ key ], url: url[key] };	
+				}
 			}
 		} else {
-			script = { name: url.substring(url.indexOf("/", 10) + 1, url.indexOf("?")), url: url }; 
+			script = { names: [ url.substring(url.indexOf("/", 10) + 1, url.indexOf("?")) ], url: url }; 
 		}
 		
 		scripts[script.url] = script;
@@ -176,9 +186,11 @@
 			//* console.info("    LOADED", script.name);
 			
 			// waiters for this script
-			each(waiters[script.name], function(fn) {
-				fn.call();		
-			});
+			for (var name in script.names) {
+				each(waiters[ script.names[name] ], function(fn) {
+					fn.call();		
+				});
+			}
 
 			// TODO: do not run until DOM is loaded			
 			var allLoaded = true;

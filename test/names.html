@@ -1,0 +1,11 @@
+<!doctype html>
+<head>
+<script src="../src/head.loader.js"></script>
+<script>
+head.ready("a", function(){console.log("a ready "+a);});
+head.ready("b", function(){console.log("b ready "+b);});
+head.js(["a", "b", "ab.js"]);
+</script>
+</head>
+<body>
+</body>
