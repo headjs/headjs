@@ -72,7 +72,7 @@
 		if (script) return script;
 		
 		if (typeof url == 'object')  {
-			for (key in url) {
+			for (var key in url) {
 				script = { name: key, url: url[key] };	
 			}
 		} else {

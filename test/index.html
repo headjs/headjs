@@ -19,36 +19,38 @@
 	
 	<script>
 	
-	var start = new Date(),
-		 server = "http://192.168.0.102:2000",
-		 num = 30;	
-		 
-	// head.preload( server + "/file1", server + "/file2", server + "/file3" );		
-	head.ready(function() {
-		console.log("        -->last one", (new Date()).getTime() - start.getTime());		
-	});
-	
-	head.ready("c", function() {
-		console.info("after C");		
-	});
-	
-	// will load but not execute. 
-	head.js(
-		{a: server + "/A-" + num + "?time=100"},
-		server + "/B-" + num + "?time=200",
-		{c: server + "/C-" + num + "?time=600"},
-		server + "/E-" + num + "?time=200",
-		server + "/F-" + num + "?time=600", // { tooltip: server + "/file2" + num + "?time=900" }, 
-		 function() {
-		console.log("        -->The Bundle");		
-	});
-	
-	head.js(server + "/rangeinput" + num + "?time=800", function() {
-		console.log("        -->rangeinput");		
-	});
-	
-	console.info(document.documentElement.className);
-	
+	(function() {
+		var start = new Date(),
+			 server = "http://192.168.0.102:2000",
+			 num = 30;	
+			 
+		// head.preload( server + "/file1", server + "/file2", server + "/file3" );		
+		head.ready(function() {
+			console.log("        -->last one", (new Date()).getTime() - start.getTime());		
+		});
+		
+		head.ready("c", function() {
+			console.info("after C");		
+		});
+		
+		// will load but not execute. 
+		head.js(
+			{a: server + "/A-" + num + "?time=100"},
+			server + "/B-" + num + "?time=200",
+			{c: server + "/C-" + num + "?time=600"},
+			server + "/E-" + num + "?time=200",
+			server + "/F-" + num + "?time=600", // { tooltip: server + "/file2" + num + "?time=900" }, 
+			 function() {
+			console.log("        -->The Bundle");		
+		});
+		
+		head.js(server + "/rangeinput" + num + "?time=800", function() {
+			console.log("        -->rangeinput");		
+		});
+		
+		console.info(document.documentElement.className);
+		
+	})();
 	</script>
 	
 </body>

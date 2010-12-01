@@ -82,8 +82,8 @@
 	addClass(ua[1]);
 	addClass(ua[1] + ua[2].replace(".", "").substring(0, 2));
 	
-	head.browser = { version: parseFloat(ua[2]) };
-	head.browser[ua[1]] = true;	
+	api.browser = { version: parseFloat(ua[2]) };
+	api.browser[ua[1]] = true;	
 	
 	// IE specific
 	if (head.browser.ie) {
@@ -102,15 +102,15 @@
 	// page class && id
 	var path = location.pathname,
 		 els = path.split("/"),
-		 section = els.slice(0, els.length -1).join("-") || "root";
+		 section = els.slice(0, els.length -1).join("-") || "root",
 		 pageId = els.slice(-1)[0] || "index",
 		 index = pageId.indexOf(".");
 	
 	if (index >= 0) { pageId = pageId.substring(0, index); }
 	
 	
-	head.section = section;	
-	head.pageId = pageId;	
+	api.section = section;	
+	api.pageId = pageId;	
 
 	addClass(section + conf.section);
 	html.id = pageId + conf.page;
