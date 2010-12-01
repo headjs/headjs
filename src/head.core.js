@@ -47,28 +47,7 @@
 		addClass((enabled ? '' : 'no-') + key);
 		api[key] = !!enabled;
 		return api;
-	};
-	
-	api.cookie = function(name, val, expires) {
-		
-		if (val === undefined) {
-			var cook = document.cookie;
-			
-			if (cook) {
-			  var i = cook.indexOf(name + "=");
-			  if (i > -1) {
-				 var end = cook.indexOf(";", i);
-				 return cook.substring(i + name.length + 1, end > -1 ? end : cook.length);
-			  }
-			}
-		} else {
-			document.cookie = name +"="+ escape(val) + (
-				expires ? ";expires=" +(new Date((new Date()).getTime() + 100000000)).toUTCString() : ""
-			);
-		}
-		return api;
-	}; 			
-		
+	};	
 	
 	// browser type & version
 	var ua = navigator.userAgent.toLowerCase();
