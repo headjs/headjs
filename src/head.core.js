@@ -80,9 +80,9 @@
 		
 	if (ua[1] == 'msie') ua[1] == 'ie';		
 	addClass(ua[1]);
-	addClass(ua[1] + ua[2].replace(".", "").substring(0, 2));
+	// addClass(ua[1] + ua[2].replace(/\./g, "").substring(0, 3));
 	
-	api.browser = { version: parseFloat(ua[2]) };
+	api.browser = { version: ua[2] };
 	api.browser[ua[1]] = true;	
 	
 	// IE specific
@@ -90,7 +90,7 @@
 		
 		// IE versions
 		for (var ver = 3; ver < 11; ver++) {
-			if (ua[2] <= ver) { addClass("lt-ie" + ver); } 			
+			if (parseFloat(ua[2]) <= ver) { addClass("lt-ie" + ver); } 			
 		}
 	} 
 	
