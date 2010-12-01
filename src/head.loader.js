@@ -14,9 +14,9 @@
 
 		 
 	/*** public API ***/
-	var head_var = window.head_conf ? head_conf.head : "head",
-		api = window[head_var] = (window[head_var] || {});
-
+	var head_var = window.head_conf && head_conf.head || "head",
+		 api = window[head_var] = (window[head_var] || {}); 
+	
 	api.js = function() {
 			
 		var args = arguments,
@@ -58,7 +58,7 @@
 		else arr.push[fn];
 		return api.js;
 	};
-		
+
 	/*
 	api.dump = function() {
 		console.info(scripts);
@@ -102,7 +102,7 @@
 		each(arguments, function(el) {
 			if (!isFunc(el)) {
 				preload(getScript(el));
-			}
+			} 
 		});		
 	}
 	
@@ -124,7 +124,7 @@
 				});					
 			}
 			
-			if (head.browser.mozilla) {
+			if (/Firefox/.test(navigator.userAgent)) {
 				var obj = doc.createElement('object');
 				obj.data = script.url;
 				obj.width  = 0;
@@ -206,7 +206,7 @@
 				callback.call();
 				callback.done = true;
 			}
-			if (!api.browser.ie) {			
+			if (!document.all) {			
 				head.removeChild(elem);
 			}
 		}; 
