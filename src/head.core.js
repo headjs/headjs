@@ -100,8 +100,7 @@
 	});
 		
 	// page class && id
-	var root = location.host,
-		 path = location.href.substring(location.href.indexOf(root) + root.length + 1),
+	var path = location.pathname,
 		 els = path.split("/"),
 		 section = els.slice(0, els.length -1).join("-") || "root";
 		 pageId = els.slice(-1)[0] || "index",
