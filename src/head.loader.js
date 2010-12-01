@@ -95,7 +95,7 @@
 	}
 	
 	function isFunc(el) {
-		return typeof el == 'function';	
+		return Object.prototype.toString.call(el) == '[object Function]';
 	} 
 	
 	function preloadAll() {
@@ -124,6 +124,10 @@
 				});					
 			}
 			
+			/*
+				Browser detection required. Firefox does not support script.type = text/cache
+				http://www.phpied.com/preload-cssjavascript-without-execution/				
+			*/	
 			if (/Firefox/.test(navigator.userAgent)) {
 				var obj = doc.createElement('object');
 				obj.data = script.url;
@@ -206,6 +210,8 @@
 				callback.call();
 				callback.done = true;
 			}
+			
+			// cleanup. IE runs into trouble
 			if (!document.all) {			
 				head.removeChild(elem);
 			}
