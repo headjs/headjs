@@ -7,47 +7,59 @@
 (function(doc) {
 	
 	var html = doc.documentElement,
-	 	conf = {
+		conf = {
 			screens: [320, 480, 640, 768, 1024, 1280, 1440, 1680, 1920],
 			section: "-section",
 			page: "-page",
 			head: "head"
-		};
+		},
+		klass = [];
 		
 	if (typeof window.head_conf == 'object') {
 		for (var key in head_conf) {
-			conf[key] = head_conf[key];
+			if (head_conf[key]) {
+				conf[key] = head_conf[key];
+			}
 		}
 	} 
 	
 	window.head_conf = conf;
 		
-	function addClass(name) { 
-		html.className += ' ' + name; 
+	function pushClass(name) {
+		klass.push(name); 
 	} 
 	
 	function removeClass(name) {
 		var re = new RegExp("\\b" + name + "\\b");
-		html.className = html.className.replace(re, ''); 
+		html.className = html.className.replace(re, '');
 	}
 
 	function each(arr, fn) {	
-		for (var i = 0; i < arr.length; i++)
+		for (var i = 0; i < arr.length; i++) {
 			fn.call(arr, arr[i], i);
+		}
 	}
 	
 	// API	 
 	var api = window[conf.head] = function() {
 		api.ready.apply(null, arguments);
-	};	
+	}; 
 
-	api.feature = function(key, enabled) {
-		removeClass('no-' + key);
-		removeClass(key);
-		addClass((enabled ? '' : 'no-') + key);
+	api.feature = function(key, enabled, queue) {
+		
+		/*% internal %*/
+		  if (!key) { 
+				html.className += ' ' + klass.join( ' ' );
+				klass = [];		  
+		  } else if (!queue) { 
+				removeClass('no-' + key); removeClass(key); 
+		  }
+		/*% endinternal %*/
+		
+		pushClass((enabled ? '' : 'no-') + key);
 		api[key] = !!enabled;
 		return api;
-	};	
+	}; 
 	
 	// browser type & version
 	var ua = navigator.userAgent.toLowerCase();
@@ -57,19 +69,19 @@
 		/(msie) ([\w.]+)/.exec( ua ) ||
 		!/compatible/.test( ua ) && /(mozilla)(?:.*? rv:([\w.]+))?/.exec( ua ) || [];
 		
-	if (ua[1] == 'msie') ua[1] = 'ie';
-	addClass(ua[1]);
-	// addClass(ua[1] + ua[2].replace(/\./g, "").substring(0, 3));
+	if (ua[1] == 'msie') { ua[1] = 'ie'; }
+	pushClass(ua[1]);
+	// pushClass(ua[1] + ua[2].replace(/\./g, "").substring(0, 3));
 	
 	api.browser = { version: ua[2] };
-	api.browser[ua[1]] = true;	
+	api.browser[ua[1]] = true; 
 	
 	// IE specific
 	if (api.browser.ie) {
 		
 		// IE versions
 		for (var ver = 3; ver < 11; ver++) {
-			if (parseFloat(ua[2]) < ver) { addClass("lt-ie" + ver); } 			
+			if (parseFloat(ua[2]) < ver) { pushClass("lt-ie" + ver); }			
 		}
 	} 
 	
@@ -89,9 +101,9 @@
 	
 	
 	api.section = section;	
-	api.pageId = pageId;	
+	api.pageId = pageId; 
 
-	addClass(section + conf.section);
+	pushClass(section + conf.section);
 	html.id = pageId + conf.page;
 	
 	
@@ -99,28 +111,29 @@
 	function screenSize() {
 		var w = document.width || window.outerWidth || document.documentElement.clientWidth;
 		
-		// remove earlier screens
+		// remove earlier widths
 		html.className = html.className.replace(/ (w|lt)-\d+/g, "");
-		addClass("w-" + Math.round(w / 100) * 100);
+		
+		// add new ones
+		pushClass("w-" + Math.round(w / 100) * 100);
 		
 		each(conf.screens, function(width) {
-			if (w <= width) { addClass("lt-" + width); } 
-		})
+			if (w <= width) { pushClass("lt-" + width); } 
+		});
 	}
 	
-	screenSize();	 	
-	window.onresize = screenSize;	
+	screenSize();		
+	window.onresize = screenSize;
 	
-	head.feature("script", true);
-
-	
+	api.feature("script", true).feature();
+		
 })(document);
 
 
-(function(doc) {
+(function(api) {
 		
 	/* CSS modernizer */
-	var el = doc.createElement("i"),
+	var el = document.createElement("i"),
 		 style = el.style,
 		 prefs = ' -o- -moz- -ms- -webkit- -khtml- '.split(' ');
 		 
@@ -189,17 +202,25 @@
 		}
       
 	};
-
-	var api = window[head_conf.head];
-		
+	
+	// queue features	
 	for (var key in tests) {		
-		api.feature(key, tests[key].call());
+		if (tests[key]) {
+			api.feature(key, tests[key].call(), true);
+		}
 	}
 	
-})(document);	
+	// enable features at once
+	api.feature();
+	
+	
+})(window[head_conf.head]);	
+
+
 (function(doc) { 
 		
-	var ready = false,
+	var head = doc.documentElement,
+		 ready = false,
 		 queue = [],
 		 thelast = [],		// functions to be executed last
 		 waiters = {},		// functions waiting for scripts
@@ -217,16 +238,17 @@
 			next = rest[0];				 
 			 
 		if (!ready) {
-			return queue.push(function()  {
+			queue.push(function()  {
 				api.js.apply(null, args);				
 			});
+			return api;
 		}
 		
 		// multiple arguments	 
 		if (next) {				
 			
 			// preload all immediately
-			if (!isFunc(next)) preloadAll.apply(null, rest);
+			if (!isFunc(next)) { preloadAll.apply(null, rest); }
 		
 			// load all recursively in order
 			load(getScript(args[0]), isFunc(next) ? next : function() {	
@@ -235,10 +257,10 @@
 			
 		// single script	
 		} else {
-			load(getScript(args[0])); 	
+			load(getScript(args[0]));
 		}
 		
-		return api.js;		 
+		return api;		 
 	};
 		
 	api.ready = function(key, fn) {
@@ -248,25 +270,21 @@
 						
 		var arr = waiters[key];
 		if (!arr) { arr = waiters[key] = [fn]; }
-		else arr.push[fn];
-		return api.js;
+		else { arr.push(fn); }
+		return api;
 	};
-
-	/*
-	api.dump = function() {
-		console.info(scripts);
-	};
-	*/
 	
 	/*** private functions ***/
 	function getScript(url) {
 		
 		var script = scripts[url.url || url];
-		if (script) return script;
+		if (script) { return script; }
 		
 		if (typeof url == 'object')  {
 			for (var key in url) {
-				script = { name: key, url: url[key] };	
+				if (url[key]) {
+					script = { name: key, url: url[key] };
+				}
 			}
 		} else {
 			script = { name: url.substring(url.indexOf("/", 10) + 1, url.indexOf("?")), url: url }; 
@@ -277,14 +295,15 @@
 	}
 	
 	function each(arr, fn) {
-		if (!arr) return;
+		if (!arr) { return; }
 		
 		// arguments special type
 		if (typeof arr == 'object') { arr = [].slice.call(arr); }
 		
 		// do the job
-		for (var i = 0; i < arr.length; i++)
+		for (var i = 0; i < arr.length; i++) {
 			fn.call(arr, arr[i], i);
+		}
 	}
 	
 	function isFunc(el) {
@@ -299,23 +318,20 @@
 		});		
 	}
 	
+	function onPreload(script) {
+		script.state = "preloaded";
+
+		each(script.onpreload, function(el) {
+			el.call();
+		});					
+	}
+	
 	function preload(script, callback) {
 		
 		if (!script.state) {
 			
-			//* console.info("PRELOAD", script.name)
-			
 			script.state = "preloading";
 			script.onpreload = [];
-
-			function onload() {
-				script.state = "preloaded";
-				
-				//* console.info("    PRE", script.name);
-				each(script.onpreload, function(el) {
-					el.call();
-				});					
-			}
 			
 			/*
 				Browser detection required. Firefox does not support script.type = text/cache
@@ -328,24 +344,24 @@
 				obj.height = 0;		
 				
 				obj.onload = function() {
-					onload();
+					onPreload(script);
 					
 					// avoid spinning progress indicator with setTimeout
-					setTimeout(function() { doc.body.removeChild(obj); }, 1);
+					setTimeout(function() { head.removeChild(obj); }, 1);
 				};
 				
-				doc.body.appendChild(obj);
+				head.appendChild(obj);
 				
 			} else {
-				scriptTag({ src: script.url, type: 'cache'}, onload);	
-			}
-			
+				scriptTag({ src: script.url, type: 'cache'}, function()  {
+					onPreload(script);		
+				});
+			} 
 		}
 	}
 	
 	
-	function load(script, callback) {		
-
+	function load(script, callback) {	
 
 		if (script.state == 'loaded') { return callback(); }
 			
@@ -354,8 +370,6 @@
 				load(script, callback);	
 			});
 		}
-
-		//* console.info("LOAD", script.name, ":", script.state)
 		
 		script.state = 'loading'; 
 
@@ -363,9 +377,7 @@
 			
 			script.state = 'loaded';
 			
-			if (callback) callback.call();			
-			
-			//* console.info("    LOADED", script.name);
+			if (callback) { callback.call(); }			
 			
 			// waiters for this script
 			each(waiters[script.name], function(fn) {
@@ -376,12 +388,12 @@
 			var allLoaded = true;
 		
 			for (var key in scripts) {
-				if (scripts[key].state != 'loaded') allLoaded = false;	
+				if (scripts[key].state != 'loaded') { allLoaded = false; }	
 			}
 		
 			if (allLoaded) {
 				each(thelast, function(fn) {
-					if (!fn.done) fn.call();
+					if (!fn.done) { fn.call(); }
 					fn.done = true;
 				});
 			}
@@ -392,9 +404,7 @@
 	// if callback == true --> preload
 	function scriptTag(src, callback)  {
 		
-		var head = doc.getElementsByTagName('head')[0],
-			elem = doc.createElement('script');
-		
+		var elem = doc.createElement('script');		
 		elem.type = 'text/' + (src.type || 'javascript');
 		elem.src = src.src || src;
 		
@@ -413,13 +423,16 @@
 		head.appendChild(elem); 
 	} 
 	
-	// DomContentLoaded no better	 
+	/*
+		This timer delays the start a little. All just become more robust. 
+		Still a bit of a mystery. Will investigate report when all clear.		
+		Not related to DomContentLoaded.	 
+	*/	
 	setTimeout(function() {
 		ready = true;
 		each(queue, function(fn) {
 			fn.call();			
 		});		
-	}, 50);
-	
+	}, 200);	
 		
 })(document);

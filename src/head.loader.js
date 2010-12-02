@@ -35,7 +35,7 @@
 		if (next) {				
 			
 			// preload all immediately
-			if (!isFunc(next)) preloadAll.apply(null, rest);
+			if (!isFunc(next)) { preloadAll.apply(null, rest); }
 		
 			// load all recursively in order
 			load(getScript(args[0]), isFunc(next) ? next : function() {	
@@ -44,7 +44,7 @@
 			
 		// single script	
 		} else {
-			load(getScript(args[0])); 	
+			load(getScript(args[0]));
 		}
 		
 		return api;		 
@@ -57,25 +57,21 @@
 						
 		var arr = waiters[key];
 		if (!arr) { arr = waiters[key] = [fn]; }
-		else arr.push[fn];
-		return api.js;
+		else { arr.push(fn); }
+		return api;
 	};
-
-	/*
-	api.dump = function() {
-		console.info(scripts);
-	};
-	*/
 	
 	/*** private functions ***/
 	function getScript(url) {
 		
 		var script = scripts[url.url || url];
-		if (script) return script;
+		if (script) { return script; }
 		
 		if (typeof url == 'object')  {
 			for (var key in url) {
-				script = { name: key, url: url[key] };	
+				if (url[key]) {
+					script = { name: key, url: url[key] };
+				}
 			}
 		} else {
 			script = { name: url.substring(url.indexOf("/", 10) + 1, url.indexOf("?")), url: url }; 
@@ -86,14 +82,15 @@
 	}
 	
 	function each(arr, fn) {
-		if (!arr) return;
+		if (!arr) { return; }
 		
 		// arguments special type
 		if (typeof arr == 'object') { arr = [].slice.call(arr); }
 		
 		// do the job
-		for (var i = 0; i < arr.length; i++)
+		for (var i = 0; i < arr.length; i++) {
 			fn.call(arr, arr[i], i);
+		}
 	}
 	
 	function isFunc(el) {
@@ -108,23 +105,20 @@
 		});		
 	}
 	
+	function onPreload(script) {
+		script.state = "preloaded";
+
+		each(script.onpreload, function(el) {
+			el.call();
+		});					
+	}
+	
 	function preload(script, callback) {
 		
 		if (!script.state) {
 			
-			//* console.info("PRELOAD", script.name)
-			
 			script.state = "preloading";
 			script.onpreload = [];
-
-			function onload() {
-				script.state = "preloaded";
-				
-				//* console.info("    PRE", script.name);
-				each(script.onpreload, function(el) {
-					el.call();
-				});					
-			}
 			
 			/*
 				Browser detection required. Firefox does not support script.type = text/cache
@@ -137,7 +131,7 @@
 				obj.height = 0;		
 				
 				obj.onload = function() {
-					onload();
+					onPreload(script);
 					
 					// avoid spinning progress indicator with setTimeout
 					setTimeout(function() { head.removeChild(obj); }, 1);
@@ -146,15 +140,15 @@
 				head.appendChild(obj);
 				
 			} else {
-				scriptTag({ src: script.url, type: 'cache'}, onload);	
-			}
-			
+				scriptTag({ src: script.url, type: 'cache'}, function()  {
+					onPreload(script);		
+				});
+			} 
 		}
 	}
 	
 	
-	function load(script, callback) {		
-
+	function load(script, callback) {	
 
 		if (script.state == 'loaded') { return callback(); }
 			
@@ -163,8 +157,6 @@
 				load(script, callback);	
 			});
 		}
-
-		//* console.info("LOAD", script.name, ":", script.state)
 		
 		script.state = 'loading'; 
 
@@ -172,9 +164,7 @@
 			
 			script.state = 'loaded';
 			
-			if (callback) callback.call();			
-			
-			//* console.info("    LOADED", script.name);
+			if (callback) { callback.call(); }			
 			
 			// waiters for this script
 			each(waiters[script.name], function(fn) {
@@ -185,12 +175,12 @@
 			var allLoaded = true;
 		
 			for (var key in scripts) {
-				if (scripts[key].state != 'loaded') allLoaded = false;	
+				if (scripts[key].state != 'loaded') { allLoaded = false; }	
 			}
 		
 			if (allLoaded) {
 				each(thelast, function(fn) {
-					if (!fn.done) fn.call();
+					if (!fn.done) { fn.call(); }
 					fn.done = true;
 				});
 			}

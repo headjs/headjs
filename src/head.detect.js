@@ -92,7 +92,9 @@
 	
 	// queue features	
 	for (var key in tests) {		
-		api.feature(key, tests[key].call(), true);
+		if (tests[key]) {
+			api.feature(key, tests[key].call(), true);
+		}
 	}
 	
 	// enable features at once

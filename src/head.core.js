@@ -7,17 +7,19 @@
 (function(doc) {
 	
 	var html = doc.documentElement,
-	 	 conf = {
+		conf = {
 			screens: [320, 480, 640, 768, 1024, 1280, 1440, 1680, 1920],
 			section: "-section",
 			page: "-page",
 			head: "head"
-		 },
-		 klass = [];
+		},
+		klass = [];
 		
 	if (typeof window.head_conf == 'object') {
 		for (var key in head_conf) {
-			conf[key] = head_conf[key];
+			if (head_conf[key]) {
+				conf[key] = head_conf[key];
+			}
 		}
 	} 
 	
@@ -33,30 +35,31 @@
 	}
 
 	function each(arr, fn) {	
-		for (var i = 0; i < arr.length; i++)
+		for (var i = 0; i < arr.length; i++) {
 			fn.call(arr, arr[i], i);
+		}
 	}
 	
 	// API	 
 	var api = window[conf.head] = function() {
 		api.ready.apply(null, arguments);
-	};	
+	}; 
 
 	api.feature = function(key, enabled, queue) {
 		
 		/*% internal %*/
 		  if (!key) { 
-			 	html.className += ' ' + klass.join( ' ' );
-			 	klass = [];		  
+				html.className += ' ' + klass.join( ' ' );
+				klass = [];		  
 		  } else if (!queue) { 
-		  		removeClass('no-' + key); removeClass(key); 
+				removeClass('no-' + key); removeClass(key); 
 		  }
 		/*% endinternal %*/
 		
 		pushClass((enabled ? '' : 'no-') + key);
 		api[key] = !!enabled;
 		return api;
-	};	
+	}; 
 	
 	// browser type & version
 	var ua = navigator.userAgent.toLowerCase();
@@ -66,19 +69,19 @@
 		/(msie) ([\w.]+)/.exec( ua ) ||
 		!/compatible/.test( ua ) && /(mozilla)(?:.*? rv:([\w.]+))?/.exec( ua ) || [];
 		
-	if (ua[1] == 'msie') ua[1] = 'ie';
+	if (ua[1] == 'msie') { ua[1] = 'ie'; }
 	pushClass(ua[1]);
 	// pushClass(ua[1] + ua[2].replace(/\./g, "").substring(0, 3));
 	
 	api.browser = { version: ua[2] };
-	api.browser[ua[1]] = true;	
+	api.browser[ua[1]] = true; 
 	
 	// IE specific
 	if (api.browser.ie) {
 		
 		// IE versions
 		for (var ver = 3; ver < 11; ver++) {
-			if (parseFloat(ua[2]) < ver) { pushClass("lt-ie" + ver); } 			
+			if (parseFloat(ua[2]) < ver) { pushClass("lt-ie" + ver); }			
 		}
 	} 
 	
@@ -98,7 +101,7 @@
 	
 	
 	api.section = section;	
-	api.pageId = pageId;	
+	api.pageId = pageId; 
 
 	pushClass(section + conf.section);
 	html.id = pageId + conf.page;
@@ -116,10 +119,10 @@
 		
 		each(conf.screens, function(width) {
 			if (w <= width) { pushClass("lt-" + width); } 
-		})
+		});
 	}
 	
-	screenSize();	 	
+	screenSize();		
 	window.onresize = screenSize;
 	
 	api.feature("script", true).feature();
