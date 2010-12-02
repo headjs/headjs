@@ -12,13 +12,12 @@
 
 <body>
 
-	<p style="font-size:20px;margin:100px">
+	<h1>script src tags on HEAD</h1>
 	
-		started rendering in  
-		
-		<script> document.write((new Date()).getTime() - now.getTime());</script>
+	<div id="info"></div>
 	
-		milliseconds
-	</p>
+	<script>
+		document.getElementById("info").innerHTML = (new Date()).getTime() - now.getTime();
+	</script>
 
 </body>
