@@ -25,9 +25,10 @@
 			next = rest[0];				 
 			 
 		if (!ready) {
-			return queue.push(function()  {
+			queue.push(function()  {
 				api.js.apply(null, args);				
 			});
+			return api;
 		}
 		
 		// multiple arguments	 
@@ -46,7 +47,7 @@
 			load(getScript(args[0])); 	
 		}
 		
-		return api.js;		 
+		return api;		 
 	};
 		
 	api.ready = function(key, fn) {

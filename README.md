@@ -7,4 +7,4 @@ Time to test, fix and benchmark became sooner than expected.
 
 A solid release around the corner.
 
-Current website: [http://headjs.com](http://headjs.com)
+The website: [http://headjs.com](http://headjs.com)
