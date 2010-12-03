@@ -73,7 +73,7 @@
 		},
 		
 		opacity: function() {
-			return testAll("opacity:.1");
+			return el.style.opacity === "";
 		},
 		
 		reflections: function() {
