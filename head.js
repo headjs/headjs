@@ -109,7 +109,7 @@
 	
 	// screen resolution: w-100, lt-480, lt-1024 ...
 	function screenSize() {
-		var w = document.width || window.outerWidth || document.documentElement.clientWidth;
+		var w = window.outerWidth || html.clientWidth;
 		
 		// remove earlier widths
 		html.className = html.className.replace(/ (w|lt)-\d+/g, "");
@@ -120,6 +120,8 @@
 		each(conf.screens, function(width) {
 			if (w <= width) { pushClass("lt-" + width); } 
 		});
+		
+		api.feature();
 	}
 	
 	screenSize();		
@@ -186,7 +188,7 @@
 		},
 		
 		opacity: function() {
-			return testAll("opacity:.1");
+			return el.style.opacity === "";
 		},
 		
 		reflections: function() {
