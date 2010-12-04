@@ -50,7 +50,8 @@
 		/*% internal %*/
 		  if (!key) { 
 				html.className += ' ' + klass.join( ' ' );
-				klass = [];		  
+				return klass = [];		  
+			
 		  } else if (!queue) { 
 				removeClass('no-' + key); removeClass(key); 
 		  }
