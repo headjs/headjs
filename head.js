@@ -4,6 +4,7 @@
 	copyright: "tipiirai" / Tero Piirainen
 	license: MIT
 */
+console.log("This is an alpha build - do NOT use it on a production site");
 (function(doc) {
 	
 	var html = doc.documentElement,
