@@ -47,18 +47,22 @@
 
 	api.feature = function(key, enabled, queue) {
 		
-		/*% internal %*/
-		  if (!key) { 
-				html.className += ' ' + klass.join( ' ' );
-				return klass = [];		  
-			
-		  } else if (!queue) { 
-				removeClass('no-' + key); removeClass(key); 
-		  }
-		/*% endinternal %*/
+		// internal: apply all classes
+		if (!key) { 
+			html.className += ' ' + klass.join( ' ' );
+			return klass = [];		  
+		}
 		
 		pushClass((enabled ? '' : 'no-') + key);
-		api[key] = !!enabled;
+		api[key] = !!enabled;		
+		
+		// apply class to HTML element
+		if (!queue) { 
+			removeClass('no-' + key); 
+			removeClass(key);
+			api.feature();
+		}   
+		
 		return api;
 	}; 
 	
@@ -72,7 +76,6 @@
 		
 	if (ua[1] == 'msie') { ua[1] = 'ie'; }
 	pushClass(ua[1]);
-	// pushClass(ua[1] + ua[2].replace(/\./g, "").substring(0, 3));
 	
 	api.browser = { version: ua[2] };
 	api.browser[ua[1]] = true; 

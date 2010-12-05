@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+// node.js server for testing
 var http = require("http");
 	 
 http.createServer(function (req, res) {
