@@ -31,8 +31,9 @@
 	*/
 	function testAll(definition)  {
 		style.cssText = prefs.join(definition + ";");
-		var len = style.cssText ? style.cssText.length : 0;
-		return len > 0 && !style.cssText.split(";")[1];
+		var val = style.cssText;
+		if (val.indexOf("-o") != -1 && val.indexOf("-ms") != -1) { return false; }
+		return !!val;
 	}
 
 	var tests = {
