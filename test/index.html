@@ -3,7 +3,7 @@
 <!-- A test page for random things. -->
 <head class="no-script">
 	<title>Test page</title>
-	<!--[if IE]><script src="ie-console.js"></script><![endif]-->
+	<script src="ie-console.js"></script><!--[if IE]><![endif]-->
 	
 	<script>var head_conf = {screens: [100, 200, 2000], section: '-area', page: 'page'};</script>
 	<!--  <script src="../head.js"></script> -->
@@ -33,7 +33,7 @@
 	(function() {
 		var start = new Date(),
 			 server = "http://192.168.1.103:2000",
-			 num = 30;	
+			 num = 31;	
 			 
 			 
 		head(function() {
@@ -55,7 +55,7 @@
 			console.log("        -->The Bundle");		
 		});
 		
-		head.js({ invalid: server + "/Chttp://not-working/file" + num }, function() {
+		head.js({ invalid: "https://github.com/headjs/headjs/raw/master/src/css3.js?" + num }, function() {
 			console.log("        -->rangeinput");		
 		});
 

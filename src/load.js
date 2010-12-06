@@ -8,7 +8,7 @@
 (function(doc) { 
 		
 	var head = doc.documentElement,
-		 ie = document.all, 
+		 ie = navigator.userAgent.toLowerCase().indexOf("msie") != -1, 
 		 ready = false, 	// is HEAD "ready"
 		 queue = [],		// if not -> defer execution
 		 handlers = {},	// user functions waiting for events
@@ -219,9 +219,10 @@
 		elem.src = src.src || src;  
 			
 		elem.onreadystatechange = elem.onload = function() {
+			var state = elem.readyState;
 			
 			// assume file was not found
-			if (ie && elem.readyState == 'loading') {
+			if (ie && state == 'loaded') {
 				return handleError(0, src);		
 			}
 			
