@@ -12,11 +12,14 @@
 	<script src="../src/css3.js"></script>
 	<script src="../src/load.js"></script>
 
-	<script>
-	window.onerror = function(a, b) {
-		alert(a + "--" + b);
-	}
+	<script> 
+	// detect video tag
+	head.feature("video", function() {
+		var tag = document.createElement('video');
+		return !!tag.canPlayType;	
+	}); 
 	</script>
+	
 </head>
 
 <body>
@@ -29,11 +32,11 @@
 	
 	(function() {
 		var start = new Date(),
-			 server = "http://localhost:2000",
+			 server = "http://192.168.1.103:2000",
 			 num = 30;	
 			 
-		// head.preload( server + "/file1", server + "/file2", server + "/file3" );		
-		head.ready(function() {
+			 
+		head(function() {
 			console.log("        -->last one", (new Date()).getTime() - start.getTime());		
 		});
 		
@@ -52,10 +55,19 @@
 			console.log("        -->The Bundle");		
 		});
 		
-		head.js(server + "/rangeinput" + num + "?time=800", function() {
+		head.js({ invalid: server + "/Chttp://not-working/file" + num }, function() {
 			console.log("        -->rangeinput");		
 		});
 
+		head.error(function(url, name) {
+			console.info("global", url, name);		
+		});
+		
+		head.error("invalid", function() {
+			console.info("invalid", arguments);		
+		});
+		
+		
 		console.info(document.documentElement.className);
 		
 	})();

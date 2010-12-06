@@ -54,6 +54,10 @@
 			return klass = [];		  
 		}
 		
+		if (Object.prototype.toString.call(enabled) == '[object Function]') {
+			enabled = enabled.call();	
+		}
+		
 		pushClass((enabled ? '' : 'no-') + key);
 		api[key] = !!enabled;		
 		
@@ -98,7 +102,7 @@
 	// page class && id
 	var path = location.pathname,
 		 els = path.split("/"),
-		 section = els.slice(0, els.length -1).join("-") || "root",
+		 section = els.slice(1, els.length -1).join("-") || "root",
 		 pageId = els.slice(-1)[0] || "index",
 		 index = pageId.indexOf(".");
 	

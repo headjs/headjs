@@ -8,23 +8,23 @@
 (function(doc) { 
 		
 	var head = doc.documentElement,
-		 ready = false,
-		 queue = [],
-		 thelast = [],		// functions to be executed last
-		 waiters = {},		// functions waiting for scripts
-		 scripts = {};		// the scripts in different states
+		 ie = document.all, 
+		 ready = false, 	// is HEAD "ready"
+		 queue = [],		// if not -> defer execution
+		 handlers = {},	// user functions waiting for events
+		 scripts = {};		// loadable scripts in different states
 
 		 
 	/*** public API ***/
 	var head_var = window.head_conf && head_conf.head || "head",
-		 api = window[head_var] = (window[head_var] || {}); 
+		 api = window[head_var] = (window[head_var] || function() { api.ready.apply(null, arguments); }); 
 	
 	api.js = function() {
 			
 		var args = arguments,
 			rest = [].slice.call(args, 1),
-			next = rest[0];				 
-			 
+			next = rest[0];   
+			
 		if (!ready) {
 			queue.push(function()  {
 				api.js.apply(null, args);				
@@ -35,11 +35,17 @@
 		// multiple arguments	 
 		if (next) {				
 			
-			// preload all immediately
-			if (!isFunc(next)) { preloadAll.apply(null, rest); }
+			// preload the rest
+			if (!isFunc(next)) { 
+				each(rest, function(el) {
+					if (!isFunc(el)) {
+						preload(getScript(el));
+					} 
+				});			
+			}
 		
 			// load all recursively in order
-			load(getScript(args[0]), isFunc(next) ? next : function() {	
+			load(getScript(args[0]), isFunc(next) ? next : function() {
 				api.js.apply(null, rest);
 			});				
 			
@@ -50,16 +56,25 @@
 		
 		return api;		 
 	};
-		
-	api.ready = function(key, fn) {
+	
+	api.ready = function(key, fn, onerror) {
 
-		// single function	
-		if (isFunc(key)) { return thelast.push(key); }					
+		// shift arguments	
+		if (isFunc(key)) {
+			fn = key; 
+			key = "ALL";
+		}			
+
+		if (onerror)  { key = "ERROR_" + key; }
 						
-		var arr = waiters[key];
-		if (!arr) { arr = waiters[key] = [fn]; }
+		var arr = handlers[key];
+		if (!arr) { arr = handlers[key] = [fn]; }
 		else { arr.push(fn); }
 		return api;
+	};
+	
+	api.error = function(key, fn) {
+		return api.ready(key, fn, true);			
 	};
 	
 	/*** private functions ***/
@@ -98,13 +113,6 @@
 		return Object.prototype.toString.call(el) == '[object Function]';
 	} 
 	
-	function preloadAll() {
-		each(arguments, function(el) {
-			if (!isFunc(el)) {
-				preload(getScript(el));
-			} 
-		});		
-	}
 	
 	function onPreload(script) {
 		script.state = "preloaded";
@@ -113,6 +121,20 @@
 			el.call();
 		});					
 	}
+   
+	function handleError(a, b) {
+			
+		var url = a.target ? a.target.src : b,
+			 script = scripts[url];
+		
+		if (script) {
+			each((handlers["ERROR_" + script.name] || []).concat(handlers.ERROR_ALL), function(fn) {
+				if (fn) { fn.call(null, script.url, script.name); }			
+			});
+		}
+	}
+	
+	if (!ie) { window.addEventListener("error", handleError, false); }
 	
 	function preload(script, callback) {
 		
@@ -167,8 +189,8 @@
 			
 			if (callback) { callback.call(); }			
 			
-			// waiters for this script
-			each(waiters[script.name], function(fn) {
+			// handlers for this script
+			each(handlers[script.name], function(fn) {
 				fn.call();		
 			});
 
@@ -180,7 +202,7 @@
 			}
 		
 			if (allLoaded) {
-				each(thelast, function(fn) {
+				each(handlers.ALL, function(fn) {
 					if (!fn.done) { fn.call(); }
 					fn.done = true;
 				});
@@ -194,16 +216,22 @@
 		
 		var elem = doc.createElement('script');		
 		elem.type = 'text/' + (src.type || 'javascript');
-		elem.src = src.src || src;
-		
+		elem.src = src.src || src;  
+			
 		elem.onreadystatechange = elem.onload = function() {
+			
+			// assume file was not found
+			if (ie && elem.readyState == 'loading') {
+				return handleError(0, src);		
+			}
+			
 			if (!callback.done) {
 				callback.call();
 				callback.done = true;
 			}
 			
 			// cleanup. IE runs into trouble
-			if (!document.all) {			
+			if (!ie) {			
 				head.removeChild(elem);
 			}
 		}; 
@@ -212,9 +240,7 @@
 	} 
 	
 	/*
-		This timer delays the start a little. All just become more robust. 
-		Still a bit of a mystery. Will investigate report when all clear.		
-		Not related to DomContentLoaded.	 
+		Start after a small dealy: guessing that the the head tag needs to be closed
 	*/	
 	setTimeout(function() {
 		ready = true;
