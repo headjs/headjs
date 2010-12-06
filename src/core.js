@@ -1,8 +1,9 @@
 /**
-	Head JS: The only script in your <HEAD>.
+ 	Head JS		The only script in your <HEAD>
+	Copyright	Tero Piirainen (tipiirai)
+	License 		MIT / http://bit.ly/mit-license
 	
-	Copyright: "tipiirai" / Tero Piirainen
-	license: MIT
+	http://headjs.com
 */
 (function(doc) {
 	

@@ -1,8 +1,9 @@
 /**
-	Head JS: The only script in your <HEAD>
-
-	copyright: "tipiirai" / Tero Piirainen
-	license: MIT
+ 	Head JS		The only script in your <HEAD>
+	Copyright	Tero Piirainen (tipiirai)
+	License 		MIT / http://bit.ly/mit-license
+	
+	http://headjs.com
 */
 (function(doc) {
 	
@@ -47,18 +48,22 @@
 
 	api.feature = function(key, enabled, queue) {
 		
-		/*% internal %*/
-		  if (!key) { 
-				html.className += ' ' + klass.join( ' ' );
-				return klass = [];		  
-			
-		  } else if (!queue) { 
-				removeClass('no-' + key); removeClass(key); 
-		  }
-		/*% endinternal %*/
+		// internal: apply all classes
+		if (!key) { 
+			html.className += ' ' + klass.join( ' ' );
+			return klass = [];		  
+		}
 		
 		pushClass((enabled ? '' : 'no-') + key);
-		api[key] = !!enabled;
+		api[key] = !!enabled;		
+		
+		// apply class to HTML element
+		if (!queue) { 
+			removeClass('no-' + key); 
+			removeClass(key);
+			api.feature();
+		}   
+		
 		return api;
 	}; 
 	
@@ -72,7 +77,6 @@
 		
 	if (ua[1] == 'msie') { ua[1] = 'ie'; }
 	pushClass(ua[1]);
-	// pushClass(ua[1] + ua[2].replace(/\./g, "").substring(0, 3));
 	
 	api.browser = { version: ua[2] };
 	api.browser[ua[1]] = true; 
@@ -133,8 +137,28 @@
 })(document);
 
 
+/**
+ 	Head JS		The only script in your <HEAD>
+	Copyright	Tero Piirainen (tipiirai)
+	License 		MIT / http://bit.ly/mit-license
+	
+	http://headjs.com
+*/
 (function(api) {
+	/*
+		To add a new test:
 		
+		head.feature("video", function() {
+			var tag = document.createElement('video');
+			return !!tag.canPlayType;	
+		});
+	
+		Good place to grab more tests
+		
+		https://github.com/Modernizr/Modernizr/blob/master/modernizr.js
+	*/
+	
+
 	/* CSS modernizer */
 	var el = document.createElement("i"),
 		 style = el.style,
@@ -147,8 +171,9 @@
 	*/
 	function testAll(definition)  {
 		style.cssText = prefs.join(definition + ";");
-		var len = style.cssText ? style.cssText.length : 0;
-		return len > 0 && !style.cssText.split(";")[1];
+		var val = style.cssText;
+		if (val.indexOf("-o") != -1 && val.indexOf("-ms") != -1) { return false; }
+		return !!val;
 	}
 
 	var tests = {
@@ -220,6 +245,13 @@
 })(window[head_conf.head]);	
 
 
+/**
+ 	Head JS		The only script in your <HEAD>
+	Copyright	Tero Piirainen (tipiirai)
+	License 		MIT / http://bit.ly/mit-license
+	
+	http://headjs.com
+*/
 (function(doc) { 
 		
 	var head = doc.documentElement,

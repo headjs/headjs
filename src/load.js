@@ -1,9 +1,10 @@
 /**
-	Head Loader: The ultimate JavaScript loader. Can be used as a standalone tool. 
+ 	Head JS		The only script in your <HEAD>
+	Copyright	Tero Piirainen (tipiirai)
+	License 		MIT / http://bit.ly/mit-license
 	
-	copyright: "tipiirai" / Tero Piirainen
-	license: MIT
-*/ 
+	http://headjs.com
+*/
 (function(doc) { 
 		
 	var head = doc.documentElement,

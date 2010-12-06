@@ -1,24 +1,25 @@
 /**
-	headjs CSS3 feature detector
+ 	Head JS		The only script in your <HEAD>
+	Copyright	Tero Piirainen (tipiirai)
+	License 		MIT / http://bit.ly/mit-license
 	
-	copyright: "tipiirai" / Tero Piirainen
-	license: MIT
-*/
-
-/*
-	To add a new test:
-	
-	head.feature("video", function() {
-		var tag = document.createElement('video');
-		return !!tag.canPlayType;	
-	});
-
-	Good place to grab more tests
-	
-	https://github.com/Modernizr/Modernizr/blob/master/modernizr.js
+	http://headjs.com
 */
 (function(api) {
+	/*
+		To add a new test:
 		
+		head.feature("video", function() {
+			var tag = document.createElement('video');
+			return !!tag.canPlayType;	
+		});
+	
+		Good place to grab more tests
+		
+		https://github.com/Modernizr/Modernizr/blob/master/modernizr.js
+	*/
+	
+
 	/* CSS modernizer */
 	var el = document.createElement("i"),
 		 style = el.style,
