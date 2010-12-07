@@ -24,7 +24,8 @@
 	var el = document.createElement("i"),
 		 style = el.style,
 		 prefs = ' -o- -moz- -ms- -webkit- -khtml- '.split(' '),
-		 api = window[window.head_conf ? head_conf.head : 'head'];
+		 head_var = window.head_conf && head_conf.head || "head",
+		 api = window[head_var];
 		 
 	/* 
 		runs a vendor property test (-moz, ...)  

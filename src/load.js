@@ -60,6 +60,13 @@
 	
 	api.ready = function(key, fn) {
 		
+		var script = scripts[key];
+		
+		if (script && script.state == 'loaded') {
+			fn.call();
+			return api;
+		}
+		
 		// shift arguments	
 		if (isFunc(key)) {
 			fn = key; 
@@ -71,25 +78,35 @@
 		else { arr.push(fn); }
 		return api;
 	};
+	
+	api.dump = function() {
+		console.dir(scripts);	
+	}
 
 	
 	/*** private functions ***/
 	function getScript(url) {
 		
-		var script = scripts[url.url || url];
+		var script = scripts[url.name || url];
 		if (script) { return script; }
 		
-		if (typeof url == 'object')  {
+		if (typeof url == 'object') {
 			for (var key in url) {
 				if (url[key]) {
 					script = { name: key, url: url[key] };
 				}
 			}
 		} else {
-			script = { name: url.substring(url.indexOf("/", 10) + 1, url.indexOf("?")), url: url }; 
+			var name = url.split("/").splice(-1)[0],
+				 i = name.indexOf("?");
+			
+			script = {
+				name: i != -1 ? name.substring(0, i) : name, 
+				url: url 
+			}; 
 		}
 		
-		scripts[script.url] = script;
+		scripts[script.name] = script;
 		return script;
 	}
 	
@@ -179,8 +196,8 @@
 			// TODO: do not run until DOM is loaded			
 			var allLoaded = true;
 		
-			for (var key in scripts) {
-				if (scripts[key].state != 'loaded') { allLoaded = false; }	
+			for (var name in scripts) {
+				if (scripts[name].state != 'loaded') { allLoaded = false; }	
 			}
 		
 			if (allLoaded) {

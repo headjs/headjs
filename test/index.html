@@ -3,10 +3,9 @@
 <!-- A test page for random things. -->
 <head class="no-script">
 	<title>Test page</title>
-	<script src="ie-console.js"></script><!--[if IE]><![endif]-->
+	<!--[if IE]><script src="ie-console.js"></script><![endif]-->
 	
 	<script>var head_conf = {screens: [100, 200, 2000], section: '-area', page: 'page'};</script>
-	<!--  <script src="../head.js"></script> -->
 	
 	<script src="../src/core.js"></script>
 	<script src="../src/css3.js"></script>
@@ -47,7 +46,7 @@
 		// will load but not execute. 
 		head.js(
 			{a: server + "/A-" + num + "?time=100"},
-			server + "/B-" + num + "?time=200",
+			server + "/BB-" + num,
 			{c: server + "/C-" + num + "?time=600"},
 			server + "/E-" + num + "?time=200",
 			server + "/F-" + num + "?time=600", // { tooltip: server + "/file2" + num + "?time=900" }, 
@@ -55,7 +54,7 @@
 			console.log("        -->The Bundle");		
 		});
 		
-		head.js({ invalid: "https://github.com/headjs/headjs/raw/master/src/css3.js?" + num }, function() {
+		head.js({ invalid: "https://github.com/jquery/jquery/blob/master/src/core.js?" + num }, function() {
 			console.log("        -->rangeinput");		
 		});
 		
