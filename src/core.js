@@ -16,15 +16,14 @@
 		},
 		klass = [];
 		
-	if (typeof window.head_conf == 'object') {
+		
+	if (window.head_conf) {
 		for (var key in head_conf) {
 			if (head_conf[key]) {
 				conf[key] = head_conf[key];
 			}
 		}
 	} 
-	
-	window.head_conf = conf;
 		
 	function pushClass(name) {
 		klass.push(name); 

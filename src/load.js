@@ -64,9 +64,7 @@
 		if (isFunc(key)) {
 			fn = key; 
 			key = "ALL";
-		}
-		 
-		console.info(getScript(key).state);
+		}		 
 						
 		var arr = handlers[key];
 		if (!arr) { arr = handlers[key] = [fn]; }

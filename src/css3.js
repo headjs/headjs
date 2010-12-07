@@ -5,7 +5,7 @@
 	
 	http://headjs.com
 */
-(function(api) {
+(function() {
 	/*
 		To add a new test:
 		
@@ -23,7 +23,8 @@
 	/* CSS modernizer */
 	var el = document.createElement("i"),
 		 style = el.style,
-		 prefs = ' -o- -moz- -ms- -webkit- -khtml- '.split(' ');
+		 prefs = ' -o- -moz- -ms- -webkit- -khtml- '.split(' '),
+		 api = window[window.head_conf ? head_conf.head : 'head'];
 		 
 	/* 
 		runs a vendor property test (-moz, ...)  
@@ -88,8 +89,7 @@
 		
 		transitions: function() {
 			return testAll("transition:all .1s linear");
-		}
-      
+		}      
 	};
 	
 	// queue features	
@@ -103,6 +103,6 @@
 	api.feature();
 	
 	
-})(window[head_conf.head]);	
+})();	
 
 
