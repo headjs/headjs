@@ -16,15 +16,14 @@
 		},
 		klass = [];
 		
-	if (typeof window.head_conf == 'object') {
+		
+	if (window.head_conf) {
 		for (var key in head_conf) {
 			if (head_conf[key]) {
 				conf[key] = head_conf[key];
 			}
 		}
 	} 
-	
-	window.head_conf = conf;
 		
 	function pushClass(name) {
 		klass.push(name); 
@@ -148,7 +147,7 @@
 	
 	http://headjs.com
 */
-(function(api) {
+(function() {
 	/*
 		To add a new test:
 		
@@ -166,7 +165,9 @@
 	/* CSS modernizer */
 	var el = document.createElement("i"),
 		 style = el.style,
-		 prefs = ' -o- -moz- -ms- -webkit- -khtml- '.split(' ');
+		 prefs = ' -o- -moz- -ms- -webkit- -khtml- '.split(' '),
+		 head_var = window.head_conf && head_conf.head || "head",
+		 api = window[head_var];
 		 
 	/* 
 		runs a vendor property test (-moz, ...)  
@@ -231,8 +232,7 @@
 		
 		transitions: function() {
 			return testAll("transition:all .1s linear");
-		}
-      
+		}      
 	};
 	
 	// queue features	
@@ -246,7 +246,7 @@
 	api.feature();
 	
 	
-})(window[head_conf.head]);	
+})();	
 
 
 /**
@@ -270,6 +270,7 @@
 	var head_var = window.head_conf && head_conf.head || "head",
 		 api = window[head_var] = (window[head_var] || function() { api.ready.apply(null, arguments); }); 
 	
+		
 	api.js = function() {
 			
 		var args = arguments,
@@ -308,15 +309,20 @@
 		return api;		 
 	};
 	
-	api.ready = function(key, fn, onerror) {
-
+	api.ready = function(key, fn) {
+		
+		var script = scripts[key];
+		
+		if (script && script.state == 'loaded') {
+			fn.call();
+			return api;
+		}
+		
 		// shift arguments	
 		if (isFunc(key)) {
 			fn = key; 
 			key = "ALL";
-		}			
-
-		if (onerror)  { key = "ERROR_" + key; }
+		}		 
 						
 		var arr = handlers[key];
 		if (!arr) { arr = handlers[key] = [fn]; }
@@ -324,27 +330,36 @@
 		return api;
 	};
 	
-	api.error = function(key, fn) {
-		return api.ready(key, fn, true);			
+	/*
+	api.dump = function() {
+		console.dir(scripts);	
 	};
+	*/
+
 	
 	/*** private functions ***/
 	function getScript(url) {
 		
-		var script = scripts[url.url || url];
+		var script = scripts[url.name || url];
 		if (script) { return script; }
 		
-		if (typeof url == 'object')  {
+		if (typeof url == 'object') {
 			for (var key in url) {
 				if (url[key]) {
 					script = { name: key, url: url[key] };
 				}
 			}
 		} else {
-			script = { name: url.substring(url.indexOf("/", 10) + 1, url.indexOf("?")), url: url }; 
+			var name = url.split("/").splice(-1)[0],
+				 i = name.indexOf("?");
+			
+			script = {
+				name: i != -1 ? name.substring(0, i) : name, 
+				url: url 
+			}; 
 		}
 		
-		scripts[script.url] = script;
+		scripts[script.name] = script;
 		return script;
 	}
 	
@@ -372,20 +387,6 @@
 			el.call();
 		});					
 	}
-   
-	function handleError(a, b) {
-			
-		var url = a.target ? a.target.src : b,
-			 script = scripts[url];
-		
-		if (script) {
-			each((handlers["ERROR_" + script.name] || []).concat(handlers.ERROR_ALL), function(fn) {
-				if (fn) { fn.call(null, script.url, script.name); }			
-			});
-		}
-	}
-	
-	if (!ie) { window.addEventListener("error", handleError, false); }
 	
 	function preload(script, callback) {
 		
@@ -448,8 +449,8 @@
 			// TODO: do not run until DOM is loaded			
 			var allLoaded = true;
 		
-			for (var key in scripts) {
-				if (scripts[key].state != 'loaded') { allLoaded = false; }	
+			for (var name in scripts) {
+				if (scripts[name].state != 'loaded') { allLoaded = false; }	
 			}
 		
 			if (allLoaded) {
@@ -471,13 +472,8 @@
 			
 		elem.onreadystatechange = elem.onload = function() {
 			var state = elem.readyState;
-			
-			// assume file was not found
-			if (ie && state == 'loaded') {
-				return handleError(0, src);		
-			}
-			
-			if (!callback.done) {
+
+			if (!callback.done && (!state || /loaded|completed/.test(state))) {
 				callback.call();
 				callback.done = true;
 			}

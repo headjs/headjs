@@ -79,9 +79,11 @@
 		return api;
 	};
 	
+	/*
 	api.dump = function() {
 		console.dir(scripts);	
-	}
+	};
+	*/
 
 	
 	/*** private functions ***/
