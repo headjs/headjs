@@ -3,7 +3,7 @@
 <!-- A test page for random things. -->
 <head class="no-script">
 	<title>Test page</title>
-	<!--[if IE]><script src="ie-console.js"></script><![endif]-->
+	<script src="ie-console.js"></script><!--[if IE]><![endif]-->
 	
 	<script>var head_conf = {screens: [100, 200, 2000], section: '-area', page: 'page'};</script>
 	
@@ -46,7 +46,7 @@
 		// will load but not execute. 
 		head.js(
 			{a: server + "/A-" + num + "?time=100"},
-			server + "/BB-" + num,
+			{b: server + "/BB-" + num},
 			{c: server + "/C-" + num + "?time=600"},
 			server + "/E-" + num + "?time=200",
 			server + "/F-" + num + "?time=600", // { tooltip: server + "/file2" + num + "?time=900" }, 
@@ -54,7 +54,7 @@
 			console.log("        -->The Bundle");		
 		});
 		
-		head.js({ invalid: "https://github.com/jquery/jquery/blob/master/src/core.js?" + num }, function() {
+		head.js({ invalid: "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js?" + num }, function() {
 			console.log("        -->rangeinput");		
 		});
 		

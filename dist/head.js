@@ -350,9 +350,12 @@
 				}
 			}
 		} else {
-			var name = url.split("/").splice(-1)[0],
+
+
+			var els = url.split("/"),
+				 name = els[els.length -1],
 				 i = name.indexOf("?");
-			
+				 
 			script = {
 				name: i != -1 ? name.substring(0, i) : name, 
 				url: url 
@@ -473,7 +476,7 @@
 		elem.onreadystatechange = elem.onload = function() {
 			var state = elem.readyState;
 
-			if (!callback.done && (!state || /loaded|completed/.test(state))) {
+			if (!callback.done && (!state || /loaded|complete/.test(state))) {
 				callback.call();
 				callback.done = true;
 			}
