@@ -32,7 +32,7 @@
 	
 	(function() {
 		var start = new Date(),
-			 server = "http://192.168.1.103:2000",
+			 server = "http://192.168.0.102:2000",
 			 num = 31;	
 			 
 			 
@@ -57,14 +57,6 @@
 		
 		head.js({ invalid: "https://github.com/headjs/headjs/raw/master/src/css3.js?" + num }, function() {
 			console.log("        -->rangeinput");		
-		});
-
-		head.error(function(url, name) {
-			console.info("global", url, name);		
-		});
-		
-		head.error("invalid", function() {
-			console.info("invalid", arguments);		
 		});
 		
 		

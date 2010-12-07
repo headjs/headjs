@@ -19,6 +19,7 @@
 	var head_var = window.head_conf && head_conf.head || "head",
 		 api = window[head_var] = (window[head_var] || function() { api.ready.apply(null, arguments); }); 
 	
+		
 	api.js = function() {
 			
 		var args = arguments,
@@ -57,25 +58,22 @@
 		return api;		 
 	};
 	
-	api.ready = function(key, fn, onerror) {
-
+	api.ready = function(key, fn) {
+		
 		// shift arguments	
 		if (isFunc(key)) {
 			fn = key; 
 			key = "ALL";
-		}			
-
-		if (onerror)  { key = "ERROR_" + key; }
+		}
+		 
+		console.info(getScript(key).state);
 						
 		var arr = handlers[key];
 		if (!arr) { arr = handlers[key] = [fn]; }
 		else { arr.push(fn); }
 		return api;
 	};
-	
-	api.error = function(key, fn) {
-		return api.ready(key, fn, true);			
-	};
+
 	
 	/*** private functions ***/
 	function getScript(url) {
@@ -121,20 +119,6 @@
 			el.call();
 		});					
 	}
-   
-	function handleError(a, b) {
-			
-		var url = a.target ? a.target.src : b,
-			 script = scripts[url];
-		
-		if (script) {
-			each((handlers["ERROR_" + script.name] || []).concat(handlers.ERROR_ALL), function(fn) {
-				if (fn) { fn.call(null, script.url, script.name); }			
-			});
-		}
-	}
-	
-	if (!ie) { window.addEventListener("error", handleError, false); }
 	
 	function preload(script, callback) {
 		
@@ -220,13 +204,8 @@
 			
 		elem.onreadystatechange = elem.onload = function() {
 			var state = elem.readyState;
-			
-			// assume file was not found
-			if (ie && state == 'loaded') {
-				return handleError(0, src);		
-			}
-			
-			if (!callback.done) {
+
+			if (!callback.done && (!state || /loaded|completed/.test(state))) {
 				callback.call();
 				callback.done = true;
 			}
