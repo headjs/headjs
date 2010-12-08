@@ -491,7 +491,7 @@
 	} 
 	
 	/*
-		Start after a small dealy: guessing that the the head tag needs to be closed
+		Start after a small delay: guessing that the the head tag needs to be closed
 	*/	
 	setTimeout(function() {
 		ready = true;
