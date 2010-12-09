@@ -98,21 +98,23 @@
 		doc.createElement(el);
 	});
 		
-	// page class && id
-	var path = location.pathname,
-		 els = path.split("/"),
-		 section = els.slice(1, els.length -1).join("-") || "root",
-		 pageId = els.slice(-1)[0] || "index",
-		 index = pageId.indexOf(".");
-	
-	if (index >= 0) { pageId = pageId.substring(0, index); }
-	
-	
-	api.section = section;	
-	api.pageId = pageId; 
-
-	pushClass(section + conf.section);
-	html.id = pageId + conf.page;
+	// CSS "router" 
+	each(location.pathname.split("/"), function(el, i) {
+			
+		if (this.length > 2 && this[i + 1]) {
+			if (i) { pushClass(this.slice(1, i+1).join("-") + conf.section); }
+	  	 
+		} else {	  	 
+			
+			// pageId
+			var id = el || "index", index = id.indexOf(".");
+			if (index > 0) { id = id.substring(0, index); }				 
+			html.id = id + conf.page;
+			
+			// on root?
+		 	if (!i) { pushClass("root" + conf.section); }		 
+	  } 
+	});	
 	
 	
 	// screen resolution: w-100, lt-480, lt-1024 ...
