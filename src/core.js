@@ -101,7 +101,7 @@
 	// CSS "router" 
 	each(location.pathname.split("/"), function(el, i) {
 			
-		if (this.length > 2 && this[i + 1]) {
+		if (this.length > 2 && this[i + 1] !== undefined) {
 			if (i) { pushClass(this.slice(1, i+1).join("-") + conf.section); }
 	  	 
 		} else {	  	 
