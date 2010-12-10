@@ -89,7 +89,9 @@
 	/*** private functions ***/
 	function getScript(url) {
 		
-		var script = scripts[url.name || url];
+		var key = resolveScriptKey(url),
+			script = scripts[key];
+		
 		if (script) { return script; }
 		
 		if (typeof url == 'object') {
@@ -113,6 +115,30 @@
 		
 		scripts[script.name] = script;
 		return script;
+	}
+	
+	
+	
+	function resolveScriptKey(url) {
+		
+		var key;
+		
+		if (typeof url == 'object') {
+			for (var property in url) {
+				if (url[property]) {
+					key = property;
+				}
+			}
+		} else {
+
+			var els = url.split("/"),
+				 name = els[els.length -1],
+				 i = name.indexOf("?");
+				 
+			key = i != -1 ? name.substring(0, i) : name;
+		}
+		
+		return key;
 	}
 	
 	function each(arr, fn) {
@@ -237,7 +263,7 @@
 		}; 
 		
 		head.appendChild(elem); 
-	} 
+	}
 	
 	/*
 		Start after a small delay: guessing that the the head tag needs to be closed
