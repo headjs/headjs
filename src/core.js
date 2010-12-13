@@ -137,7 +137,7 @@
 	screenSize();		
 	window.onresize = screenSize;
 	
-	api.feature("script", true).feature();
+	api.feature("js", true).feature();
 		
 })(document);
 
