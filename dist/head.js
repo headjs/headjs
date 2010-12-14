@@ -101,7 +101,7 @@
 	// CSS "router" 
 	each(location.pathname.split("/"), function(el, i) {
 			
-		if (this.length > 2 && this[i + 1]) {
+		if (this.length > 2 && this[i + 1] !== undefined) {
 			if (i) { pushClass(this.slice(1, i+1).join("-") + conf.section); }
 	  	 
 		} else {	  	 
@@ -137,7 +137,7 @@
 	screenSize();		
 	window.onresize = screenSize;
 	
-	api.feature("script", true).feature();
+	api.feature("js", true).feature();
 		
 })(document);
 
@@ -336,14 +336,26 @@
 	api.dump = function() {
 		console.dir(scripts);	
 	};
-	*/
 
+	api.preload = function(url) {
+		url = { name: toLabel(url), url: url };
+		preload(url);	
+	};
+	*/
+	
+	function toLabel(url) {		
+		var els = url.split("/"),
+			 name = els[els.length -1],
+			 i = name.indexOf("?");
+			 
+		return i != -1 ? name.substring(0, i) : name				 
+	}
+	
 	
 	/*** private functions ***/
 	function getScript(url) {
 		
-		var script = scripts[url.name || url];
-		if (script) { return script; }
+		var script;
 		
 		if (typeof url == 'object') {
 			for (var key in url) {
@@ -351,18 +363,12 @@
 					script = { name: key, url: url[key] };
 				}
 			}
-		} else {
-
-
-			var els = url.split("/"),
-				 name = els[els.length -1],
-				 i = name.indexOf("?");
-				 
-			script = {
-				name: i != -1 ? name.substring(0, i) : name, 
-				url: url 
-			}; 
+		} else { 
+			script = { name: toLabel(url),  url: url }; 
 		}
+
+		var existing = scripts[script.name];
+		if (existing) { return existing; }
 		
 		scripts[script.name] = script;
 		return script;
@@ -396,7 +402,7 @@
 	function preload(script, callback) {
 		
 		if (!script.state) {
-			
+						
 			script.state = "preloading";
 			script.onpreload = [];
 			
@@ -405,6 +411,7 @@
 				http://www.phpied.com/preload-cssjavascript-without-execution/				
 			*/	
 			if (/Firefox/.test(navigator.userAgent)) {
+			
 				var obj = doc.createElement('object');
 				obj.data = script.url;
 				obj.width  = 0;
@@ -423,7 +430,8 @@
 				scriptTag({ src: script.url, type: 'cache'}, function()  {
 					onPreload(script);		
 				});
-			} 
+			}
+			
 		}
 	}
 	
@@ -482,11 +490,6 @@
 				callback.call();
 				callback.done = true;
 			}
-			
-			// cleanup. IE runs into trouble
-			if (!ie) {			
-				head.removeChild(elem);
-			}
 		}; 
 		
 		head.appendChild(elem); 
@@ -501,5 +504,6 @@
 			fn.call();			
 		});		
 	}, 200);	
+	
 		
 })(document);
