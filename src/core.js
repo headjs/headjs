@@ -1,20 +1,20 @@
 /**
- 	Head JS		The only script in your <HEAD>
+	Head JS		The only script in your <HEAD>
 	Copyright	Tero Piirainen (tipiirai)
-	License 		MIT / http://bit.ly/mit-license
+	License		MIT / http://bit.ly/mit-license
 	
 	http://headjs.com
 */
 (function(doc) {
 	
 	var html = doc.documentElement,
-		conf = {
+		 conf = {
 			screens: [320, 480, 640, 768, 1024, 1280, 1440, 1680, 1920],
 			section: "-section",
 			page: "-page",
 			head: "head"
-		},
-		klass = [];
+		 },
+		 klass = [];
 		
 		
 	if (window.head_conf) {
@@ -50,7 +50,8 @@
 		// internal: apply all classes
 		if (!key) { 
 			html.className += ' ' + klass.join( ' ' );
-			return klass = [];		  
+			klass = [];
+			return;
 		}
 		
 		if (Object.prototype.toString.call(enabled) == '[object Function]') {
@@ -103,8 +104,8 @@
 			
 		if (this.length > 2 && this[i + 1] !== undefined) {
 			if (i) { pushClass(this.slice(1, i+1).join("-") + conf.section); }
-	  	 
-		} else {	  	 
+		
+		} else {
 			
 			// pageId
 			var id = el || "index", index = id.indexOf(".");
@@ -112,7 +113,7 @@
 			html.id = id + conf.page;
 			
 			// on root?
-		 	if (!i) { pushClass("root" + conf.section); }		 
+			if (!i) { pushClass("root" + conf.section); }
 	  } 
 	});	
 	

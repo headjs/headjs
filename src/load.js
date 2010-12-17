@@ -1,7 +1,7 @@
 /**
- 	Head JS		The only script in your <HEAD>
+	Head JS		The only script in your <HEAD>
 	Copyright	Tero Piirainen (tipiirai)
-	License 		MIT / http://bit.ly/mit-license
+	License		MIT / http://bit.ly/mit-license
 	
 	http://headjs.com
 */
@@ -9,7 +9,7 @@
 		
 	var head = doc.documentElement,
 		 ie = navigator.userAgent.toLowerCase().indexOf("msie") != -1, 
-		 ready = false, 	// is HEAD "ready"
+		 ready = false,	// is HEAD "ready"
 		 queue = [],		// if not -> defer execution
 		 handlers = {},	// user functions waiting for events
 		 scripts = {};		// loadable scripts in different states
