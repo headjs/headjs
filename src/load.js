@@ -95,7 +95,7 @@
 			 name = els[els.length -1],
 			 i = name.indexOf("?");
 			 
-		return i != -1 ? name.substring(0, i) : name				 
+		return i != -1 ? name.substring(0, i) : name;				 
 	}
 	
 	
@@ -185,7 +185,9 @@
 	
 	function load(script, callback) {	
 
-		if (script.state == 'loaded') { return callback(); }
+		if (script.state == 'loaded') { 
+			return callback && callback() ; 
+		}
 			
 		if (script.state == 'preloading') {
 			return script.onpreload.push(function()  {
