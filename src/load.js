@@ -9,9 +9,9 @@
 		
 	var head = doc.documentElement,
 		 ie = navigator.userAgent.toLowerCase().indexOf("msie") != -1, 
-		 ready = false,	// is HEAD "ready"
+		 ready = false,		// is HEAD "ready"
 		 queue = [],		// if not -> defer execution
-		 handlers = {},	// user functions waiting for events
+		 handlers = {},		// user functions waiting for events
 		 scripts = {};		// loadable scripts in different states
 
 		 
@@ -90,6 +90,7 @@
 	};
 	*/
 	
+	/*** private functions ***/
 	function toLabel(url) {		
 		var els = url.split("/"),
 			 name = els[els.length -1],
@@ -98,8 +99,6 @@
 		return i != -1 ? name.substring(0, i) : name;				 
 	}
 	
-	
-	/*** private functions ***/
 	function getScript(url) {
 		
 		var script;
@@ -225,7 +224,7 @@
 				
 	}   
 	
-	// if callback == true --> preload
+	
 	function scriptTag(src, callback)  {
 		
 		var elem = doc.createElement('script');		
@@ -245,7 +244,7 @@
 	} 
 	
 	/*
-		Start after a small delay: guessing that the the head tag needs to be closed
+		Start after HEAD tag is closed
 	*/	
 	setTimeout(function() {
 		ready = true;
@@ -254,5 +253,14 @@
 		});		
 	}, 200);	
 	
-		
+	
+	// required: shim for FF <= 3.5 not having document.readyState
+	if (doc.readyState == null && doc.addEventListener) {
+	    doc.readyState = "loading";
+	    doc.addEventListener("DOMContentLoaded", handler = function () {
+	        doc.removeEventListener("DOMContentLoaded", handler, false);
+	        doc.readyState = "complete";
+	    }, false);
+	}
+			
 })(document);
