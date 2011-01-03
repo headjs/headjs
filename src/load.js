@@ -57,7 +57,33 @@
 		
 		return api;		 
 	};
-	
+
+	api.stage = function(stages, callback) {
+		var stagePhase = -1;
+		var stageLoaded = 0;
+		var nextStage = function() {
+			if (++stagePhase >= stages.length) {
+				return callback && callback();
+			}
+			stageLoaded = 0;
+			var stageDef = stages[stagePhase];
+			if (typeof stageDef == 'string') {
+				api.js(stageDef, nextStage);
+				return;
+			}
+			if (stageDef.length === 0) {
+				return nextStage();
+			}
+			for (var i = 0; i < stageDef.length; i++) {
+				api.js(stageDef[i], stageReady);
+			}
+		};
+		var stageReady = function() {
+			if (++stageLoaded == stages[stagePhase].length) { nextStage(); }
+		};
+		nextStage();
+	};
+
 	api.ready = function(key, fn) {
 		
 		var script = scripts[key];
