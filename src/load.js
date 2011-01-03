@@ -113,10 +113,10 @@
 			script = { name: toLabel(url),  url: url }; 
 		}
 
-		var existing = scripts[script.name];
+		var existing = scripts[script.url];
 		if (existing) { return existing; }
 		
-		scripts[script.name] = script;
+		scripts[script.url] = script;
 		return script;
 	}
 	
