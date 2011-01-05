@@ -9,6 +9,7 @@
 		
 	var head = doc.documentElement,
 		 ie = navigator.userAgent.toLowerCase().indexOf("msie") != -1, 
+		 opera = navigator.userAgent.toLowerCase().indexOf("opera") != -1,
 		 ready = false,		// is HEAD "ready"
 		 queue = [],		// if not -> defer execution
 		 handlers = {},		// user functions waiting for events
@@ -155,6 +156,7 @@
 			/*
 				Browser detection required. Firefox does not support script.type = text/cache
 				http://www.phpied.com/preload-cssjavascript-without-execution/				
+				Opera needs content-type to be "text"
 			*/	
 			if (/Firefox/.test(navigator.userAgent)) {
 			
@@ -173,7 +175,7 @@
 				head.appendChild(obj);
 				
 			} else {
-				scriptTag({ src: script.url, type: 'cache'}, function()  {
+				scriptTag({ src: script.url, type: (!opera && '/cache' || '')}, function()  {
 					onPreload(script);		
 				});
 			}
@@ -228,7 +230,7 @@
 	function scriptTag(src, callback)  {
 		
 		var elem = doc.createElement('script');		
-		elem.type = 'text/' + (src.type || 'javascript');
+		elem.type = 'text' + (src.type || '/javascript');
 		elem.src = src.src || src;  
 			
 		elem.onreadystatechange = elem.onload = function() {
