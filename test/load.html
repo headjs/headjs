@@ -14,21 +14,23 @@
 		js.js(
 			{a: "https://github.com/DmitryBaranovskiy/raphael/raw/master/raphael.js"},
 			{b: "https://github.com/jquery/jquery-ui/raw/master/jquery-1.4.4.js"},
-			{c: "https://github.com/kosmas58/compass-jquery-plugin/raw/master/lib/jslint.js"});
+			{c: "https://github.com/kosmas58/compass-jquery-plugin/raw/master/lib/jslint.js"}, function()  {
+				console.info("a, b & c");	
+			});
 		
-		js.ready("a", function() {
-			console.info("a");		
+		js.ready("a", function() {				
+			console.info("a: " + !!Raphael);		
 		});
 		
-		js.ready(function() {
-			console.info("b");		
+		js.ready("b", function() {						
+			console.info("b: "  + !!jQuery);		
 		});
 		
-		js.ready(function() {
-			console.info("c");		
+		js.ready("c", function() {
+				console.info("c: " + !!JSLINT);		
 		});
 		
-		js.ready(function() {
+		js.ready(function() {				
 			console.info("all");		
 		});
 	}
