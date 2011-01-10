@@ -169,19 +169,27 @@
 	var el = document.createElement("i"),
 		 style = el.style,
 		 prefs = ' -o- -moz- -ms- -webkit- -khtml- '.split(' '),
+		 domPrefs = 'Webkit Moz O ms Khtml'.split(' '),
+		 
 		 head_var = window.head_conf && head_conf.head || "head",
 		 api = window[head_var];
+	
 		 
-	/* 
-		runs a vendor property test (-moz, ...)  
-		
-		testAll("box-shadow: 0 0 0 red;");
-	*/
-	function testAll(definition)  {
-		style.cssText = prefs.join(definition + ";");
-		var val = style.cssText;
-		if (val.indexOf("-o") != -1 && val.indexOf("-ms") != -1) { return false; }
-		return !!val;
+	// Paul Irish (http://paulirish.com): Million Thanks!	 
+	function testProps(props) {
+		for (var i in props) {
+			if (style[props[i]] !== undefined) {
+				return true;
+			}
+		}
+	}
+	
+	
+	function testAll(prop) {	
+		var camel = prop.charAt(0).toUpperCase() + prop.substr(1),
+			 props   = (prop + ' ' + domPrefs.join(camel + ' ') + camel).split(' ');
+	
+		return !!testProps(props);
 	}
 
 	var tests = {
@@ -200,10 +208,10 @@
 			return !!style.backgroundColor;
 		},
 		
-		boxshadow: function() {
-			return testAll("box-shadow: 0 0 0 red");	
+		opacity: function() {
+			return el.style.opacity === "";
 		},
-		
+			
 		textshadow: function() {			
 			return style.textShadow === '';	
 		},
@@ -213,28 +221,28 @@
 			return new RegExp("(url\\s*\\(.*?){3}").test(style.background);
 		},
 		
+		boxshadow: function() {
+			return testAll("boxShadow");	
+		},
+		
 		borderimage: function() {
-			return testAll("border-image: url(m.png) 1 1 stretch");
+			return testAll("borderImage");
 		},
 		
 		borderradius: function() {
-			return testAll('border-radius:0');	
+			return testAll("borderRadius");	
 		},
-		
-		opacity: function() {
-			return el.style.opacity === "";
-		},
-		
+	
 		reflections: function() {
-			return testAll("box-reflect:right 0");
+			return testAll("boxReflect");
 		},
       
 		transforms: function() {
-			return testAll("transform:rotate(1deg)");
+			return testAll("transform");
 		},
 		
 		transitions: function() {
-			return testAll("transition:all .1s linear");
+			return testAll("transition");
 		}      
 	};
 	
@@ -266,51 +274,95 @@
 		 ready = false,	// is HEAD "ready"
 		 queue = [],		// if not -> defer execution
 		 handlers = {},	// user functions waiting for events
-		 scripts = {};		// loadable scripts in different states
-
+		 scripts = {},		// loadable scripts in different states
+ 
+		 isAsync = doc.createElement("script").async === true ||
+					"MozAppearance" in doc.documentElement.style ||
+					window.opera;
 		 
 	/*** public API ***/
 	var head_var = window.head_conf && head_conf.head || "head",
 		 api = window[head_var] = (window[head_var] || function() { api.ready.apply(null, arguments); }); 
+		 
+
 	
+	// Method 1: simply load and let browser take care of ordering	
+	if (isAsync) {			
 		
-	api.js = function() {
+		api.js = function() {
+						
+			var args = arguments,
+				 fn = args[args.length -1],
+				 els = [];
+
+			if (!isFunc(fn)) { fn = null; }	 
 			
-		var args = arguments,
-			rest = [].slice.call(args, 1),
-			next = rest[0];   
-			
-		if (!ready) {
-			queue.push(function()  {
-				api.js.apply(null, args);				
+			each(args, function(el, i) {
+					
+				if (el != fn) {					
+					el = getScript(el);
+					els.push(el);
+										
+					load(el, fn && i == args.length -2 ? function() {							
+						var allLoaded = true;
+						
+						each(els, function(s) {
+								
+							if (s.state != 'loaded') { allLoaded = false; }
+						});
+							
+						if (allLoaded) { fn(); }
+							
+					} : null);
+				}							
 			});
-			return api;
-		}
-		
-		// multiple arguments	 
-		if (next) {				
 			
-			// preload the rest
-			if (!isFunc(next)) { 
+			return api;		 
+		};
+		
+		
+	// Method 2: preload	with text/cache hack
+	} else {
+		
+		api.js = function() {
+				
+			var args = arguments,
+				 rest = [].slice.call(args, 1),
+				 next = rest[0];
+				
+			if (!ready) {
+				queue.push(function()  {
+					api.js.apply(null, args);				
+				});
+				return api;
+			}
+			
+			// multiple arguments	 
+			if (next) {				
+				
+				// load
 				each(rest, function(el) {
 					if (!isFunc(el)) {
 						preload(getScript(el));
 					} 
 				});			
+				
+				// execute
+				load(getScript(args[0]), isFunc(next) ? next : function() {
+					api.js.apply(null, rest);
+				});
+				
+				
+			// single script	
+			} else {				
+				load(getScript(args[0]));
 			}
-		
-			// load all recursively in order
-			load(getScript(args[0]), isFunc(next) ? next : function() {
-				api.js.apply(null, rest);
-			});				
 			
-		// single script	
-		} else {
-			load(getScript(args[0]));
-		}
+			return api;		 
+		};			
 		
-		return api;		 
-	};
+	} 
+	
 	
 	api.ready = function(key, fn) {
 		
@@ -330,20 +382,11 @@
 		var arr = handlers[key];
 		if (!arr) { arr = handlers[key] = [fn]; }
 		else { arr.push(fn); }
-		return api;
-	};
-	
-	/*
-	api.dump = function() {
-		console.dir(scripts);	
+		return api;		
 	};
 
-	api.preload = function(url) {
-		url = { name: toLabel(url), url: url };
-		preload(url);	
-	};
-	*/
 	
+	/*** private functions ***/
 	function toLabel(url) {		
 		var els = url.split("/"),
 			 name = els[els.length -1],
@@ -353,7 +396,6 @@
 	}
 	
 	
-	/*** private functions ***/
 	function getScript(url) {
 		
 		var script;
@@ -374,6 +416,7 @@
 		scripts[script.name] = script;
 		return script;
 	}
+	
 	
 	function each(arr, fn) {
 		if (!arr) { return; }
@@ -404,50 +447,26 @@
 		
 		if (!script.state) {
 						
-			script.state = "preloading";
+			script.state = 'preloading';
 			script.onpreload = [];
-			
-			/*
-				Browser detection required. Firefox does not support script.type = text/cache
-				http://www.phpied.com/preload-cssjavascript-without-execution/				
-			*/	
-			if (/Firefox/.test(navigator.userAgent)) {
-			
-				var obj = doc.createElement('object');
-				obj.data = script.url;
-				obj.width  = 0;
-				obj.height = 0;		
-				
-				obj.onload = function() {
-					onPreload(script);
-					
-					// avoid spinning progress indicator with setTimeout
-					setTimeout(function() { head.removeChild(obj); }, 1);
-				};
-				
-				head.appendChild(obj);
-				
-			} else {
-				scriptTag({ src: script.url, type: 'cache'}, function()  {
-					onPreload(script);		
-				});
-			}
-			
-		}
-	}
-	
-	
-	function load(script, callback) {	
 
-		if (script.state == 'loaded') { 
-			return callback && callback() ; 
+			scriptTag({ src: script.url, type: 'cache'}, function()  {
+				onPreload(script);		
+			});			
+		}
+	} 
+	
+	function load(script, callback) {
+		
+		if (script.state == 'loaded' && callback) { 
+			return callback(); 
 		}
 			
-		if (script.state == 'preloading') {
+		if (script.state == 'preloading') {			
 			return script.onpreload.push(function()  {
 				load(script, callback);	
 			});
-		}
+		}  
 		
 		script.state = 'loading'; 
 
@@ -455,14 +474,14 @@
 			
 			script.state = 'loaded';
 			
-			if (callback) { callback.call(); }			
+			if (callback) { callback(); }			
+			
 			
 			// handlers for this script
-			each(handlers[script.name], function(fn) {
+			each(handlers[script.name], function(fn) {				
 				fn.call();		
 			});
 
-			// TODO: do not run until DOM is loaded			
 			var allLoaded = true;
 		
 			for (var name in scripts) {
@@ -475,31 +494,33 @@
 					fn.done = true;
 				});
 			}
-		});
-				
-	}   
-	
-	// if callback == true --> preload
+		});		 
+	}
+
+
 	function scriptTag(src, callback)  {
 		
-		var elem = doc.createElement('script');		
-		elem.type = 'text/' + (src.type || 'javascript');
-		elem.src = src.src || src;  
+		var s = doc.createElement('script');		
+		s.type = 'text/' + (src.type || 'javascript');
+		s.src = src.src || src;
+		s.async = false;
+		
+		s.onreadystatechange = s.onload = function() {
 			
-		elem.onreadystatechange = elem.onload = function() {
-			var state = elem.readyState;
-
+			var state = s.readyState;
+			
 			if (!callback.done && (!state || /loaded|complete/.test(state))) {
-				callback.call();
+				callback();
 				callback.done = true;
 			}
 		}; 
 		
-		head.appendChild(elem); 
-	} 
+		head.appendChild(s); 
+	}
+	
 	
 	/*
-		Start after a small delay: guessing that the the head tag needs to be closed
+		Start after HEAD tag is closed
 	*/	
 	setTimeout(function() {
 		ready = true;
@@ -508,5 +529,15 @@
 		});		
 	}, 200);	
 	
-		
+	
+	// enable document.readyState for Firefox <= 3.5 
+	if (!doc.readyState && doc.addEventListener) {
+	    doc.readyState = "loading";
+	    doc.addEventListener("DOMContentLoaded", handler = function () {
+	        doc.removeEventListener("DOMContentLoaded", handler, false);
+	        doc.readyState = "complete";
+	    }, false);
+	}
+			
 })(document);
+
