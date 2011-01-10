@@ -14,10 +14,9 @@
 		 handlers = {},	// user functions waiting for events
 		 scripts = {},		// loadable scripts in different states
  
-		 isAsync = doc.createElement("script").async === true ||	
-		 			  "MozAppearance" in doc.documentElement.style ||	
-		 			  window.opera;
-
+		 isAsync = doc.createElement("script").async === true ||
+					"MozAppearance" in doc.documentElement.style ||
+					window.opera;
 		 
 	/*** public API ***/
 	var head_var = window.head_conf && head_conf.head || "head",
@@ -34,7 +33,7 @@
 				 fn = args[args.length -1],
 				 els = [];
 
-			if (!isFunc(fn)) { fn == null; }	 
+			if (!isFunc(fn)) { fn = null; }	 
 			
 			each(args, function(el, i) {
 					
@@ -52,7 +51,7 @@
 							
 						if (allLoaded) { fn(); }
 							
-					} : null)
+					} : null);
 				}							
 			});
 			
@@ -270,7 +269,7 @@
 	
 	
 	// enable document.readyState for Firefox <= 3.5 
-	if (doc.readyState == null && doc.addEventListener) {
+	if (!doc.readyState && doc.addEventListener) {
 	    doc.readyState = "loading";
 	    doc.addEventListener("DOMContentLoaded", handler = function () {
 	        doc.removeEventListener("DOMContentLoaded", handler, false);

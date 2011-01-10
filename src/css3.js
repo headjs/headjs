@@ -24,19 +24,27 @@
 	var el = document.createElement("i"),
 		 style = el.style,
 		 prefs = ' -o- -moz- -ms- -webkit- -khtml- '.split(' '),
+		 domPrefs = 'Webkit Moz O ms Khtml'.split(' '),
+		 
 		 head_var = window.head_conf && head_conf.head || "head",
 		 api = window[head_var];
+	
 		 
-	/* 
-		runs a vendor property test (-moz, ...)  
-		
-		testAll("box-shadow: 0 0 0 red;");
-	*/
-	function testAll(definition)  {
-		style.cssText = prefs.join(definition + ";");
-		var val = style.cssText;
-		if (val.indexOf("-o") != -1 && val.indexOf("-ms") != -1) { return false; }
-		return !!val;
+	// Paul Irish (http://paulirish.com): Million Thanks!	 
+	function testProps(props) {
+		for (var i in props) {
+			if (style[props[i]] !== undefined) {
+				return true;
+			}
+		}
+	}
+	
+	
+	function testAll(prop) {	
+		var camel = prop.charAt(0).toUpperCase() + prop.substr(1),
+			 props   = (prop + ' ' + domPrefs.join(camel + ' ') + camel).split(' ');
+	
+		return !!testProps(props);
 	}
 
 	var tests = {
@@ -55,10 +63,10 @@
 			return !!style.backgroundColor;
 		},
 		
-		boxshadow: function() {
-			return testAll("box-shadow: 0 0 0 red");	
+		opacity: function() {
+			return el.style.opacity === "";
 		},
-		
+			
 		textshadow: function() {			
 			return style.textShadow === '';	
 		},
@@ -68,28 +76,28 @@
 			return new RegExp("(url\\s*\\(.*?){3}").test(style.background);
 		},
 		
+		boxshadow: function() {
+			return testAll("boxShadow");	
+		},
+		
 		borderimage: function() {
-			return testAll("border-image: url(m.png) 1 1 stretch");
+			return testAll("borderImage");
 		},
 		
 		borderradius: function() {
-			return testAll('border-radius:0');	
+			return testAll("borderRadius");	
 		},
-		
-		opacity: function() {
-			return el.style.opacity === "";
-		},
-		
+	
 		reflections: function() {
-			return testAll("box-reflect:right 0");
+			return testAll("boxReflect");
 		},
       
 		transforms: function() {
-			return testAll("transform:rotate(1deg)");
+			return testAll("transform");
 		},
 		
 		transitions: function() {
-			return testAll("transition:all .1s linear");
+			return testAll("transition");
 		}      
 	};
 	
