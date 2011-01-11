@@ -34,7 +34,7 @@
 	(function() {
 		var start = new Date(),
 			 server = "http://192.168.0.102:2000",
-			 num = 31;				 
+			 num = 34;				 
 			 
 		head(function() {
 			console.log("        -->last one", (new Date()).getTime() - start.getTime());		
@@ -52,11 +52,14 @@
 			server + "/E-" + num + "?time=200",
 			server + "/F-" + num + "?time=600", // { tooltip: server + "/file2" + num + "?time=900" }, 
 			 function() {
-			console.log("        -->The Bundle");		
+			console.log("        -->ALL");		
 		});
 		
-		head.js({ invalid: "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js?" + num }, function() {
-			console.log("        -->rangeinput");		
+		head.js({ jquery: "http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js?" + num }, function() {
+			console.info("        --> jquery");
+			$(function() {
+				console.log("        -->$(document).ready()");
+			});
 		});
 		
 		
