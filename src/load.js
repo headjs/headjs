@@ -16,13 +16,19 @@
  
 		 isAsync = doc.createElement("script").async === true ||
 					"MozAppearance" in doc.documentElement.style ||
-					window.opera;
-		 
+					window.opera;		 
+					
 	/*** public API ***/
 	var head_var = window.head_conf && head_conf.head || "head",
 		 api = window[head_var] = (window[head_var] || function() { api.ready.apply(null, arguments); }); 
 		 
 
+	// states
+	var PRELOADED = 0,
+		 PRELOADING = 1,		 
+		 LOADING	= 2,
+		 LOADED = 3;
+		
 	
 	// Method 1: simply load and let browser take care of ordering	
 	if (isAsync) {			
@@ -46,7 +52,7 @@
 						
 						each(els, function(s) {
 								
-							if (s.state != 'loaded') { allLoaded = false; }
+							if (s.state != LOADED) { allLoaded = false; }
 						});
 							
 						if (allLoaded) { fn(); }
@@ -106,7 +112,7 @@
 		
 		var script = scripts[key];
 		
-		if (script && script.state == 'loaded') {
+		if (script && script.state == LOADED) {
 			fn.call();
 			return api;
 		}
@@ -151,6 +157,11 @@
 		var existing = scripts[script.name];
 		if (existing) { return existing; }
 		
+		// same URL?
+		for (var name in scripts) {
+			if (scripts[name].url == script.url) { return scripts[name]; }	
+		}
+		
 		scripts[script.name] = script;
 		return script;
 	}
@@ -174,7 +185,7 @@
 	
 	
 	function onPreload(script) {
-		script.state = "preloaded";
+		script.state = PRELOADED;
 
 		each(script.onpreload, function(el) {
 			el.call();
@@ -185,7 +196,7 @@
 		
 		if (!script.state) {
 						
-			script.state = 'preloading';
+			script.state = PRELOADING;
 			script.onpreload = [];
 
 			scriptTag({ src: script.url, type: 'cache'}, function()  {
@@ -196,21 +207,25 @@
 	
 	function load(script, callback) {
 		
-		if (script.state == 'loaded' && callback) { 
+		if (script.state == LOADED && callback) { 
 			return callback(); 
 		}
+		
+		if (script.state == LOADING) {
+			return api.ready(script.name, callback);	
+		}
 			
-		if (script.state == 'preloading') {			
-			return script.onpreload.push(function()  {
+		if (script.state == PRELOADING) {			
+			return script.onpreload.push(function() {
 				load(script, callback);	
 			});
 		}  
 		
-		script.state = 'loading'; 
+		script.state = LOADING; 
 
 		scriptTag(script.url, function() {
 			
-			script.state = 'loaded';
+			script.state = LOADED;
 			
 			if (callback) { callback(); }			
 			
@@ -223,7 +238,7 @@
 			var allLoaded = true;
 		
 			for (var name in scripts) {
-				if (scripts[name].state != 'loaded') { allLoaded = false; }	
+				if (scripts[name].state != LOADED) { allLoaded = false; }	
 			}
 		
 			if (allLoaded) {

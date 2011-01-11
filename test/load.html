@@ -4,36 +4,41 @@
 <head>
 
 	<!--[if IE]><script src="ie-console.js"></script><![endif]-->
-	
-	
-	<script>var head_conf = { head: 'js' }</script>
 	<script src="../src/load.js"></script>
 
 	<script> 	
-	if (1) {
-		js.js(
-			{a: "https://github.com/DmitryBaranovskiy/raphael/raw/master/raphael.js"},
-			{b: "https://github.com/jquery/jquery-ui/raw/master/jquery-1.4.4.js"},
-			{c: "https://github.com/kosmas58/compass-jquery-plugin/raw/master/lib/jslint.js"}, function()  {
-				console.info("a, b & c");	
-			});
-		
-		js.ready("a", function() {				
-			console.info("a: " + !!Raphael);		
+	head.js(
+		{a: "https://github.com/DmitryBaranovskiy/raphael/raw/master/raphael.js"},
+		{b: "https://github.com/jquery/jquery-ui/raw/master/jquery-1.4.4.js"},
+		{c: "https://github.com/kosmas58/compass-jquery-plugin/raw/master/lib/jslint.js"}, function()  {
+			console.info("a, b & c");	
 		});
-		
-		js.ready("b", function() {						
-			console.info("b: "  + !!jQuery);		
+	
+	head.ready("a", function() {				
+		console.info("a: " + !!Raphael);		
+	});
+	
+	head.ready("b", function() {						
+		console.info("b: "  + !!jQuery);		
+	});
+	
+	head.ready("c", function() {
+			console.info("c: " + !!JSLINT);		
+	});
+	
+	head.ready(function() {				
+		console.info("all");		
+	});
+	
+	head.js("server.js", function() {
+		console.info("server.js");		
+	});
+	
+	head.js("https://github.com/jquery/jquery-ui/raw/master/jquery-1.4.4.js", function() {
+		$(function()  {
+			console.info("another load + dom is ready");		
 		});
-		
-		js.ready("c", function() {
-				console.info("c: " + !!JSLINT);		
-		});
-		
-		js.ready(function() {				
-			console.info("all");		
-		});
-	}
+	});
 	</script>
 	
 </head>
