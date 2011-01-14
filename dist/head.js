@@ -312,15 +312,8 @@
 					el = getScript(el);
 					els.push(el);
 										
-					load(el, fn && i == args.length -2 ? function() {							
-						var allLoaded = true;
-						
-						each(els, function(s) {
-								
-							if (s.state != LOADED) { allLoaded = false; }
-						});
-							
-						if (allLoaded) { fn(); }
+					load(el, fn && i == args.length -2 ? function() {
+						if (allLoaded(els)) { fn(); }
 							
 					} : null);
 				}							
@@ -373,20 +366,20 @@
 	} 
 	
 	
-	api.ready = function(key, fn) {
-		
-		var script = scripts[key];
-		
-		if (script && script.state == LOADED) {
-			fn.call();
-			return api;
-		}
+	api.ready = function(key, fn) {		
 		
 		// shift arguments	
 		if (isFunc(key)) {
 			fn = key; 
 			key = "ALL";
-		}		 
+		}				
+		
+		var script = scripts[key];		
+		
+		if (script && script.state == LOADED || key == 'ALL' && allLoaded()) {
+			fn();
+			return api;
+		}
 						
 		var arr = handlers[key];
 		if (!arr) { arr = handlers[key] = [fn]; }
@@ -448,6 +441,15 @@
 		return Object.prototype.toString.call(el) == '[object Function]';
 	} 
 	
+	function allLoaded(els) {		
+		els = els || scripts;
+		
+		for (var name in els) {
+			if (els[name].state != LOADED) { return false; }	
+		}
+		return true;			
+	}
+	
 	
 	function onPreload(script) {
 		script.state = PRELOADED;
@@ -497,18 +499,12 @@
 			
 			// handlers for this script
 			each(handlers[script.name], function(fn) {				
-				fn.call();		
+				fn();		
 			});
-
-			var allLoaded = true;
 		
-			for (var name in scripts) {
-				if (scripts[name].state != LOADED) { allLoaded = false; }	
-			}
-		
-			if (allLoaded) {
+			if (allLoaded()) {
 				each(handlers.ALL, function(fn) {
-					if (!fn.done) { fn.call(); }
+					if (!fn.done) { fn(); }
 					fn.done = true;
 				});
 			}
@@ -543,9 +539,9 @@
 	setTimeout(function() {
 		ready = true;
 		each(queue, function(fn) {
-			fn.call();			
+			fn();			
 		});		
-	}, 200);	
+	}, 300);	
 	
 	
 	// enable document.readyState for Firefox <= 3.5 
