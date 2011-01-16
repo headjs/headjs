@@ -80,7 +80,16 @@
 		/(msie) ([\w.]+)/.exec( ua ) ||
 		!/compatible/.test( ua ) && /(mozilla)(?:.*? rv:([\w.]+))?/.exec( ua ) || [];
 		
-	if (ua[1] == 'msie') { ua[1] = 'ie'; }
+	// IE specific
+	if (ua[1] == 'msie') {
+		ua[1] = 'ie';
+
+		// If the document.documentMode is available, it specify the ie version
+		// behavior in use. Which is what interest the page designers.
+		if (typeof document.documentMode !== 'undefined') {
+			ua[2] = document.documentMode;
+		}
+	}
 	pushClass(ua[1]);
 	
 	api.browser = { version: ua[2] };
