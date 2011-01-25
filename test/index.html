@@ -33,10 +33,17 @@
 	
 	(function() {
 		var start = new Date(),
-			 server = "http://192.168.0.102:2000",
+			 server = "http://localhost:2000",
 			 num = 34;				 
 			 
-		head(function() {
+		head.js({ jquery: "http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js?" + num }, function() {
+			console.info("        --> jquery");
+			$(function() {
+				console.log("        -->$(document).ready()");
+			});
+		});
+		
+		head.ready(function() {
 			console.log("        -->last one", (new Date()).getTime() - start.getTime());		
 		});
 		
@@ -55,12 +62,7 @@
 			console.log("        -->ALL");		
 		});
 		
-		head.js({ jquery: "http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js?" + num }, function() {
-			console.info("        --> jquery");
-			$(function() {
-				console.log("        -->$(document).ready()");
-			});
-		});
+
 		
 		
 		console.info(document.documentElement.className);

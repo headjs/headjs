@@ -112,10 +112,10 @@
 		
 		var script = scripts[key];		
 		
-		if (script && script.state == LOADED || key == 'ALL' && allLoaded()) {
-			fn();
+		if (script && script.state == LOADED || key == 'ALL' && allLoaded()) {			
+			fn();			
 			return api;
-		}
+		}  
 						
 		var arr = handlers[key];
 		if (!arr) { arr = handlers[key] = [fn]; }
@@ -178,12 +178,14 @@
 	} 
 	
 	function allLoaded(els) {		
-		els = els || scripts;
+		els = els || scripts;		
+		var loaded = false;
 		
 		for (var name in els) {
-			if (els[name].state != LOADED) { return false; }	
+			if (els[name].state != LOADED) { return false; }
+			loaded = true;
 		}
-		return true;			
+		return loaded;			
 	}
 	
 	
