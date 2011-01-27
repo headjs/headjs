@@ -251,23 +251,34 @@
 
 
 	function scriptTag(src, callback)  {
-		
-		var s = doc.createElement('script');		
-		s.type = 'text/' + (src.type || 'javascript');
-		s.src = src.src || src;
-		s.async = false;
-		
-		s.onreadystatechange = s.onload = function() {
-			
-			var state = s.readyState;
-			
-			if (!callback.done && (!state || /loaded|complete/.test(state))) {
-				callback();
-				callback.done = true;
+		if(src instanceof Array) {
+			for(n in src) {
+				var callbacks = 0;
+				scriptTag(src[n], function() {
+					callbacks++;
+					if(callbacks == src.length) {
+						callback();
+					}
+				});
 			}
-		}; 
-		
-		head.appendChild(s); 
+		} else {
+			var s = doc.createElement('script');		
+			s.type = 'text/' + (src.type || 'javascript');
+			s.src = src.src || src;
+			s.async = false;
+
+			s.onreadystatechange = s.onload = function() {
+
+				var state = s.readyState;
+
+				if (!callback.done && (!state || /loaded|complete/.test(state))) {
+					callback();
+					callback.done = true;
+				}
+			}; 
+
+			head.appendChild(s);
+		}
 	}
 	
 	

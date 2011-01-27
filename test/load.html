@@ -8,18 +8,18 @@
 
 	<script> 	
 	head.js(
-		{a: "https://github.com/DmitryBaranovskiy/raphael/raw/master/raphael.js"},
-		{b: "https://github.com/jquery/jquery-ui/raw/master/jquery-1.4.4.js"},
+		{a: ["https://github.com/DmitryBaranovskiy/raphael/raw/master/raphael.js", "https://github.com/janl/mustache.js/raw/master/mustache.js"]},
+		{b: ["https://github.com/jquery/jquery-ui/raw/master/jquery-1.4.4.js", "https://github.com/janl/mustache.js/raw/master/mustache.js"]},
 		{c: "https://github.com/kosmas58/compass-jquery-plugin/raw/master/lib/jslint.js"}, function()  {
-			console.info("a, b & c");	
+			console.info("a, b & c: " + (!!Raphael && !!Mustache && !!JSLINT && !!jQuery));	
 		});
 	
 	head.ready("a", function() {				
-		console.info("a: " + !!Raphael);		
+		console.info("a: " + (!!Raphael && !!Mustache));		
 	});
 	
 	head.ready("b", function() {						
-		console.info("b: "  + !!jQuery);		
+		console.info("b: "  + !!jQuery);
 	});
 	
 	head.ready("c", function() {
@@ -27,7 +27,7 @@
 	});
 	
 	head.ready(function() {				
-		console.info("all");		
+		console.info("all: " + (!!Raphael && !!Mustache && !!JSLINT && !!jQuery));		
 	});
 	
 	head.js("server.js", function() {
