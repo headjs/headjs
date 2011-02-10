@@ -582,7 +582,11 @@
 			each(handlers.ALL, function(fn) {
 				call(fn);
 			});
-		}				
+		}
+		
+		if (api.feature) {
+			api.feature("domloaded", true);	
+		}
 	});
 	
 	(function() {
@@ -590,7 +594,7 @@
 		// W3C
 		if (window.addEventListener) {
 			doc.addEventListener("DOMContentLoaded", fireReady, false);
-			window.addEventListener("onload", fireReady);
+			window.addEventListener("onload", fireReady, false);
 			
 		// IE	
 		} else if (window.attachEvent) {
