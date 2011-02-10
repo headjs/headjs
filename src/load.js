@@ -149,7 +149,7 @@
 		}
 
 		var existing = scripts[script.name];
-		if (existing) { return existing; }
+		if (existing && script.url === existing.url) { return existing; }
 		
 		// same URL?
 		for (var name in scripts) {
