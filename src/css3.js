@@ -31,7 +31,7 @@
 		 api = window[head_var];
 	
 		 
-	// Paul Irish (http://paulirish.com): Million Thanks!	 
+	 // Thanks Paul Irish!	 
 	function testProps(props) {
 		for (var i in props) {
 			if (style[props[i]] !== undefined) {

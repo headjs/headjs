@@ -34,14 +34,18 @@
 	(function() {
 		var start = new Date(),
 			 server = "http://localhost:2000",
-			 num = 34;				 
+			 num = 34;
 			 
 		head.js({ jquery: "http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js?" + num }, function() {
-			console.info("        --> jquery");
+			console.info("jquery loaded");
 			$(function() {
-				console.log("        -->$(document).ready()");
+				console.log("$(document).ready()");
 			});
 		});
+		
+		head(function() {
+			console.info("all ready");		
+		});		
 		
 		head.ready(function() {
 			console.log("        -->last one", (new Date()).getTime() - start.getTime());		
@@ -60,9 +64,7 @@
 			server + "/F-" + num + "?time=600", // { tooltip: server + "/file2" + num + "?time=900" }, 
 			 function() {
 			console.log("        -->ALL");		
-		});
-		
-
+		}); 
 		
 		
 		console.info(document.documentElement.className);

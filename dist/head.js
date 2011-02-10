@@ -20,7 +20,7 @@
 		
 	if (window.head_conf) {
 		for (var key in head_conf) {
-			if (head_conf[key]) {
+			if (head_conf[key] !== undefined) {
 				conf[key] = head_conf[key];
 			}
 		}
@@ -177,7 +177,7 @@
 		 api = window[head_var];
 	
 		 
-	// Paul Irish (http://paulirish.com): Million Thanks!	 
+	 // Thanks Paul Irish!	 
 	function testProps(props) {
 		for (var i in props) {
 			if (style[props[i]] !== undefined) {
@@ -274,11 +274,11 @@
 		
 	var head = doc.documentElement,
 		 ie = navigator.userAgent.toLowerCase().indexOf("msie") != -1, 
-		 ready = false,	// is HEAD "ready"
+		 isHeadReady,		// is HEAD "ready"
 		 queue = [],		// if not -> defer execution
 		 handlers = {},	// user functions waiting for events
 		 scripts = {},		// loadable scripts in different states
- 
+ 		 
 		 isAsync = doc.createElement("script").async === true ||
 					"MozAppearance" in doc.documentElement.style ||
 					window.opera;		 
@@ -286,7 +286,6 @@
 	/*** public API ***/
 	var head_var = window.head_conf && head_conf.head || "head",
 		 api = window[head_var] = (window[head_var] || function() { api.ready.apply(null, arguments); }); 
-		 
 
 	// states
 	var PRELOADED = 0,
@@ -313,7 +312,7 @@
 					els.push(el);
 										
 					load(el, fn && i == args.length -2 ? function() {
-						if (allLoaded(els)) { fn(); }
+						if (allLoaded(els)) { call(fn); }
 							
 					} : null);
 				}							
@@ -332,7 +331,7 @@
 				 rest = [].slice.call(args, 1),
 				 next = rest[0];
 				
-			if (!ready) {
+			if (!isHeadReady) {
 				queue.push(function()  {
 					api.js.apply(null, args);				
 				});
@@ -361,12 +360,11 @@
 			}
 			
 			return api;		 
-		};			
-		
+		};		
 	} 
 	
 	
-	api.ready = function(key, fn) {		
+	api.ready = function(key, fn) {
 		
 		// shift arguments	
 		if (isFunc(key)) {
@@ -376,8 +374,8 @@
 		
 		var script = scripts[key];		
 		
-		if (script && script.state == LOADED || key == 'ALL' && allLoaded()) {			
-			fn();			
+		if (script && script.state == LOADED || key == 'ALL' && allLoaded() && isDomReady) {			
+			call(fn);			
 			return api;
 		}  
 						
@@ -389,6 +387,15 @@
 
 	
 	/*** private functions ***/
+	
+	// make sure ready() listener is called only once
+	function call(fn) {
+		if (fn._done) { return; }		
+		fn();
+		fn._done = 1;	
+	}
+	
+	
 	function toLabel(url) {		
 		var els = url.split("/"),
 			 name = els[els.length -1],
@@ -443,13 +450,15 @@
 	
 	function allLoaded(els) {		
 		els = els || scripts;		
-		var loaded = false;
+		var loaded = false,
+			 count = 0;
 		
 		for (var name in els) {
 			if (els[name].state != LOADED) { return false; }
 			loaded = true;
+			count++;
 		}
-		return loaded;			
+		return loaded || count === 0;			
 	}
 	
 	
@@ -496,18 +505,17 @@
 			
 			script.state = LOADED;
 			
-			if (callback) { callback(); }			
-			
+			if (callback) { callback(); }
 			
 			// handlers for this script
-			each(handlers[script.name], function(fn) {				
-				fn();		
+			each(handlers[script.name], function(fn) {
+				call(fn);
 			});
 		
-			if (allLoaded()) {
+			
+			if (isDomReady && allLoaded()) {
 				each(handlers.ALL, function(fn) {
-					if (!fn.done) { fn(); }
-					fn.done = true;
+					call(fn);
 				});
 			}
 		});		 
@@ -539,11 +547,86 @@
 		Start after HEAD tag is closed
 	*/	
 	setTimeout(function() {
-		ready = true;
+		isHeadReady = true;
 		each(queue, function(fn) {
 			fn();			
 		});		
 	}, 300);	
+	
+	
+	/* Check for DOM ready */
+	var isDomReady, domWaiters = [];
+
+	
+	function domReady(fn) {		
+		if (isDomReady) {
+			fn();
+			
+		} else { 
+			domWaiters.push(fn); 
+		}	
+	}
+	
+	function fireReady() {
+		isDomReady = true;
+		each(domWaiters, function(fn) {
+			if (!fn._done) {
+				fn._done = 1;
+				fn();		
+			}
+		});
+	}
+	
+	domReady(function() {			
+		if (allLoaded()) {
+			each(handlers.ALL, function(fn) {
+				call(fn);
+			});
+		}				
+	});
+	
+	(function() {
+		
+		// W3C
+		if (window.addEventListener) {
+			doc.addEventListener("DOMContentLoaded", fireReady, false);
+			window.addEventListener("onload", fireReady);
+			
+		// IE	
+		} else if (window.attachEvent) {
+			
+			// for iframes
+			doc.attachEvent("onreadystatechange", function()  {
+				if (doc.readyState === "complete" ) {
+					fireReady();
+				}
+			});
+			
+			// http://javascript.nwbox.com/IEContentLoaded/
+			var toplevel = false,
+				 head = doc.documentElement;
+		
+			try { toplevel = window.frameElement == null; } catch(e) {}
+		
+			if (head.doScroll && toplevel) {
+				
+				(function() { 
+					try {
+						head.doScroll("left");
+						fireReady(); 
+				
+					} catch(e) {
+						setTimeout(arguments.callee, 1);
+						return;
+					}		
+				})();			
+			} 
+					
+			// fallback
+			window.attachEvent("onload", fireReady);		
+		}
+		
+	})();
 	
 	
 	// enable document.readyState for Firefox <= 3.5 
@@ -553,7 +636,7 @@
 	        doc.removeEventListener("DOMContentLoaded", handler, false);
 	        doc.readyState = "complete";
 	    }, false);
-	}
-			
+	}   
+	
 })(document);
 

@@ -1,6 +1,5 @@
-// IE http://javascript.nwbox.com/IEContentLoaded/
 
-var fns = [];
+var isDomReady, domWaiters = [];
 
 function each(arr, fn) {
 	if (!arr) { return; }
@@ -16,20 +15,25 @@ function each(arr, fn) {
 
 
 function domReady(fn) {		
-	if (document.readyState === "complete") { return fn(); }	
-	fns.push(fn);	
+	if (isDomReady) {
+		fn();
+		
+	} else { 
+		domWaiters.push(fn); 
+	}	
 }
 
 function fireReady() { 
-	each(fns, function(fn) {
+	isDomReady = true;
+	each(domWaiters, function(fn) {
 		if (!fn._done) {
-			fn._done = true;
+			fn._done = 1;
 			fn();		
 		}
 	});
 }
 
-function checkReady() {
+(function() {
 	
 	// W3C
 	if (window.addEventListener) {
@@ -69,10 +73,6 @@ function checkReady() {
 		// fallback
 		window.attachEvent("onload", fireReady);		
 	}
-}
-
-checkReady();
-
-
-
+	
+})();
 
