@@ -20,7 +20,7 @@
 		
 	if (window.head_conf) {
 		for (var key in head_conf) {
-			if (head_conf[key]) {
+			if (head_conf[key] !== undefined) {
 				conf[key] = head_conf[key];
 			}
 		}
