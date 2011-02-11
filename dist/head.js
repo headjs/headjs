@@ -405,8 +405,7 @@
 		
 		var script = scripts[key];		
 		
-		if (script && script.state == LOADED || key == 'ALL' && allLoaded() && isDomReady) {	
-			console.info("key!");
+		if (script && script.state == LOADED || key == 'ALL' && allLoaded() && isDomReady) {
 			one(fn);			
 			return api;
 		}  
