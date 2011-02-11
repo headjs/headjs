@@ -82,16 +82,16 @@
 			server + "/E-" + num + "?time=200",
 			server + "/F-" + num + "?time=600", // { tooltip: server + "/file2" + num + "?time=900" }, 
 			 function() {
-			console.log("        -->ALL");		
+			console.log("Bundle");		
 		}); 
 		
 		
-		head.js(server + "/X-" + num + "?time=100", function() {
-			console.info("after X");		
+		head.js(server + "/foo/", function() {
+			console.info("after foo");		
 		});
 		
-		head.js(server + "/X-" + num + "?time=100", function() {
-			console.info("after X");		
+		head.js(server + "/bar/", function() {
+			console.info("after bar");		
 		});		
 		
 		console.info(document.documentElement.className);
