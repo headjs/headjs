@@ -5,7 +5,12 @@
 
 <head>
 	<title>Test page</title>
-	<!--[if IE]><script src="ie-console.js"></script><![endif]-->
+	
+	<script>
+	if (!window.console) {
+		document.write("<script src=ie-console.js><\/script>");	
+	}
+	</script>
 	
 	<script>var head_conf = {screens: [100, 200, 2000], section: '-area', page: 'page'};</script>
 	
@@ -39,7 +44,7 @@
 		var start = new Date(),
 			 server = "http://cloudpanic.info:2000",
 			 num = 15;
-			 
+		
 		head.js({ jquery: "http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js?" + num }, function() {
 			console.info("jquery loaded");
 			$(function() {
@@ -47,12 +52,14 @@
 			});
 		});
 		
+		
 		head(function() {
-			console.info("all ready");		
-		});		
+			console.info("all ready1", (new Date()).getTime() - start.getTime());		
+		});
+
 		
 		head.ready(function() {
-			console.log("        -->last one", (new Date()).getTime() - start.getTime());		
+			console.log("all ready2", (new Date()).getTime() - start.getTime());		
 		});
 
 		head.ready("a", function() {
@@ -80,11 +87,11 @@
 		
 		
 		head.js(server + "/X-" + num + "?time=100", function() {
-			console.info("should be called");		
+			console.info("after X");		
 		});
 		
 		head.js(server + "/X-" + num + "?time=100", function() {
-			console.info("should not be called");		
+			console.info("after X");		
 		});		
 		
 		console.info(document.documentElement.className);

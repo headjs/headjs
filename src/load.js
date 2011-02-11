@@ -9,7 +9,7 @@
 (function(doc) { 
 		
 	var head = doc.documentElement,		 
-		 isHeadReady,		// is HEAD "ready"
+		 smallwait,
 		 isDomReady, 
 		 domWaiters = [],
 		 queue = [],		// if not -> defer execution
@@ -70,7 +70,8 @@
 				 rest = [].slice.call(args, 1),
 				 next = rest[0];
 				
-			if (!isHeadReady) {
+			// wait for a while. immediate execution causes some browsers to ignore caching	 
+			if (!smallwait) {
 				queue.push(function()  {
 					api.js.apply(null, args);				
 				});
@@ -118,7 +119,7 @@
 		
 		var script = scripts[key];		
 		
-		if (script && script.state == LOADED || key == 'ALL' && allLoaded() && isDomReady) {			
+		if (script && script.state == LOADED || key == 'ALL' && allLoaded() && isDomReady) {
 			one(fn);			
 			return api;
 		}  
@@ -131,9 +132,9 @@
 
 
 	// perform this when DOM is ready
-	api.ready("dom", function() {
-			
-		if (allLoaded()) {
+	api.ready("dom", function() {		
+		
+		if (smallwait && allLoaded()) {
 			each(handlers.ALL, function(fn) {
 				one(fn);
 			});
@@ -201,7 +202,8 @@
 		return Object.prototype.toString.call(el) == '[object Function]';
 	} 
 	
-	function allLoaded(els) {		
+	function allLoaded(els) {		 
+		
 		els = els || scripts;		
 		var loaded = false,
 			 count = 0;
@@ -296,15 +298,10 @@
 	}
 	
 	
-	/*
-		Start after HEAD tag is closed
-	*/	
 	setTimeout(function() {
-		isHeadReady = true;
-		each(queue, function(fn) {
-			fn();			
-		});		
-	}, 300);	  
+		smallwait = true;
+		each(queue, function(fn) { fn(); });		
+	}, 0);	  
 	
 	
 	function fireReady() {		

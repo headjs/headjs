@@ -235,17 +235,39 @@
 			return testAll("borderRadius");	
 		},
 	
-		reflections: function() {
+		cssreflections: function() {
 			return testAll("boxReflect");
 		},
       
-		transforms: function() {
+		csstransforms: function() {
 			return testAll("transform");
 		},
 		
-		transitions: function() {
+		csstransitions: function() {
 			return testAll("transition");
-		}      
+		},
+		
+		/*
+			font-face support. Uses browser sniffing but is synchronous.
+			
+			http://paulirish.com/2009/font-face-feature-detection/
+		*/
+		fontface: function() {
+			var ua = navigator.userAgent, parsed;
+			
+			if (/*@cc_on@if(@_jscript_version>=5)!@end@*/0) 
+				return true;
+			if (parsed = ua.match(/Chrome\/(\d+\.\d+\.\d+\.\d+)/))
+				return parsed[1] >= '4.0.249.4';
+			if ((parsed = ua.match(/Safari\/(\d+\.\d+)/)) && !/iPhone/.test(ua))
+				return parsed[1] >= '525.13';
+			if (/Opera/.test({}.toString.call(window.opera)))
+				return opera.version() >= '10.00';
+			if (parsed = ua.match(/rv:(\d+\.\d+\.\d+)[^b].*Gecko\//))
+				return parsed[1] >= '1.9.1';    
+			
+			return false;				
+		}
 	};
 	
 	// queue features	
@@ -272,9 +294,10 @@
 */
 (function(doc) { 
 		
-	var head = doc.documentElement,
-		 ie = navigator.userAgent.toLowerCase().indexOf("msie") != -1, 
-		 isHeadReady,		// is HEAD "ready"
+	var head = doc.documentElement,		 
+		 smallwait,
+		 isDomReady, 
+		 domWaiters = [],
 		 queue = [],		// if not -> defer execution
 		 handlers = {},	// user functions waiting for events
 		 scripts = {},		// loadable scripts in different states
@@ -282,6 +305,8 @@
 		 isAsync = doc.createElement("script").async === true ||
 					"MozAppearance" in doc.documentElement.style ||
 					window.opera;		 
+					
+					
 					
 	/*** public API ***/
 	var head_var = window.head_conf && head_conf.head || "head",
@@ -312,7 +337,7 @@
 					els.push(el);
 										
 					load(el, fn && i == args.length -2 ? function() {
-						if (allLoaded(els)) { call(fn); }
+						if (allLoaded(els)) { one(fn); }
 							
 					} : null);
 				}							
@@ -331,7 +356,8 @@
 				 rest = [].slice.call(args, 1),
 				 next = rest[0];
 				
-			if (!isHeadReady) {
+			// wait for a while. immediate execution causes some browsers to ignore caching	 
+			if (!smallwait) {
 				queue.push(function()  {
 					api.js.apply(null, args);				
 				});
@@ -363,8 +389,13 @@
 		};		
 	} 
 	
-	
 	api.ready = function(key, fn) {
+		
+		if (key == 'dom') {
+			if (isDomReady) { one(fn);  } 
+			else { domWaiters.push(fn); }
+			return api;
+		}
 		
 		// shift arguments	
 		if (isFunc(key)) {
@@ -374,8 +405,9 @@
 		
 		var script = scripts[key];		
 		
-		if (script && script.state == LOADED || key == 'ALL' && allLoaded() && isDomReady) {			
-			call(fn);			
+		if (script && script.state == LOADED || key == 'ALL' && allLoaded() && isDomReady) {	
+			console.info("key!");
+			one(fn);			
 			return api;
 		}  
 						
@@ -385,11 +417,25 @@
 		return api;		
 	};
 
+
+	// perform this when DOM is ready
+	api.ready("dom", function() {		
+		
+		if (smallwait && allLoaded()) {
+			each(handlers.ALL, function(fn) {
+				one(fn);
+			});
+		}
+		
+		if (api.feature) {
+			api.feature("domloaded", true);	
+		}
+	}); 
+		
 	
-	/*** private functions ***/
-	
-	// make sure ready() listener is called only once
-	function call(fn) {
+	/*** private functions ***/	
+	// call function once
+	function one(fn) {
 		if (fn._done) { return; }		
 		fn();
 		fn._done = 1;	
@@ -420,12 +466,7 @@
 		}
 
 		var existing = scripts[script.name];
-		if (existing) { return existing; }
-		
-		// same URL?
-		for (var name in scripts) {
-			if (scripts[name].url == script.url) { return scripts[name]; }	
-		}
+		if (existing && existing.url === script.url) { return existing; }
 		
 		scripts[script.name] = script;
 		return script;
@@ -448,7 +489,8 @@
 		return Object.prototype.toString.call(el) == '[object Function]';
 	} 
 	
-	function allLoaded(els) {		
+	function allLoaded(els) {		 
+		
 		els = els || scripts;		
 		var loaded = false,
 			 count = 0;
@@ -509,13 +551,13 @@
 			
 			// handlers for this script
 			each(handlers[script.name], function(fn) {
-				call(fn);
+				one(fn);
 			});
 		
 			
 			if (isDomReady && allLoaded()) {
 				each(handlers.ALL, function(fn) {
-					call(fn);
+					one(fn);
 				});
 			}
 		});		 
@@ -543,94 +585,54 @@
 	}
 	
 	
-	/*
-		Start after HEAD tag is closed
-	*/	
 	setTimeout(function() {
-		isHeadReady = true;
-		each(queue, function(fn) {
-			fn();			
-		});		
-	}, 300);	
+		smallwait = true;
+		each(queue, function(fn) { fn(); });		
+	}, 0);	  
 	
 	
-	/* Check for DOM ready */
-	var isDomReady, domWaiters = [];
-
+	function fireReady() {		
+		if (!isDomReady) {
+			isDomReady = true;
+			each(domWaiters, function(fn) {
+				one(fn);
+			});
+		}
+	}	
 	
-	function domReady(fn) {		
-		if (isDomReady) {
-			fn();
-			
-		} else { 
-			domWaiters.push(fn); 
-		}	
-	}
-	
-	function fireReady() {
-		isDomReady = true;
-		each(domWaiters, function(fn) {
-			if (!fn._done) {
-				fn._done = 1;
-				fn();		
+	// W3C
+	if (window.addEventListener) {
+		doc.addEventListener("DOMContentLoaded", fireReady, false);
+		window.addEventListener("onload", fireReady, false);
+		
+	// IE	
+	} else if (window.attachEvent) {
+		
+		// for iframes
+		doc.attachEvent("onreadystatechange", function()  {
+			if (doc.readyState === "complete" ) {
+				fireReady();
 			}
 		});
+		
+		// http://javascript.nwbox.com/IEContentLoaded/
+		if (window.frameElement == null && head.doScroll) {
+			
+			(function() { 
+				try {
+					head.doScroll("left");
+					fireReady(); 
+			
+				} catch(e) {
+					setTimeout(arguments.callee, 1);
+					return;
+				}		
+			})();			
+		} 
+				
+		// fallback
+		window.attachEvent("onload", fireReady);		
 	}
-	
-	domReady(function() {			
-		if (allLoaded()) {
-			each(handlers.ALL, function(fn) {
-				call(fn);
-			});
-		}
-		
-		if (api.feature) {
-			api.feature("domloaded", true);	
-		}
-	});
-	
-	(function() {
-		
-		// W3C
-		if (window.addEventListener) {
-			doc.addEventListener("DOMContentLoaded", fireReady, false);
-			window.addEventListener("onload", fireReady, false);
-			
-		// IE	
-		} else if (window.attachEvent) {
-			
-			// for iframes
-			doc.attachEvent("onreadystatechange", function()  {
-				if (doc.readyState === "complete" ) {
-					fireReady();
-				}
-			});
-			
-			// http://javascript.nwbox.com/IEContentLoaded/
-			var toplevel = false,
-				 head = doc.documentElement;
-		
-			try { toplevel = window.frameElement == null; } catch(e) {}
-		
-			if (head.doScroll && toplevel) {
-				
-				(function() { 
-					try {
-						head.doScroll("left");
-						fireReady(); 
-				
-					} catch(e) {
-						setTimeout(arguments.callee, 1);
-						return;
-					}		
-				})();			
-			} 
-					
-			// fallback
-			window.attachEvent("onload", fireReady);		
-		}
-		
-	})();
 	
 	
 	// enable document.readyState for Firefox <= 3.5 
