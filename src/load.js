@@ -328,8 +328,16 @@
 			}
 		});
 		
+		// Avoid frames with different domains issue
+		var frameElement;
+		try {
+			frameElement = window.frameElement;
+		} catch(e) {
+			frameElement = 1; // Value that is not null
+		}
+
 		// http://javascript.nwbox.com/IEContentLoaded/
-		if (window.frameElement == null && head.doScroll) {
+		if (frameElement == null && head.doScroll) {
 			
 			(function() { 
 				try {
