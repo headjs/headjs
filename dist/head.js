@@ -405,8 +405,7 @@
 		
 		var script = scripts[key];		
 		
-		if (script && script.state == LOADED || key == 'ALL' && allLoaded() && isDomReady) {	
-			console.info("key!");
+		if (script && script.state == LOADED || key == 'ALL' && allLoaded() && isDomReady) {
 			one(fn);			
 			return api;
 		}  
@@ -615,8 +614,16 @@
 			}
 		});
 		
+		// Avoid frames with different domains issue
+		var frameElement;
+		try {
+			frameElement = window.frameElement;
+		} catch(e) {
+			frameElement = 1; // Value that is not null
+		}
+
 		// http://javascript.nwbox.com/IEContentLoaded/
-		if (window.frameElement == null && head.doScroll) {
+		if (frameElement == null && head.doScroll) {
 			
 			(function() { 
 				try {
