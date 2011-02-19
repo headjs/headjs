@@ -92,6 +92,7 @@
 		// IE versions
 		for (var ver = 3; ver < 11; ver++) {
 			if (parseFloat(ua[2]) < ver) { pushClass("lt-ie" + ver); }			
+			pushClass("ie" + ver);
 		}
 	} 
 	
