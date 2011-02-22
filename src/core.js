@@ -89,6 +89,8 @@
 	// IE specific
 	if (api.browser.ie) {
 		
+		pushClass("ie" + parseFloat(ua[2]));
+		
 		// IE versions
 		for (var ver = 3; ver < 11; ver++) {
 			if (parseFloat(ua[2]) < ver) { pushClass("lt-ie" + ver); }			
