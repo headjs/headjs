@@ -27,10 +27,10 @@
 		 api = window[head_var] = (window[head_var] || function() { api.ready.apply(null, arguments); }); 
 
 	// states
-	var PRELOADED = 0,
-		 PRELOADING = 1,		 
-		 LOADING	= 2,
-		 LOADED = 3;
+	var PRELOADED = 1,
+		 PRELOADING = 2,		 
+		 LOADING	= 3,
+		 LOADED = 4;
 		
 	
 	// Method 1: simply load and let browser take care of ordering	
