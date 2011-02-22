@@ -208,8 +208,8 @@
 		var loaded = false,
 			 count = 0;
 		
-		for (var name in els) {
-			if (els[name].state != LOADED) { return false; }
+		for(var i = 0, l = els.length; i < l; ++i) {
+			if (els[i].state != LOADED) { return false; }
 			loaded = true;
 			count++;
 		}
