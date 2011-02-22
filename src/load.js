@@ -328,8 +328,18 @@
 			}
 		});
 		
-		// http://javascript.nwbox.com/IEContentLoaded/
-		if (window.frameElement == null && head.doScroll) {
+		/* // http://javascript.nwbox.com/IEContentLoaded/ */
+		
+		// avoid frames with different domains issue
+		var frameElement = 1;
+		
+		try {
+			frameElement = window.frameElement;
+			
+		} catch(e) {}
+		
+		
+		if (!frameElement && head.doScroll) {
 			
 			(function() { 
 				try {
