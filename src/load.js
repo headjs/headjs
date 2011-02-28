@@ -9,7 +9,7 @@
 (function(doc) { 
 		
 	var head = doc.documentElement,		 
-		 smallwait,
+		 isHeadReady,
 		 isDomReady, 
 		 domWaiters = [],
 		 queue = [],		// if not -> defer execution
@@ -71,7 +71,7 @@
 				 next = rest[0];
 				
 			// wait for a while. immediate execution causes some browsers to ignore caching	 
-			if (!smallwait) {
+			if (!isHeadReady) {
 				queue.push(function()  {
 					api.js.apply(null, args);				
 				});
@@ -134,7 +134,7 @@
 	// perform this when DOM is ready
 	api.ready("dom", function() {		
 		
-		if (smallwait && allLoaded()) {
+		if (isHeadReady && allLoaded()) {
 			each(handlers.ALL, function(fn) {
 				one(fn);
 			});
@@ -299,9 +299,10 @@
 	
 	
 	setTimeout(function() {
-		smallwait = true;
-		each(queue, function(fn) { fn(); });		
-	}, 0);	  
+		isHeadReady = true;
+		each(queue, function(fn) { fn(); });
+		
+	}, 300);
 	
 	
 	function fireReady() {		
@@ -316,7 +317,7 @@
 	// W3C
 	if (window.addEventListener) {
 		doc.addEventListener("DOMContentLoaded", fireReady, false);
-		window.addEventListener("onload", fireReady, false);
+		window.addEventListener("load", fireReady, false);
 		
 	// IE	
 	} else if (window.attachEvent) {
