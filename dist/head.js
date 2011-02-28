@@ -79,8 +79,13 @@
 		/(opera)(?:.*version)?[ \/]([\w.]+)/.exec( ua ) ||
 		/(msie) ([\w.]+)/.exec( ua ) ||
 		!/compatible/.test( ua ) && /(mozilla)(?:.*? rv:([\w.]+))?/.exec( ua ) || [];
+	
 		
-	if (ua[1] == 'msie') { ua[1] = 'ie'; }
+	if (ua[1] == 'msie') {
+		ua[1] = 'ie';
+		ua[2] = document.documentMode || ua[2];
+	}
+	
 	pushClass(ua[1]);
 	
 	api.browser = { version: ua[2] };
@@ -88,6 +93,8 @@
 	
 	// IE specific
 	if (api.browser.ie) {
+		
+		pushClass("ie" + parseFloat(ua[2]));
 		
 		// IE versions
 		for (var ver = 3; ver < 11; ver++) {
@@ -295,7 +302,7 @@
 (function(doc) { 
 		
 	var head = doc.documentElement,		 
-		 smallwait,
+		 isHeadReady,
 		 isDomReady, 
 		 domWaiters = [],
 		 queue = [],		// if not -> defer execution
@@ -313,10 +320,10 @@
 		 api = window[head_var] = (window[head_var] || function() { api.ready.apply(null, arguments); }); 
 
 	// states
-	var PRELOADED = 0,
-		 PRELOADING = 1,		 
-		 LOADING	= 2,
-		 LOADED = 3;
+	var PRELOADED = 1,
+		 PRELOADING = 2,		 
+		 LOADING	= 3,
+		 LOADED = 4;
 		
 	
 	// Method 1: simply load and let browser take care of ordering	
@@ -326,7 +333,7 @@
 						
 			var args = arguments,
 				 fn = args[args.length -1],
-				 els = [];
+				 els = {};
 
 			if (!isFunc(fn)) { fn = null; }	 
 			
@@ -334,7 +341,7 @@
 					
 				if (el != fn) {					
 					el = getScript(el);
-					els.push(el);
+					els[el.name] = el;
 										
 					load(el, fn && i == args.length -2 ? function() {
 						if (allLoaded(els)) { one(fn); }
@@ -357,7 +364,7 @@
 				 next = rest[0];
 				
 			// wait for a while. immediate execution causes some browsers to ignore caching	 
-			if (!smallwait) {
+			if (!isHeadReady) {
 				queue.push(function()  {
 					api.js.apply(null, args);				
 				});
@@ -391,7 +398,8 @@
 	
 	api.ready = function(key, fn) {
 		
-		if (key == 'dom') {
+		// DOM ready check: head.ready(document, function() { });
+		if (key == doc) {
 			if (isDomReady) { one(fn);  } 
 			else { domWaiters.push(fn); }
 			return api;
@@ -401,11 +409,14 @@
 		if (isFunc(key)) {
 			fn = key; 
 			key = "ALL";
-		}				
+		}
+		
+		// make sure arguments are sane
+		if (typeof key != 'string' || !isFunc(fn)) { return api; }
 		
 		var script = scripts[key];		
 		
-		if (script && script.state == LOADED || key == 'ALL' && allLoaded() && isDomReady) {
+		if (script && script.state == LOADED || key == 'ALL' && allLoaded()) {
 			one(fn);			
 			return api;
 		}  
@@ -418,9 +429,9 @@
 
 
 	// perform this when DOM is ready
-	api.ready("dom", function() {		
-		
-		if (smallwait && allLoaded()) {
+	api.ready(doc, function() {		
+
+		if (allLoaded()) {
 			each(handlers.ALL, function(fn) {
 				one(fn);
 			});
@@ -488,18 +499,20 @@
 		return Object.prototype.toString.call(el) == '[object Function]';
 	} 
 	
-	function allLoaded(els) {		 
+	function allLoaded(els) {
 		
-		els = els || scripts;		
+		els = els || scripts;	
+
 		var loaded = false,
 			 count = 0;
 		
-		for (var name in els) {
+		for (var name in els) {			
 			if (els[name].state != LOADED) { return false; }
 			loaded = true;
 			count++;
 		}
-		return loaded || count === 0;			
+		
+		return loaded;			
 	}
 	
 	
@@ -554,7 +567,7 @@
 			});
 		
 			
-			if (isDomReady && allLoaded()) {
+			if (allLoaded()) {
 				each(handlers.ALL, function(fn) {
 					one(fn);
 				});
@@ -585,9 +598,10 @@
 	
 	
 	setTimeout(function() {
-		smallwait = true;
-		each(queue, function(fn) { fn(); });		
-	}, 0);	  
+		isHeadReady = true;
+		each(queue, function(fn) { fn(); });
+		
+	}, 300);
 	
 	
 	function fireReady() {		
@@ -602,7 +616,7 @@
 	// W3C
 	if (window.addEventListener) {
 		doc.addEventListener("DOMContentLoaded", fireReady, false);
-		window.addEventListener("onload", fireReady, false);
+		window.addEventListener("load", fireReady, false);
 		
 	// IE	
 	} else if (window.attachEvent) {
@@ -614,8 +628,18 @@
 			}
 		});
 		
-		// http://javascript.nwbox.com/IEContentLoaded/
-		if (window.frameElement == null && head.doScroll) {
+		/* // http://javascript.nwbox.com/IEContentLoaded/ */
+		
+		// avoid frames with different domains issue
+		var frameElement = 1;
+		
+		try {
+			frameElement = window.frameElement;
+			
+		} catch(e) {}
+		
+		
+		if (!frameElement && head.doScroll) {
 			
 			(function() { 
 				try {

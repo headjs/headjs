@@ -40,7 +40,7 @@
 						
 			var args = arguments,
 				 fn = args[args.length -1],
-				 els = [];
+				 els = {};
 
 			if (!isFunc(fn)) { fn = null; }	 
 			
@@ -48,7 +48,7 @@
 					
 				if (el != fn) {					
 					el = getScript(el);
-					els.push(el);
+					els[el.name] = el;
 										
 					load(el, fn && i == args.length -2 ? function() {
 						if (allLoaded(els)) { one(fn); }
@@ -123,7 +123,7 @@
 		
 		var script = scripts[key];		
 		
-		if (script && script.state == LOADED || key == 'ALL' && allLoaded() && isDomReady) {
+		if (script && script.state == LOADED || key == 'ALL' && allLoaded()) {
 			one(fn);			
 			return api;
 		}  
@@ -136,9 +136,9 @@
 
 
 	// perform this when DOM is ready
-	api.ready("dom", function() {		
-		
-		if (isHeadReady && allLoaded()) {
+	api.ready(doc, function() {		
+
+		if (allLoaded()) {
 			each(handlers.ALL, function(fn) {
 				one(fn);
 			});
@@ -206,18 +206,20 @@
 		return Object.prototype.toString.call(el) == '[object Function]';
 	} 
 	
-	function allLoaded(els) {		 
+	function allLoaded(els) {
 		
-		els = els || scripts;		
+		els = els || scripts;	
+
 		var loaded = false,
 			 count = 0;
 		
-		for (var name in els) {
+		for (var name in els) {			
 			if (els[name].state != LOADED) { return false; }
 			loaded = true;
 			count++;
 		}
-		return loaded || count === 0;			
+		
+		return loaded;			
 	}
 	
 	
@@ -272,7 +274,7 @@
 			});
 		
 			
-			if (isDomReady && allLoaded()) {
+			if (allLoaded()) {
 				each(handlers.ALL, function(fn) {
 					one(fn);
 				});
