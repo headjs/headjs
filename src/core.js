@@ -79,8 +79,13 @@
 		/(opera)(?:.*version)?[ \/]([\w.]+)/.exec( ua ) ||
 		/(msie) ([\w.]+)/.exec( ua ) ||
 		!/compatible/.test( ua ) && /(mozilla)(?:.*? rv:([\w.]+))?/.exec( ua ) || [];
+	
 		
-	if (ua[1] == 'msie') { ua[1] = 'ie'; } 
+	if (ua[1] == 'msie') {
+		ua[1] = 'ie';
+		ua[2] = document.documentMode || ua[2];
+	}
+	
 	pushClass(ua[1]);
 	
 	api.browser = { version: ua[2] };
