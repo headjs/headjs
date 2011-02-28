@@ -105,7 +105,8 @@
 	
 	api.ready = function(key, fn) {
 		
-		if (key == 'dom') {
+		// DOM ready check: head.ready(document, function() { });
+		if (key == doc) {
 			if (isDomReady) { one(fn);  } 
 			else { domWaiters.push(fn); }
 			return api;
@@ -115,7 +116,10 @@
 		if (isFunc(key)) {
 			fn = key; 
 			key = "ALL";
-		}				
+		}
+		
+		// make sure arguments are sane
+		if (typeof key != 'string' || !isFunc(fn)) { return api; }
 		
 		var script = scripts[key];		
 		

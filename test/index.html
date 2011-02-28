@@ -25,7 +25,7 @@
 		return !!tag.canPlayType;	
 	}); 
 	
-	head.ready("dom", function() {
+	head.ready(document, function() {
 		console.info("dom ready", document.getElementById("info"));		
 	});
 	</script>
