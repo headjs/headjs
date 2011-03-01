@@ -2,7 +2,7 @@
 	Head JS		The only script in your <HEAD>
 	Copyright	Tero Piirainen (tipiirai)
 	License		MIT / http://bit.ly/mit-license
-	Version		0.91dev
+	Version		0.92dev
 	
 	http://headjs.com
 */
@@ -123,7 +123,8 @@
 		
 		var script = scripts[key];		
 		
-		if (script && script.state == LOADED || key == 'ALL' && allLoaded()) {
+		// script already loaded --> execute and return
+		if (script && script.state == LOADED || key == 'ALL' && allLoaded()) {			
 			one(fn);			
 			return api;
 		}  
@@ -138,7 +139,7 @@
 	// perform this when DOM is ready
 	api.ready(doc, function() {		
 
-		if (allLoaded()) {
+		if (allLoaded()) {			
 			each(handlers.ALL, function(fn) {
 				one(fn);
 			});
@@ -210,13 +211,11 @@
 		
 		els = els || scripts;	
 
-		var loaded = false,
-			 count = 0;
+		var loaded;
 		
 		for (var name in els) {			
 			if (els[name].state != LOADED) { return false; }
 			loaded = true;
-			count++;
 		}
 		
 		return loaded;			
@@ -271,10 +270,10 @@
 			// handlers for this script
 			each(handlers[script.name], function(fn) {
 				one(fn);
-			});
-		
+			});		
 			
-			if (allLoaded()) {
+			// everything ready
+			if (allLoaded() && isDomReady) {		
 				each(handlers.ALL, function(fn) {
 					one(fn);
 				});
@@ -304,12 +303,10 @@
 	}
 	
 	
-	setTimeout(function() {
-		isHeadReady = true;
-		each(queue, function(fn) { fn(); });
-		
-	}, 300);
-	
+	/* 
+		The much desired DOM ready check  
+		Thanks to jQuery and http://javascript.nwbox.com/IEContentLoaded/ 
+	*/
 	
 	function fireReady() {		
 		if (!isDomReady) {
@@ -323,6 +320,8 @@
 	// W3C
 	if (window.addEventListener) {
 		doc.addEventListener("DOMContentLoaded", fireReady, false);
+		
+		// fallback. this is always called
 		window.addEventListener("load", fireReady, false);
 		
 	// IE	
@@ -335,7 +334,6 @@
 			}
 		});
 		
-		/* // http://javascript.nwbox.com/IEContentLoaded/ */
 		
 		// avoid frames with different domains issue
 		var frameElement = 1;
@@ -373,6 +371,18 @@
 	        doc.readyState = "complete";
 	    }, false);
 	}   
+	
+	/* 
+		We wait for 300 ms before script loading starts. for some reason this is needed 
+		to make sure scripts are cached. Not sure why this happens yet. A case study:
+		
+		https://github.com/headjs/headjs/issues/closed#issue/83
+	*/
+	setTimeout(function() {
+		isHeadReady = true;
+		each(queue, function(fn) { fn(); });
+		
+	}, 300);	
 	
 })(document);
 
