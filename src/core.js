@@ -2,7 +2,7 @@
 	Head JS		The only script in your <HEAD>
 	Copyright	Tero Piirainen (tipiirai)
 	License		MIT / http://bit.ly/mit-license
-	Version		0.8
+	Version		0.92dev
 	
 	http://headjs.com
 */
@@ -20,7 +20,7 @@
 		
 	if (window.head_conf) {
 		for (var key in head_conf) {
-			if (head_conf[key]) {
+			if (head_conf[key] !== undefined) {
 				conf[key] = head_conf[key];
 			}
 		}
@@ -79,7 +79,7 @@
 		/(opera)(?:.*version)?[ \/]([\w.]+)/.exec( ua ) ||
 		/(msie) ([\w.]+)/.exec( ua ) ||
 		!/compatible/.test( ua ) && /(mozilla)(?:.*? rv:([\w.]+))?/.exec( ua ) || [];
-		
+	
 	// IE specific
 	if (ua[1] == 'msie') {
 		ua[1] = 'ie';
@@ -97,6 +97,8 @@
 	
 	// IE specific
 	if (api.browser.ie) {
+		
+		pushClass("ie" + parseFloat(ua[2]));
 		
 		// IE versions
 		for (var ver = 3; ver < 11; ver++) {

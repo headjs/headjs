@@ -5,7 +5,12 @@
 
 <head>
 	<title>Test page</title>
-	<!--[if IE]><script src="ie-console.js"></script><![endif]-->
+	
+	<script>
+	if (!window.console) {
+		document.write("<script src=ie-console.js><\/script>");	
+	}
+	</script>
 	
 	<script>var head_conf = {screens: [100, 200, 2000], section: '-area', page: 'page'};</script>
 	
@@ -19,6 +24,10 @@
 		var tag = document.createElement('video');
 		return !!tag.canPlayType;	
 	}); 
+	
+	head.ready(document, function() {
+		console.info("dom ready", document.getElementById("info"));		
+	});
 	</script>
 	
 </head>
@@ -33,16 +42,37 @@
 	
 	(function() {
 		var start = new Date(),
-			 server = "http://192.168.0.102:2000",
-			 num = 34;				 
-			 
-		head(function() {
-			console.log("        -->last one", (new Date()).getTime() - start.getTime());		
+			 server = "http://cloudpanic.info:2000",
+			 num = 1122;
+		
+		head.js({ jquery: "http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js?" + num }, function() {
+			console.info("jquery loaded");
+			$(function() {
+				console.log("$(document).ready()");
+			});
 		});
+		
+		
+		head(function() {
+			console.info("all ready1", (new Date()).getTime() - start.getTime());		
+		});
+
+		
+		head.ready(function() {
+			console.log("all ready2", (new Date()).getTime() - start.getTime());		
+		});
+
+		head.ready("a", function() {
+			console.info("after A");		
+		});	
 		
 		head.ready("c", function() {
 			console.info("after C");		
 		});
+		
+		head.ready("b", function() {
+			console.info("after B");		
+		});		
 		
 		// will load but not execute. 
 		head.js(
@@ -52,16 +82,17 @@
 			server + "/E-" + num + "?time=200",
 			server + "/F-" + num + "?time=600", // { tooltip: server + "/file2" + num + "?time=900" }, 
 			 function() {
-			console.log("        -->ALL");		
+			console.log("Bundle");		
+		}); 
+		
+		
+		head.js(server + "/foo/", function() {
+			console.info("after foo");		
 		});
 		
-		head.js({ jquery: "http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js?" + num }, function() {
-			console.info("        --> jquery");
-			$(function() {
-				console.log("        -->$(document).ready()");
-			});
-		});
-		
+		head.js(server + "/bar/", function() {
+			console.info("after bar");		
+		});		
 		
 		console.info(document.documentElement.className);
 		

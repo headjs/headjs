@@ -2,7 +2,7 @@
 	Head JS		The only script in your <HEAD>
 	Copyright	Tero Piirainen (tipiirai)
 	License		MIT / http://bit.ly/mit-license
-	Version		0.8
+	Version		0.92dev
 	
 	http://headjs.com
 */
@@ -20,7 +20,7 @@
 		
 	if (window.head_conf) {
 		for (var key in head_conf) {
-			if (head_conf[key]) {
+			if (head_conf[key] !== undefined) {
 				conf[key] = head_conf[key];
 			}
 		}
@@ -79,8 +79,17 @@
 		/(opera)(?:.*version)?[ \/]([\w.]+)/.exec( ua ) ||
 		/(msie) ([\w.]+)/.exec( ua ) ||
 		!/compatible/.test( ua ) && /(mozilla)(?:.*? rv:([\w.]+))?/.exec( ua ) || [];
-		
-	if (ua[1] == 'msie') { ua[1] = 'ie'; }
+	
+	// IE specific
+	if (ua[1] == 'msie') {
+		ua[1] = 'ie';
+
+		// If the document.documentMode is available, it specify the ie version
+		// behavior in use. Which is what interest the page designers.
+		if (typeof document.documentMode !== 'undefined') {
+			ua[2] = document.documentMode;
+		}
+	}
 	pushClass(ua[1]);
 	
 	api.browser = { version: ua[2] };
@@ -88,6 +97,8 @@
 	
 	// IE specific
 	if (api.browser.ie) {
+		
+		pushClass("ie" + parseFloat(ua[2]));
 		
 		// IE versions
 		for (var ver = 3; ver < 11; ver++) {
@@ -148,7 +159,7 @@
 	Head JS		The only script in your <HEAD>
 	Copyright	Tero Piirainen (tipiirai)
 	License		MIT / http://bit.ly/mit-license
-	Version		0.8
+	Version		0.92dev
 	
 	http://headjs.com
 */
@@ -177,7 +188,7 @@
 		 api = window[head_var];
 	
 		 
-	// Paul Irish (http://paulirish.com): Million Thanks!	 
+	 // Thanks Paul Irish!	 
 	function testProps(props) {
 		for (var i in props) {
 			if (style[props[i]] !== undefined) {
@@ -235,17 +246,39 @@
 			return testAll("borderRadius");	
 		},
 	
-		reflections: function() {
+		cssreflections: function() {
 			return testAll("boxReflect");
 		},
       
-		transforms: function() {
+		csstransforms: function() {
 			return testAll("transform");
 		},
 		
-		transitions: function() {
+		csstransitions: function() {
 			return testAll("transition");
-		}      
+		},
+		
+		/*
+			font-face support. Uses browser sniffing but is synchronous.
+			
+			http://paulirish.com/2009/font-face-feature-detection/
+		*/
+		fontface: function() {
+			var ua = navigator.userAgent, parsed;
+			
+			if (/*@cc_on@if(@_jscript_version>=5)!@end@*/0) 
+				return true;
+			if (parsed = ua.match(/Chrome\/(\d+\.\d+\.\d+\.\d+)/))
+				return parsed[1] >= '4.0.249.4';
+			if ((parsed = ua.match(/Safari\/(\d+\.\d+)/)) && !/iPhone/.test(ua))
+				return parsed[1] >= '525.13';
+			if (/Opera/.test({}.toString.call(window.opera)))
+				return opera.version() >= '10.00';
+			if (parsed = ua.match(/rv:(\d+\.\d+\.\d+)[^b].*Gecko\//))
+				return parsed[1] >= '1.9.1';    
+			
+			return false;				
+		}
 	};
 	
 	// queue features	
@@ -266,33 +299,35 @@
 	Head JS		The only script in your <HEAD>
 	Copyright	Tero Piirainen (tipiirai)
 	License		MIT / http://bit.ly/mit-license
-	Version		0.8
+	Version		0.92dev
 	
 	http://headjs.com
 */
 (function(doc) { 
 		
-	var head = doc.documentElement,
-		 ie = navigator.userAgent.toLowerCase().indexOf("msie") != -1, 
-		 ready = false,	// is HEAD "ready"
+	var head = doc.documentElement,		 
+		 isHeadReady,
+		 isDomReady, 
+		 domWaiters = [],
 		 queue = [],		// if not -> defer execution
 		 handlers = {},	// user functions waiting for events
 		 scripts = {},		// loadable scripts in different states
- 
+ 		 
 		 isAsync = doc.createElement("script").async === true ||
 					"MozAppearance" in doc.documentElement.style ||
 					window.opera;		 
 					
+					
+					
 	/*** public API ***/
 	var head_var = window.head_conf && head_conf.head || "head",
 		 api = window[head_var] = (window[head_var] || function() { api.ready.apply(null, arguments); }); 
-		 
 
 	// states
-	var PRELOADED = 0,
-		 PRELOADING = 1,		 
-		 LOADING	= 2,
-		 LOADED = 3;
+	var PRELOADED = 1,
+		 PRELOADING = 2,		 
+		 LOADING	= 3,
+		 LOADED = 4;
 		
 	
 	// Method 1: simply load and let browser take care of ordering	
@@ -302,7 +337,7 @@
 						
 			var args = arguments,
 				 fn = args[args.length -1],
-				 els = [];
+				 els = {};
 
 			if (!isFunc(fn)) { fn = null; }	 
 			
@@ -310,10 +345,10 @@
 					
 				if (el != fn) {					
 					el = getScript(el);
-					els.push(el);
+					els[el.name] = el;
 										
 					load(el, fn && i == args.length -2 ? function() {
-						if (allLoaded(els)) { fn(); }
+						if (allLoaded(els)) { one(fn); }
 							
 					} : null);
 				}							
@@ -332,7 +367,8 @@
 				 rest = [].slice.call(args, 1),
 				 next = rest[0];
 				
-			if (!ready) {
+			// wait for a while. immediate execution causes some browsers to ignore caching	 
+			if (!isHeadReady) {
 				queue.push(function()  {
 					api.js.apply(null, args);				
 				});
@@ -361,25 +397,34 @@
 			}
 			
 			return api;		 
-		};			
-		
+		};		
 	} 
 	
-	
-	api.ready = function(key, fn) {		
+	api.ready = function(key, fn) {
+		
+		// DOM ready check: head.ready(document, function() { });
+		if (key == doc) {
+			if (isDomReady) { one(fn);  } 
+			else { domWaiters.push(fn); }
+			return api;
+		}
 		
 		// shift arguments	
 		if (isFunc(key)) {
 			fn = key; 
 			key = "ALL";
-		}				
+		}
+		
+		// make sure arguments are sane
+		if (typeof key != 'string' || !isFunc(fn)) { return api; }
 		
 		var script = scripts[key];		
 		
-		if (script && script.state == LOADED || key == 'ALL' && allLoaded()) {
-			fn();
+		// script already loaded --> execute and return
+		if (script && script.state == LOADED || key == 'ALL' && allLoaded()) {			
+			one(fn);			
 			return api;
-		}
+		}  
 						
 		var arr = handlers[key];
 		if (!arr) { arr = handlers[key] = [fn]; }
@@ -387,8 +432,31 @@
 		return api;		
 	};
 
+
+	// perform this when DOM is ready
+	api.ready(doc, function() {		
+
+		if (allLoaded()) {			
+			each(handlers.ALL, function(fn) {
+				one(fn);
+			});
+		}
+		
+		if (api.feature) {
+			api.feature("domloaded", true);	
+		}
+	}); 
+		
 	
-	/*** private functions ***/
+	/*** private functions ***/	
+	// call function once
+	function one(fn) {
+		if (fn._done) { return; }		
+		fn();
+		fn._done = 1;	
+	}
+	
+	
 	function toLabel(url) {		
 		var els = url.split("/"),
 			 name = els[els.length -1],
@@ -413,12 +481,7 @@
 		}
 
 		var existing = scripts[script.name];
-		if (existing) { return existing; }
-		
-		// same URL?
-		for (var name in scripts) {
-			if (scripts[name].url == script.url) { return scripts[name]; }	
-		}
+		if (existing && existing.url === script.url) { return existing; }
 		
 		scripts[script.name] = script;
 		return script;
@@ -441,13 +504,18 @@
 		return Object.prototype.toString.call(el) == '[object Function]';
 	} 
 	
-	function allLoaded(els) {		
-		els = els || scripts;
+	function allLoaded(els) {
 		
-		for (var name in els) {
-			if (els[name].state != LOADED) { return false; }	
+		els = els || scripts;	
+
+		var loaded;
+		
+		for (var name in els) {			
+			if (els[name].state != LOADED) { return false; }
+			loaded = true;
 		}
-		return true;			
+		
+		return loaded;			
 	}
 	
 	
@@ -494,18 +562,17 @@
 			
 			script.state = LOADED;
 			
-			if (callback) { callback(); }			
-			
+			if (callback) { callback(); }
 			
 			// handlers for this script
-			each(handlers[script.name], function(fn) {				
-				fn();		
-			});
-		
-			if (allLoaded()) {
+			each(handlers[script.name], function(fn) {
+				one(fn);
+			});		
+			
+			// everything ready
+			if (allLoaded() && isDomReady) {		
 				each(handlers.ALL, function(fn) {
-					if (!fn.done) { fn(); }
-					fn.done = true;
+					one(fn);
 				});
 			}
 		});		 
@@ -533,15 +600,64 @@
 	}
 	
 	
-	/*
-		Start after HEAD tag is closed
-	*/	
-	setTimeout(function() {
-		ready = true;
-		each(queue, function(fn) {
-			fn();			
-		});		
-	}, 300);	
+	/* 
+		The much desired DOM ready check  
+		Thanks to jQuery and http://javascript.nwbox.com/IEContentLoaded/ 
+	*/
+	
+	function fireReady() {		
+		if (!isDomReady) {
+			isDomReady = true;
+			each(domWaiters, function(fn) {
+				one(fn);
+			});
+		}
+	}	
+	
+	// W3C
+	if (window.addEventListener) {
+		doc.addEventListener("DOMContentLoaded", fireReady, false);
+		
+		// fallback. this is always called
+		window.addEventListener("load", fireReady, false);
+		
+	// IE	
+	} else if (window.attachEvent) {
+		
+		// for iframes
+		doc.attachEvent("onreadystatechange", function()  {
+			if (doc.readyState === "complete" ) {
+				fireReady();
+			}
+		});
+		
+		
+		// avoid frames with different domains issue
+		var frameElement = 1;
+		
+		try {
+			frameElement = window.frameElement;
+			
+		} catch(e) {}
+		
+		
+		if (!frameElement && head.doScroll) {
+			
+			(function() { 
+				try {
+					head.doScroll("left");
+					fireReady(); 
+			
+				} catch(e) {
+					setTimeout(arguments.callee, 1);
+					return;
+				}		
+			})();			
+		} 
+				
+		// fallback
+		window.attachEvent("onload", fireReady);		
+	}
 	
 	
 	// enable document.readyState for Firefox <= 3.5 
@@ -551,7 +667,19 @@
 	        doc.removeEventListener("DOMContentLoaded", handler, false);
 	        doc.readyState = "complete";
 	    }, false);
-	}
-			
+	}   
+	
+	/* 
+		We wait for 300 ms before script loading starts. for some reason this is needed 
+		to make sure scripts are cached. Not sure why this happens yet. A case study:
+		
+		https://github.com/headjs/headjs/issues/closed#issue/83
+	*/
+	setTimeout(function() {
+		isHeadReady = true;
+		each(queue, function(fn) { fn(); });
+		
+	}, 300);	
+	
 })(document);
 

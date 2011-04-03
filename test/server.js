@@ -16,6 +16,7 @@ http.createServer(function (req, res) {
 	
 	setTimeout(function() {
 		res.end("console.info('    GOT', '" + req.url + "')");
+		
 	}, params.time ? 1 * params.time : 1000);
 	
 	console.log(url);
