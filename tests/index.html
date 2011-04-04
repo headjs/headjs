@@ -20,6 +20,23 @@
 	<script src="load.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script> <!-- jQuery used in css3 tests -->
 	<script src="css3.js"></script>
+
+	<style>
+		.manual-testing {
+			font: 12px "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif;
+			background: #ddd;
+			margin-top: 20px;
+			padding: 8px 20px;
+			border: 1px solid #999;
+			border-radius: 10px;
+		}
+		.manual-testing h2 {
+			color: #555;
+			text-shadow: white 1px 1px 3px;
+			margin-top: 0;
+		}
+}
+	</style>
 </head>
 
 <body>
@@ -29,11 +46,12 @@
 	<h2 id="qunit-userAgent"></h2>  
 	<ol id="qunit-tests">  
 	</ol>
-<!--
-	<h3>Manual testing</h3>
-	<small>Centain aspects arent testable with unittests. </small>
-	<p><b>Paralell downloads</b>: Check if the javascripts are downloaded in paralell, use network inspection (like firebug)</p>
-	<p><b>print with html elements</b></p>
--->
+	<div class="manual-testing">
+		<h2>Manual testing</h2>
+		<p>Centain aspects of headjs aren't testable with unittests. </p>
+		<p><b>Paralell downloads:</b> Check if the javascripts are downloaded in paralell. (<a href="manual-tests/yui.html">yui.html</a>)</p>
+		<p><b>Printing with html5 elements:</b> <a href="manual-tests/html5-print.html">html5-print.html</a></p>
+		<p><b>Other:</b> <a href="manual-tests/">manual-tests/</a></p>
+	</div>
 </body>
 </html>
