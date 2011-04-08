@@ -27,7 +27,7 @@
 	} 
 		
 	function pushClass(name) {
-		klass.push(name); 
+		klass[klass.length] = name;
 	} 
 	
 	function removeClass(name) {
