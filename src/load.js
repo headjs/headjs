@@ -297,9 +297,9 @@
             }
         };
 
-        doc.body.appendChild(s);
+        // use body if available. more safe in IE
+        (doc.body || head).appendChild(s);
     }
-
 
     /*
         The much desired DOM ready check
