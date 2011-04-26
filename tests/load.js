@@ -1,64 +1,80 @@
 /**
  * Unittests: javascript loader
  */
+
+// or "localhost"
+var s = "http://cloudpanic.info:3000";
+
 module('Load');
 
+asyncTest('1 file', 3, function () {
+    
+    head.ready("test1", function() {
+       ok(true, "head.ready");
+    });
+    
+    head.js(s + "/test1?value=1", function() {
+        start();
+        equals(test1, 1); 
+    });
+    
+    head.ready("test1", function() {
+       ok(true, "head.ready");
+    });
+ 
+});
 
-test('Non blocking inorder execution', function () {
-    equals(typeof counter1, 'undefined', 'sanity check');
-    stop();
+asyncTest('2 files', 2, function () {
+        
+    head.js(s + "/test1?value=2", s + "/test2?value=2", function() {
+        start();
+        equals(test1, 2);
+        equals(test2, 2); 
+    });
+
+});
+
+asyncTest('2 files in order', 1, function () {
+        
+    head.js(s + "/dep1?value=1&time=100", s + "/test3?value=1&require=dep1", function() {
+        start();
+        equals(test3, 1); 
+    });
+
+});
+
+asyncTest('5 files in order', 3, function () {
+
+    head.ready("dep4", function() {
+        ok(true, "dep4 ready");
+    });
+            
     head.js(
-        {counterScript1: "helpers/counter1.js"},
-        {counterScript2: "helpers/counter1.js"},
-        function () {
+        s + "/dep2?value=1&time=400", 
+        s + "/dep3?value=1&time=300&require=dep2", 
+        s + "/dep4?value=1&time=200&require=dep3", 
+        s + "/dep5?value=1&time=100&require=dep4", 
+        s + "/test3?value=2&require=dep5", 
+        
+        function() {
             start();
-            equals(counter1, 2, '1 + 1 == 2');
-
+            equals(test3, 2); 
         }
     );
-    // TODO: improve non-blocking detection
-    equals(typeof testCounter, 'undefined', 'No counter1.js script should have run');
-    //counter1 = 10;
-    head.ready('counterScript2', function () {
-        equals(counter1, 2, 'sanity check');
+
+    head.ready("test3", function() {
+        ok(dep2 && dep3 && dep4 && dep5 && test3, "all ready");
     });
-    head.ready('counterScript1', function () {
-        equals(counter1, 1, 'When the counter1 ready is fired, the script should be executed once');
+    
+});
+
+
+asyncTest("document ready", function() {
+    head.ready(document, function() {
+        start();
+        ok(!!document.getElementById("qunit-header"));
     });
 });
 
-// create test to run the same script x times
-function duplicateScriptnameTest(nrOfCalls) {
 
-    return function () {
-        var callbackCounter = 0;
-        var testCounterStart = 0;
-        if (typeof counter2 == 'number') {
-            testCounterStart = counter2;
-        }
 
-        var allCompleted = function() {
-            callbackCounter++;
-            if (callbackCounter == nrOfCalls) {
-                start();
-                ok(true, 'Callback function should be executed ' + nrOfCalls + ' times?'); // Currently doesn't work in ff
-            }
-        };
-
-        stop();
-        for (var i = 0; i < nrOfCalls; i++) {
-            head.js("helpers/counter2.js?makeUrlUnique=" + nrOfCalls, allCompleted);
-        }
-        setTimeout(function () {
-            if (callbackCounter != nrOfCalls) {
-                start();
-                equals(callbackCounter, nrOfCalls, 'Callback function isn\'t called ' + nrOfCalls + ' times?');
-            }
-            equals(counter2 - testCounterStart, 1, 'Should the script be executed only once?');
-        }, 250); // assume counter2.js is loaded & executed within 250 miliseconds
-    };
-}
-
-test('Duplicate scriptname 2x', duplicateScriptnameTest(2));
-
-test('Duplicate scriptname 3x', duplicateScriptnameTest(3));
