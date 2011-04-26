@@ -9,13 +9,13 @@
 (function(doc) {
 
     var head = doc.documentElement,
-         isHeadReady,
-         isDomReady,
-         domWaiters = [],
-         queue = [],        // waiters for the "head ready" event
-         handlers = {},     // user functions waiting for events
-         scripts = {},      // loadable scripts in different states
-         isAsync = doc.createElement("script").async === true || "MozAppearance" in doc.documentElement.style || window.opera;
+        isHeadReady,
+        isDomReady,
+        domWaiters = [],
+        queue = [],        // waiters for the "head ready" event
+        handlers = {},     // user functions waiting for events
+        scripts = {},      // loadable scripts in different states
+        isAsync = doc.createElement("script").async === true || "MozAppearance" in doc.documentElement.style || window.opera;
 
 
     /*** public API ***/
@@ -243,8 +243,8 @@
 
     function load(script, callback) {
 
-        if (script.state == LOADED && callback) {
-            return callback();
+        if (script.state == LOADED) {
+            return callback && callback();
         }
 
         if (script.state == LOADING) {
@@ -297,7 +297,7 @@
             }
         };
 
-        head.appendChild(s);
+        doc.body.appendChild(s);
     }
 
 
