@@ -43,12 +43,13 @@ asyncTest('2 files in order', 1, function () {
 
 });
 
+
 asyncTest('5 files in order', 3, function () {
 
     head.ready("dep4", function() {
         ok(true, "dep4 ready");
     });
-            
+
     head.js(
         s + "/dep2?value=1&time=400", 
         s + "/dep3?value=1&time=300&require=dep2", 
@@ -66,6 +67,20 @@ asyncTest('5 files in order', 3, function () {
         ok(dep2 && dep3 && dep4 && dep5 && test3, "all ready");
     });
     
+});
+
+
+asyncTest('nested load', function () {
+        
+    head.js(s + "/dep6?value=1", function() {
+        
+        head.js(s + "/test4?value=1&require=dep6", function() {
+            start();
+            equals(test4, 1); 
+        });
+        
+    });
+
 });
 
 
