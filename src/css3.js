@@ -111,8 +111,9 @@
 
             if (/*@cc_on@if(@_jscript_version>=5)!@end@*/0)
                 return true;
+                
             if (parsed = ua.match(/Chrome\/(\d+\.\d+\.\d+\.\d+)/))
-                return parsed[1] >= '4.0.249.4';
+                return parsed[1] >= '4.0.249.4' || 1 * parsed[1].split(".")[0] > 5;
             if ((parsed = ua.match(/Safari\/(\d+\.\d+)/)) && !/iPhone/.test(ua))
                 return parsed[1] >= '525.13';
             if (/Opera/.test({}.toString.call(window.opera)))
@@ -133,7 +134,6 @@
 
     // enable features at once
     api.feature();
-
 
 })();
 
