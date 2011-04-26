@@ -1,6 +1,23 @@
 
 module('Libraries');
 
+
+asyncTest("no conflict", 2, function() {
+    
+    head.js(
+        "http://ajax.googleapis.com/ajax/libs/prototype/1.7.0.0/prototype.js",
+        "http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js",
+        
+        function() {
+            var $j = jQuery.noConflict();
+            start();
+            ok(!!$j("#qunit-header").addClass, "jQuery in use");
+            ok(!!$("qunit-header").addClassName, "Prototype in use");
+        }
+    );
+});
+
+
 asyncTest("jquery", 1, function() {
     
     head.ready("jquery.min.js", function() {
@@ -11,6 +28,8 @@ asyncTest("jquery", 1, function() {
     head.js("http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js");
     
 });
+
+
 
 asyncTest('raphael, jquery, jslint', 3, function () {
     
