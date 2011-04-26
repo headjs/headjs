@@ -212,7 +212,7 @@
         var loaded;
         
         for (var name in els) {
-            if (els[name].state != LOADED) { return false; }
+            if (els.hasOwnProperty(name) && els[name].state != LOADED) { return false; }
             loaded = true;
         }
         
