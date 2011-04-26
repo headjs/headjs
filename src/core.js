@@ -27,7 +27,7 @@
 	} 
 		
 	function pushClass(name) {
-		klass.push(name); 
+		klass[klass.length] = name;
 	} 
 	
 	function removeClass(name) {
@@ -36,7 +36,7 @@
 	}
 
 	function each(arr, fn) {	
-		for (var i = 0; i < arr.length; i++) {
+		for (var i = 0, arr_length = arr.length; i < arr_length; i++) {
 			fn.call(arr, arr[i], i);
 		}
 	}
