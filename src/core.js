@@ -93,13 +93,12 @@
 		for (var ver = 3; ver < 11; ver++) {
 			if (parseFloat(ua[2]) < ver) { pushClass("lt-ie" + ver); }			
 		}
-	} 
-	
-	// HTML5 support
-	each("abbr|article|aside|audio|canvas|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|summary|time|video".split("|"), function(el) {		
-		doc.createElement(el);
-	});
-		
+		// HTML5 support
+		each("abbr|article|aside|audio|canvas|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|summary|time|video".split("|"), function(el) {
+			doc.createElement(el);
+		});
+	}
+
 	// CSS "router" 
 	each(location.pathname.split("/"), function(el, i) {
 			
