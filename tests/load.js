@@ -3,7 +3,7 @@
  */
 
 // or "localhost"
-var s = "http://cloudpanic.info:3000";
+var s = "http://localhost:3000";
 
 module('Load');
 

@@ -118,9 +118,9 @@
         if (typeof key != 'string' || !isFunc(fn)) { return api; }
 
         var script = scripts[key];
-
+        
         // script already loaded --> execute and return
-        if (script && script.state == LOADED || key == 'ALL' && allLoaded()) {
+        if (script && script.state == LOADED || key == 'ALL' && allLoaded() && isDomReady) {
             one(fn);
             return api;
         }
@@ -280,7 +280,7 @@
     }
 
 
-    function scriptTag(src, callback)  {
+    function scriptTag(src, callback) {
 
         var s = doc.createElement('script');
         s.type = 'text/' + (src.type || 'javascript');
