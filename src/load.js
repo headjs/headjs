@@ -230,7 +230,7 @@
 
     function preload(script, callback) {
 
-        if (!script.state) {
+        if (script.state === undefined) {
 
             script.state = PRELOADING;
             script.onpreload = [];
@@ -292,8 +292,8 @@
             var state = s.readyState;
 
             if (!callback.done && (!state || /loaded|complete/.test(state))) {
-                callback();
                 callback.done = true;
+                callback();
             }
         };
 
