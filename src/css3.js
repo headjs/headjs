@@ -2,7 +2,7 @@
     Head JS     The only script in your <HEAD>
     Copyright   Tero Piirainen (tipiirai)
     License     MIT / http://bit.ly/mit-license
-    Version     0.95
+    Version     0.96
 
     http://headjs.com
 */

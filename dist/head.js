@@ -2,7 +2,7 @@
     Head JS     The only script in your <HEAD>
     Copyright   Tero Piirainen (tipiirai)
     License     MIT / http://bit.ly/mit-license
-    Version     0.95
+    Version     0.96
 
     http://headjs.com
 */
@@ -157,7 +157,7 @@
     Head JS     The only script in your <HEAD>
     Copyright   Tero Piirainen (tipiirai)
     License     MIT / http://bit.ly/mit-license
-    Version     0.95
+    Version     0.96
 
     http://headjs.com
 */
@@ -297,7 +297,7 @@
     Head JS     The only script in your <HEAD>
     Copyright   Tero Piirainen (tipiirai)
     License     MIT / http://bit.ly/mit-license
-    Version     0.95
+    Version     0.96
 
     http://headjs.com
 */
@@ -525,7 +525,7 @@
 
     function preload(script, callback) {
 
-        if (!script.state) {
+        if (script.state === undefined) {
 
             script.state = PRELOADING;
             script.onpreload = [];
@@ -587,8 +587,8 @@
             var state = s.readyState;
 
             if (!callback.done && (!state || /loaded|complete/.test(state))) {
-                callback();
                 callback.done = true;
+                callback();
             }
         };
 
