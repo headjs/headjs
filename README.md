@@ -5,6 +5,6 @@ This project was never announced. `git push` and it was all viral.
 
 The website: [http://headjs.com](http://headjs.com)
 
-v0.9 Feb 11 2011.
+v0.96 Wednesday, May 18 2011.
 
 [Report a Bug](https://github.com/headjs/headjs/issues).
