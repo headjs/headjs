@@ -577,10 +577,16 @@
 
     function scriptTag(src, callback) {
 
-        var s = doc.createElement('script');
-        s.type = 'text/' + (src.type || 'javascript');
-        s.src = src.src || src;
-        s.async = false;
+        if(/\.js[^\.]*$/.test(src)){
+          var s = doc.createElement('script');
+          s.type = 'text/' + (src.type || 'javascript');
+          s.src = src.src || src;
+          s.async = false;
+        }else{
+          var s = doc.createElement('link');
+          s.rel = 'stylesheet';
+          s.href = src.src || src;
+        }
 
         s.onreadystatechange = s.onload = function() {
 
