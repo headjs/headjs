@@ -394,6 +394,11 @@
         };
     }
 
+    // Alias .js() as .css(), since .js() now supports loading CSS as well
+    api.css = function() {
+        return api.js.apply(api, arguments);
+    }
+
     api.ready = function(key, fn) {
 
         // DOM ready check: head.ready(document, function() { });
