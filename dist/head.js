@@ -586,6 +586,11 @@
           var s = doc.createElement('link');
           s.rel = 'stylesheet';
           s.href = src.src || src;
+          s.readyState = false;
+          setTimeout(function(){
+            callback.done = true;
+            callback();
+          }, 200);
         }
 
         s.onreadystatechange = s.onload = function() {
