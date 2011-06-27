@@ -586,12 +586,11 @@
           var s = doc.createElement('script');
           s.type = 'text/' + (src.type || 'javascript');
           s.src = src.src || src;
-          s.async = false;
+          s.async = true;
         }else{
           var s = doc.createElement('link');
           s.rel = 'stylesheet';
           s.href = src.src || src;
-          s.readyState = false;
           setTimeout(function(){
             callback.done = true;
             callback();
