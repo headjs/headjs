@@ -109,6 +109,7 @@
         }
         
         // Config object passed, use recursion to process items
+        // Case: head.ready({jquery: function() { }, jqueryui: function() { }});
         if (isObj(key)) {
             for (var k in key) {
                 api.ready(k, key[k]);
