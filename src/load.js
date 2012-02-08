@@ -15,6 +15,8 @@
         queue = [],        // waiters for the "head ready" event
         handlers = {},     // user functions waiting for events
         scripts = {},      // loadable scripts in different states
+        progress= { loaded:0, total:0 },
+        notifys = [],      // callbacks to notify progress on queue loading
         isAsync = doc.createElement("script").async === true || "MozAppearance" in doc.documentElement.style || window.opera;
 
 
@@ -112,7 +114,7 @@
         if (isFunc(key)) {
             fn = key;
             key = "ALL";
-        }    
+        }
 
         // make sure arguments are sane
         if (typeof key != 'string' || !isFunc(fn)) { return api; }
@@ -128,6 +130,32 @@
         var arr = handlers[key];
         if (!arr) { arr = handlers[key] = [fn]; }
         else { arr.push(fn); }
+ 
+        return api;
+    };
+
+    /**
+     * Submit callback for progress of queue loading
+     * Requires head.js() configuration:
+     *
+     *   head.js(
+     *       { jquery     : "js/lib/jquery/jquery.min.js",   size : "93876"     },
+     *       { uuid       :  "js/lib/uuid.js",               size : "7362"      },
+     *       { underscore :  "js/lib/underscore-min.js",     size : "12140"     }
+     *   );
+     *
+     *   head.notify( function( name, size, loaded, total){
+     *      // indicate progress of libraries loading
+     *   });
+     *
+     * @param  {Function} fn(scriptName,scriptSize,loadedSize,totalSize)
+     * @return `api` public methods
+     *
+     */
+    api.notify = function( fn ) {
+        if ( isFunc(fn) ) {
+            notifys.push(fn);
+        }
         return api;
     };
 
@@ -167,25 +195,48 @@
     }
 
 
-    function getScript(url) {
+    function updateTotalSize(script) {
+        script.size     = script["size"] ? parseInt( script.size ) : 0;
+        progress.total += script.size;
 
-        var script;
+        return script;
+    }
 
-        if (typeof url == 'object') {
-            for (var key in url) {
-                if (url[key]) {
-                    script = { name: key, url: url[key] };
+    function getScript( config ) {
+        var script = {
+                name : undefined,
+                url  : undefined,
+                size : undefined
+            };
+
+        if (typeof config == 'object')
+        {
+            for (var key in config)
+            {
+                if ( config[key] )
+                {
+                    switch( key )
+                    {
+                        case "size" : script.size = config[key];
+                                      break;
+
+                        default     : script.name = key;
+                                      script.url = config[key];
+                                      break;
+                    }
                 }
             }
         } else {
-            script = { name: toLabel(url),  url: url };
+            script.name = toLabel(config);
+            script.url  = config;
         }
 
         var existing = scripts[script.name];
         if (existing && existing.url === script.url) { return existing; }
 
         scripts[script.name] = script;
-        return script;
+
+        return updateTotalSize( script );
     }
 
 
@@ -241,7 +292,7 @@
         }
     }
 
-    function load(script, callback) {
+     function load(script, callback) {
 
         if (script.state == LOADED) {
             return callback && callback();
@@ -259,9 +310,11 @@
 
         script.state = LOADING;
 
+        // Load this script synchronously...
         scriptTag(script.url, function() {
 
-            script.state = LOADED;
+            script.state        = LOADED;
+            progress.loaded    += script.size;
 
             if (callback) { callback(); }
 
@@ -270,11 +323,24 @@
                 one(fn);
             });
 
+            // Notify observers of progress
+            each( notifys, function(fn){
+                var args = [
+                        script.name,     script.size,
+                        progress.loaded, progress.total
+                    ];
+                fn.apply(null,args);
+            });
+
             // everything ready
             if (allLoaded() && isDomReady) {
                 each(handlers.ALL, function(fn) {
                     one(fn);
                 });
+
+                
+                progress.loaded = undefined;
+                progress.total  = undefined;
             }
         });
     }
