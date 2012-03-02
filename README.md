@@ -9,6 +9,7 @@ v0.96 Wednesday, May 18 2011.
 
 Added new **_load progress_** &nbsp;feature that supports notification of load progress for each item in the head.js() queue:
 Added new **css( )** feature that supports silently loading of 1 or more stylesheets with optional notification callbacks.
+
     /**
 	* Load files in parallel but execute them in sequence
 	* Note: developer is required to manually specify each script size!
