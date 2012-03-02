@@ -101,6 +101,83 @@
         };
     }
 
+    /**
+     *  Sample usage: 
+     *
+     *  head.css(
+     *      // Load SyntaxHighlighter themed CSS
+     *      [
+     *          "http://alexgorbatchev.com/pub/sh/current/styles/shCoreDefault.css",
+     *          "http://alexgorbatchev.com/pub/sh/current/styles/shThemeRDark.css",
+     *          "http://alexgorbatchev.com/pub/sh/current/styles/shThemeRDark.css"
+     *      ]
+     *  );
+     */
+    api.css = function ( paths, fn ) {
+        var scope = null;
+                
+                function loadStyleSheet( path ) {
+                    var interval, timeout,
+                        style,    head;
+                    
+                        // Checking whether the style sheet has successfully loaded
+                        function onCheckLoad()  {
+                            try {
+                                 // SUCCESS! our style sheet has loaded
+                                 // clear the counters
+                                 if ( style.sheet && style.sheet.cssRules ) {
+
+                                    clearInterval( interval );                      
+                                    clearTimeout( timeout );
+
+                                    interval = timeout = undefined;
+
+                                    // fire the callback with success == true
+                                    fn && fn.call( scope || window, true, style );           
+                                 }
+                              } 
+                              catch( e ) { } 
+                        }
+
+                        // If timeout occurs, then load FAILed!
+                        function onLoadFail()  {
+                            if (!interval && !timeout) return;
+
+                            // clear the counters
+                            clearInterval( interval );             
+                            clearTimeout( timeout );
+
+                            // since the style sheet didn't load, remove the link node from the DOM
+                            // and fire the callback with success == false            
+                            head.removeChild( style );                
+                            fn && fn.call( scope || window, false, style ); 
+                        }
+                    
+                    // create the style @import node
+                    
+                    style = document.createElement( 'style' );           
+                    style.textContent = '@import url("' + path + '");'; 
+
+                    // reference to document.head for appending/ removing link nodes
+                    // insert the style into the DOM and start loading the style sheet
+
+                    head = document.getElementsByTagName( 'head' )[0], 
+                    head.appendChild( style );  
+
+                    interval = setInterval( onCheckLoad, 10 );                                                                     
+                    timeout  = setTimeout( onLoadFail, 15000 );
+                }
+        
+
+        // For each CSS entry, load it and notify via `fn` callback
+        each(paths, function(url){
+            loadStyleSheet( url );
+        });
+
+        return api;
+     };
+
+
     api.ready = function(key, fn) {
 
         // DOM ready check: head.ready(document, function() { });

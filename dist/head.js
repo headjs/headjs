@@ -394,6 +394,70 @@
         };
     }
 
+    api.css = function ( paths, fn ) {
+        var self = callee;
+            
+                // Checking whether the style sheet has successfully loaded
+                function onCheckLoad()  {
+                    try {
+                         // SUCCESS! our style sheet has loaded
+                         // clear the counters
+                         if ( link[sheet] && link[sheet][cssRules].length ) { 
+                            clearInterval( interval );                      
+                            clearTimeout( timeout );
+
+                            // fire the callback with success == true
+                            fn.call( scope || window, true, link );           
+                         }
+                      } 
+                      catch( e ) { } 
+                      finally    { }
+                }
+
+                // If timeout occurs, then load FAILed!
+                function onLoadFail()  {
+                    // clear the counters
+                    clearInterval( interval );             
+                    clearTimeout( timeout );
+
+                    // since the style sheet didn't load, remove the link node from the DOM
+                    // and fire the callback with success == false            
+                    head.removeChild( link );                
+                    fn.call( scope || window, false, link ); 
+                }
+                
+                function loadStyleSheet( path, fn, scope ) {
+                
+                    fn    ||= function noop() {  };
+                    scope ||= self;
+
+                  var head  = document.getElementsByTagName( 'head' )[0], // reference to document.head for appending/ removing link nodes
+                       link = document.createElement( 'link' );           // create the link node
+
+                       link.setAttribute( 'href', path );
+                       link.setAttribute( 'rel', 'stylesheet' );
+                       link.setAttribute( 'type', 'text/css' );
+
+                    // get the correct properties to check for depending on the browser
+                    var sheet, cssRules; 
+                    if ( 'sheet' in link ) { sheet = 'sheet';        cssRules = 'cssRules';  }
+                    else                   { sheet = 'styleSheet';   cssRules = 'rules';     }
+
+                    head.appendChild( link );  // insert the link node into the DOM and start loading the style sheet
+
+                    var interval = setInterval( onCheckLoad, 10 );                                                                     
+                    var timeout  = setTimeout( onLoadFail, 15000 );
+                }
+        
+
+        // For each CSS entry, load it and notify via `fn` callback
+        each(paths, function(url){
+            loadStyleSheet( url, fn );
+        });
+
+        return api;
+     };
+
     api.ready = function(key, fn) {
 
         // DOM ready check: head.ready(document, function() { });
