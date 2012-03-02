@@ -5,7 +5,7 @@
 [http://headjs.com](http://headjs.com)<br/>
 v0.96 Wednesday, May 18 2011.
 
-## Additions
+## Changes
 
 Added new **_load progress_** &nbsp;feature that supports notification of load progress for each item in the head.js() queue:<br/>
 Added new **css( )** feature that supports silently loading of 1 or more stylesheets with optional notification callbacks.
