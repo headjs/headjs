@@ -75,11 +75,15 @@
     // browser type & version
     var ua = navigator.userAgent.toLowerCase();
 
-    ua = /(webkit)[ \/]([\w.]+)/.exec( ua ) ||
+    ua = /(chrome)[ \/]([\w.]+)/.exec( ua ) ||
+        /(webkit)[ \/]([\w.]+)/.exec( ua ) ||
         /(opera)(?:.*version)?[ \/]([\w.]+)/.exec( ua ) ||
         /(msie) ([\w.]+)/.exec( ua ) ||
         !/compatible/.test( ua ) && /(mozilla)(?:.*? rv:([\w.]+))?/.exec( ua ) || [];
 
+    if (ua[1] == 'chrome') {
+        ua[1] = 'webkit';
+    }
 
     if (ua[1] == 'msie') {
         ua[1] = 'ie';

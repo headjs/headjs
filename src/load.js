@@ -46,9 +46,8 @@
                     el = getScript(el);
                     els[el.name] = el;
 
-                    load(el, fn && i == args.length -2 ? function() {
+                    load(el, fn ? function() {
                         if (allLoaded(els)) { one(fn); }
-
                     } : null);
                 }
             });
