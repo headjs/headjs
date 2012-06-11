@@ -15,6 +15,8 @@
         queue = [],        // waiters for the "head ready" event
         handlers = {},     // user functions waiting for events
         scripts = {},      // loadable scripts in different states
+        progress= { loaded:0, total:0 },
+        notifys = [],      // callbacks to notify progress on queue loading
         isAsync = doc.createElement("script").async === true || "MozAppearance" in doc.documentElement.style || window.opera;
 
 
@@ -99,6 +101,83 @@
         };
     }
 
+    /**
+     *  Sample usage: 
+     *
+     *  head.css(
+     *      // Load SyntaxHighlighter themed CSS
+     *      [
+     *          "http://alexgorbatchev.com/pub/sh/current/styles/shCoreDefault.css",
+     *          "http://alexgorbatchev.com/pub/sh/current/styles/shThemeRDark.css",
+     *          "http://alexgorbatchev.com/pub/sh/current/styles/shThemeRDark.css"
+     *      ]
+     *  );
+     */
+    api.css = function ( paths, fn ) {
+        var scope = null;
+                
+                function loadStyleSheet( path ) {
+                    var interval, timeout,
+                        style,    head;
+                    
+                        // Checking whether the style sheet has successfully loaded
+                        function onCheckLoad()  {
+                            try {
+                                 // SUCCESS! our style sheet has loaded
+                                 // clear the counters
+                                 if ( style.sheet && style.sheet.cssRules ) {
+
+                                    clearInterval( interval );                      
+                                    clearTimeout( timeout );
+
+                                    interval = timeout = undefined;
+
+                                    // fire the callback with success == true
+                                    fn && fn.call( scope || window, true, style );           
+                                 }
+                              } 
+                              catch( e ) { } 
+                        }
+
+                        // If timeout occurs, then load FAILed!
+                        function onLoadFail()  {
+                            if (!interval && !timeout) return;
+
+                            // clear the counters
+                            clearInterval( interval );             
+                            clearTimeout( timeout );
+
+                            // since the style sheet didn't load, remove the link node from the DOM
+                            // and fire the callback with success == false            
+                            head.removeChild( style );                
+                            fn && fn.call( scope || window, false, style ); 
+                        }
+                    
+                    // create the style @import node
+                    
+                    style = document.createElement( 'style' );           
+                    style.textContent = '@import url("' + path + '");'; 
+
+                    // reference to document.head for appending/ removing link nodes
+                    // insert the style into the DOM and start loading the style sheet
+
+                    head = document.getElementsByTagName( 'head' )[0], 
+                    head.appendChild( style );  
+
+                    interval = setInterval( onCheckLoad, 10 );                                                                     
+                    timeout  = setTimeout( onLoadFail, 15000 );
+                }
+        
+
+        // For each CSS entry, load it and notify via `fn` callback
+        each(paths, function(url){
+            loadStyleSheet( url );
+        });
+
+        return api;
+     };
+
+
     api.ready = function(key, fn) {
 
         // DOM ready check: head.ready(document, function() { });
@@ -112,7 +191,7 @@
         if (isFunc(key)) {
             fn = key;
             key = "ALL";
-        }    
+        }
 
         // make sure arguments are sane
         if (typeof key != 'string' || !isFunc(fn)) { return api; }
@@ -128,6 +207,32 @@
         var arr = handlers[key];
         if (!arr) { arr = handlers[key] = [fn]; }
         else { arr.push(fn); }
+ 
+        return api;
+    };
+
+    /**
+     * Submit callback for progress of queue loading
+     * Requires head.js() configuration:
+     *
+     *   head.js(
+     *       { jquery     : "js/lib/jquery/jquery.min.js",   size : "93876"     },
+     *       { uuid       :  "js/lib/uuid.js",               size : "7362"      },
+     *       { underscore :  "js/lib/underscore-min.js",     size : "12140"     }
+     *   );
+     *
+     *   head.notify( function( name, size, loaded, total){
+     *      // indicate progress of libraries loading
+     *   });
+     *
+     * @param  {Function} fn(scriptName,scriptSize,loadedSize,totalSize)
+     * @return `api` public methods
+     *
+     */
+    api.notify = function( fn ) {
+        if ( isFunc(fn) ) {
+            notifys.push(fn);
+        }
         return api;
     };
 
@@ -167,25 +272,48 @@
     }
 
 
-    function getScript(url) {
+    function updateTotalSize(script) {
+        script.size     = script["size"] ? parseInt( script.size ) : 0;
+        progress.total += script.size;
 
-        var script;
+        return script;
+    }
 
-        if (typeof url == 'object') {
-            for (var key in url) {
-                if (url[key]) {
-                    script = { name: key, url: url[key] };
+    function getScript( config ) {
+        var script = {
+                name : undefined,
+                url  : undefined,
+                size : undefined
+            };
+
+        if (typeof config == 'object')
+        {
+            for (var key in config)
+            {
+                if ( config[key] )
+                {
+                    switch( key )
+                    {
+                        case "size" : script.size = config[key];
+                                      break;
+
+                        default     : script.name = key;
+                                      script.url = config[key];
+                                      break;
+                    }
                 }
             }
         } else {
-            script = { name: toLabel(url),  url: url };
+            script.name = toLabel(config);
+            script.url  = config;
         }
 
         var existing = scripts[script.name];
         if (existing && existing.url === script.url) { return existing; }
 
         scripts[script.name] = script;
-        return script;
+
+        return updateTotalSize( script );
     }
 
 
@@ -241,7 +369,7 @@
         }
     }
 
-    function load(script, callback) {
+     function load(script, callback) {
 
         if (script.state == LOADED) {
             return callback && callback();
@@ -259,9 +387,11 @@
 
         script.state = LOADING;
 
+        // Load this script synchronously...
         scriptTag(script.url, function() {
 
-            script.state = LOADED;
+            script.state        = LOADED;
+            progress.loaded    += script.size;
 
             if (callback) { callback(); }
 
@@ -270,11 +400,24 @@
                 one(fn);
             });
 
+            // Notify observers of progress
+            each( notifys, function(fn){
+                var args = [
+                        script.name,     script.size,
+                        progress.loaded, progress.total
+                    ];
+                fn.apply(null,args);
+            });
+
             // everything ready
             if (allLoaded() && isDomReady) {
                 each(handlers.ALL, function(fn) {
                     one(fn);
                 });
+
+                
+                progress.loaded = undefined;
+                progress.total  = undefined;
             }
         });
     }
