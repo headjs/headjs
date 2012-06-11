@@ -107,16 +107,25 @@
             else { domWaiters.push(fn); }
             return api;
         }
+        
+        // Config object passed, use recursion to process items
+        // Case: head.ready({jquery: function() { }, jqueryui: function() { }});
+        if (isObj(key)) {
+            for (var k in key) {
+                api.ready(k, key[k]);
+            }
+            return api;
+        }
 
         // shift arguments
         if (isFunc(key)) {
             fn = key;
             key = "ALL";
-        }    
-
+        }
+        
         // make sure arguments are sane
         if (typeof key != 'string' || !isFunc(fn)) { return api; }
-
+        
         var script = scripts[key];
         
         // script already loaded --> execute and return
@@ -203,6 +212,10 @@
 
     function isFunc(el) {
         return Object.prototype.toString.call(el) == '[object Function]';
+    }
+    
+    function isObj(el) {
+        return Object.prototype.toString.call(el) == '[object Object]';
     }
 
     function allLoaded(els) {

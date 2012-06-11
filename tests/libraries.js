@@ -53,3 +53,26 @@ asyncTest('raphael, jquery, jslint', 3, function () {
     });
     
 });
+
+asyncTest('3 libraries - head.ready([object])', 3, function () {
+    
+    head.js(
+        { mootools: "https://ajax.googleapis.com/ajax/libs/mootools/1.4.1/mootools-yui-compressed.js"},
+        { scriptaculous: "https://ajax.googleapis.com/ajax/libs/scriptaculous/1.9.0/scriptaculous.js"},
+        { jqueryui: "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"}
+    );
+
+    head.ready({
+        mootools: function() {
+            ok(!!MooTools, "Moo Tools ready");
+        },
+        scriptaculous: function() {
+            ok(!!Scriptaculous, "script.aculo.us ready");
+        },
+        jqueryui: function() {
+            start();
+            ok(!!jQuery.ui, "jQuery UI ready");
+        }
+    });
+    
+});
