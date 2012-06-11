@@ -394,6 +394,11 @@
         };
     }
 
+    // Alias .js() as .css(), since .js() now supports loading CSS as well
+    api.css = function() {
+        return api.js.apply(api, arguments);
+    }
+
     api.ready = function(key, fn) {
 
         // DOM ready check: head.ready(document, function() { });
@@ -577,10 +582,20 @@
 
     function scriptTag(src, callback) {
 
-        var s = doc.createElement('script');
-        s.type = 'text/' + (src.type || 'javascript');
-        s.src = src.src || src;
-        s.async = false;
+        if(/\.js[^\.]*$/.test(src)){
+          var s = doc.createElement('script');
+          s.type = 'text/' + (src.type || 'javascript');
+          s.src = src.src || src;
+          s.async = true;
+        }else{
+          var s = doc.createElement('link');
+          s.rel = 'stylesheet';
+          s.href = src.src || src;
+          setTimeout(function(){
+            callback.done = true;
+            callback();
+          }, 200);
+        }
 
         s.onreadystatechange = s.onload = function() {
 
