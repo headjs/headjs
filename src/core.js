@@ -148,6 +148,9 @@
     screenSize();
     window.onresize = screenSize;
 
+    // detecting retina
+    api.feature("retina", (window.devicePixelRatio > 1)).feature();
+
     api.feature("js", true).feature();
 
 })(document);
