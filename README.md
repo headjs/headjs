@@ -1,9 +1,47 @@
-_**Hello everyone,**_
+![Head JS](http://headjs.com/media/img/headjs.gif)
 
-This project may have been sitting idle for the last year or so, but i [Robert](https://github.com/itechnology) have just gotten the green light from [Tipiirai](https://github.com/tipiirai) to try and keep the project alive together with [Paul](https://github.com/paulirish).
+This project was never announced. `git push` and it was all viral.
+
+The website: [http://headjs.com](http://headjs.com)
+
+v0.97a / 2012-10-20
+
+[Report a Bug](https://github.com/headjs/headjs/issues).
 
 
-There will be a few questions to work out, but i think that [Head.JS](http://headjs.com) still solves some basic problems that many users are experiencing. Especially in the Enterprise, where we must support obsolete browsers while at the same time moving forward with our time.
+0.97a
+
+- Updated QUnit &amp; got unit tests running again
+- Swictched to "use strict"
+- Fixed up some variable usage
+- Added browser detections other than just for ie-lt
+- updated browser regexes (firefox, safari, opera, ios, android, webkit)
+- detect if browser is: desktop, mobile, touch enabled
+- detect portrait/landscape mode
+- html5 shim now only triggers on ie-lt9
+- added a throttle to onResize, since some browsers fire tons of events/sec
+- added corrected height/width measurements, but only exposed via new object: head.screen
+  - contains height/width, innerHeight/innerWidth, outerHeight/outerWidth
+- force all css router names to lowercase just in case ppl try typing in names with wierd casings
+
+
+Future
+
+- In the immediate future i would like to patch up things that have been sitting on hold, and that people already using **HeadJS** can continue to use without any breaking changes.
+- After that however things will likely change a bit
+ - Have a peek here [HeadJS@I-Technology](https://github.com/itechnology/headjs)
+ - For example :
+     - Programatically it's very had to use the current syntax of prefixig things with **no-**. Instead they should be suffixed with **-true/-false**. Like this it is very easy to generate variable on the fly and have them match your HeadJS rules.
+     - Currently screen detection is based on the **outerWidth** of the navigator window, so once you add tabs, scrollbars, sidebars, & toolbars ..you are probably in for a big surprise with your design! Therefore generated classes should instead reflect the actual screen estate availiable: **innerWidth/innerHeight**
+     - Right now you only get classes based on **lt**, but what about **lte, gt, and gte** ? Not to mention **height** ! :)
+
+
+_**Rebooting HeadJS,**_
+
+This project was sitting idle for the last year or so, but me [Robert Hoffmann](https://github.com/itechnology) and [Paul Irish](https://github.com/paulirish) have just gotten the green light from [Tipiirai](https://github.com/tipiirai) to try and keep the project alive a bit more :)
+
+
+There will be a few questions to work out, but i think that **HeadJS** still solves the basic problems that many users are experiencing. Especially in the Enterprise, where we must support obsolete browsers while moving forward with our time.
 
 1. Feature detection
   * This area seems well covered by [Modernizr](http://modernizr.com)
@@ -11,13 +49,13 @@ There will be a few questions to work out, but i think that [Head.JS](http://hea
 	* This area also seems well covered by libraries like [YepNope.JS](http://yepnopejs.com) or [Require.JS](http://requirejs.org)
 	* [YepNope.JS](http://yepnopejs.com) can by the way be bundled into [Modernizr](http://modernizr.com)
 3. Responsive design
-	* [Head.JS](http://headjs.com) handles this very well through css classes
+	* **HeadJS** handles this very well through css classes
 	* But there are other solutions like [Respond.JS](https://github.com/scottjehl/Respond) that work well too.
 4. Browser detection
 5. Plug browser quirks
 
 
-Since points 1 & 2 seem pretty well covered, going forward we will need to decide if those functionalities should be removed or not from [Head.JS](http://headjs.com), to be able to concentrate on the points that [Head.JS](http://headjs.com) handles well: 3-5
+Since points 1 & 2 seem pretty well covered, going forward we will need to decide if these functionalities should be removed or not from **HeadJS**, to we can concentrate on the points that **HeadJS** handles well: 3-5
 
 If you're like me, and need to support browsers like IE6+, FF2+, and think head.js does a great job emulating responsive design, while letting you plug the odd bugs and quirks of your least favorite browsers...
 

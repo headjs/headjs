@@ -1,2 +1,9 @@
 github.com
 www
+.idea*/
+_Resharper*/
+Web.config
+WebWorkbench.mswwsettings
+headjs.sln
+headjs.v11.suo
+dist/dist.chirp.config

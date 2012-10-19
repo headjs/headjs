@@ -2,31 +2,33 @@
     Head JS     The only script in your <HEAD>
     Copyright   Tero Piirainen (tipiirai)
     License     MIT / http://bit.ly/mit-license
-    Version     0.96
+    Version     0.97a
 
     http://headjs.com
 */
-(function(doc) {
+;(function(win, undefined) {
+    "use strict";
 
-    var head = doc.documentElement,
+    var doc  = win.document,
+        nav  = win.navigator,
+        head = doc.documentElement,
         isHeadReady,
         isDomReady,
         domWaiters = [],
-        queue = [],        // waiters for the "head ready" event
-        handlers = {},     // user functions waiting for events
-        scripts = {},      // loadable scripts in different states
-        isAsync = doc.createElement("script").async === true || "MozAppearance" in doc.documentElement.style || window.opera;
-
+        queue      = [],        // waiters for the "head ready" event
+        handlers   = {},     // user functions waiting for events
+        scripts    = {},      // loadable scripts in different states
+        isAsync    = doc.createElement("script").async === true || "MozAppearance" in doc.documentElement.style || win.opera,
 
     /*** public API ***/
-    var head_var = window.head_conf && head_conf.head || "head",
-         api = window[head_var] = (window[head_var] || function() { api.ready.apply(null, arguments); });
+    head_var = win.head_conf && win.head_conf.head || "head",
+    api      = win[head_var] = (win[head_var] || function() { api.ready.apply(null, arguments); }),
 
     // states
-    var PRELOADED = 1,
-        PRELOADING = 2,
-        LOADING = 3,
-        LOADED = 4;
+    PRELOADED  = 1,
+    PRELOADING = 2,
+    LOADING    = 3,
+    LOADED     = 4;
 
 
     // Method 1: simply load and let browser take care of ordering
@@ -38,7 +40,9 @@
                  fn = args[args.length -1],
                  els = {};
 
-            if (!isFunc(fn)) { fn = null; }
+            if (!isFunc(fn)) {
+                fn = null;
+            }
 
             each(args, function(el, i) {
 
@@ -47,7 +51,9 @@
                     els[el.name] = el;
 
                     load(el, fn && i == args.length -2 ? function() {
-                        if (allLoaded(els)) { one(fn); }
+                        if (allLoaded(els)) {
+                            one(fn);
+                        }
 
                     } : null);
                 }
@@ -71,6 +77,7 @@
                 queue.push(function()  {
                     api.js.apply(null, args);
                 });
+                
                 return api;
             }
 
@@ -103,8 +110,13 @@
 
         // DOM ready check: head.ready(document, function() { });
         if (key == doc) {
-            if (isDomReady) { one(fn);  }
-            else { domWaiters.push(fn); }
+            if (isDomReady) {
+                one(fn);
+            }
+            else {
+                domWaiters.push(fn);
+            }
+            
             return api;
         }
 
@@ -115,7 +127,9 @@
         }    
 
         // make sure arguments are sane
-        if (typeof key != 'string' || !isFunc(fn)) { return api; }
+        if (typeof key != 'string' || !isFunc(fn)) {
+            return api;
+        }
 
         var script = scripts[key];
         
@@ -126,8 +140,13 @@
         }
 
         var arr = handlers[key];
-        if (!arr) { arr = handlers[key] = [fn]; }
-        else { arr.push(fn); }
+        if (!arr) {
+            arr = handlers[key] = [fn];
+        }
+        else {
+            arr.push(fn);
+        }
+        
         return api;
     };
 
@@ -159,9 +178,9 @@
 
 
     function toLabel(url) {
-        var els = url.split("/"),
+        var els   = url.split("/"),
              name = els[els.length -1],
-             i = name.indexOf("?");
+             i    = name.indexOf("?");
 
         return i != -1 ? name.substring(0, i) : name;
     }
@@ -182,7 +201,9 @@
         }
 
         var existing = scripts[script.name];
-        if (existing && existing.url === script.url) { return existing; }
+        if (existing && existing.url === script.url) {
+            return existing;
+        }
 
         scripts[script.name] = script;
         return script;
@@ -212,7 +233,10 @@
         var loaded;
         
         for (var name in els) {
-            if (els.hasOwnProperty(name) && els[name].state != LOADED) { return false; }
+            if (els.hasOwnProperty(name) && els[name].state != LOADED) {
+                return false;
+            }
+            
             loaded = true;
         }
         
@@ -232,7 +256,7 @@
 
         if (script.state === undefined) {
 
-            script.state = PRELOADING;
+            script.state     = PRELOADING;
             script.onpreload = [];
 
             scriptTag({ src: script.url, type: 'cache'}, function()  {
@@ -283,8 +307,8 @@
     function scriptTag(src, callback) {
 
         var s = doc.createElement('script');
-        s.type = 'text/' + (src.type || 'javascript');
-        s.src = src.src || src;
+        s.type  = 'text/' + (src.type || 'javascript');
+        s.src   = src.src || src;
         s.async = false;
 
         s.onreadystatechange = s.onload = function() {
@@ -316,14 +340,14 @@
     }
 
     // W3C
-    if (window.addEventListener) {
+    if (win.addEventListener) {
         doc.addEventListener("DOMContentLoaded", fireReady, false);
 
         // fallback. this is always called
-        window.addEventListener("load", fireReady, false);
+        win.addEventListener("load", fireReady, false);
 
     // IE
-    } else if (window.attachEvent) {
+    } else if (win.attachEvent) {
 
         // for iframes
         doc.attachEvent("onreadystatechange", function()  {
@@ -337,7 +361,7 @@
         var frameElement = 1;
 
         try {
-            frameElement = window.frameElement;
+            frameElement = win.frameElement;
 
         } catch(e) {}
 
@@ -357,7 +381,7 @@
         }
 
         // fallback
-        window.attachEvent("onload", fireReady);
+        win.attachEvent("onload", fireReady);
     }
 
 
@@ -378,9 +402,10 @@
     */
     setTimeout(function() {
         isHeadReady = true;
-        each(queue, function(fn) { fn(); });
+        each(queue, function(fn) {
+            fn();
+        });
 
     }, 300);
 
-})(document);
-
+})(window);

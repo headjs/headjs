@@ -2,34 +2,37 @@
     Head JS     The only script in your <HEAD>
     Copyright   Tero Piirainen (tipiirai)
     License     MIT / http://bit.ly/mit-license
-    Version     0.96
+    Version     0.97a
 
     http://headjs.com
 */
-(function() {
-    /*
-        To add a new test:
+;(function(win, undefined) {
+    "use strict";
 
-        head.feature("video", function() {
-            var tag = document.createElement('video');
-            return !!tag.canPlayType;
-        });
+    var doc = win.document,
+        nav = win.navigator,
 
-        Good place to grab more tests
+        /*
+            To add a new test:
 
-        https://github.com/Modernizr/Modernizr/blob/master/modernizr.js
-    */
+            head.feature("video", function() {
+                var tag = document.createElement('video');
+                return !!tag.canPlayType;
+            });
 
+            Good place to grab more tests
 
-    /* CSS modernizer */
-    var el = document.createElement("i"),
-         style = el.style,
-         prefs = ' -o- -moz- -ms- -webkit- -khtml- '.split(' '),
+            https://github.com/Modernizr/Modernizr/blob/master/modernizr.js
+        */
+
+        /* CSS modernizer */
+         el       = doc.createElement("i"),
+         style    = el.style,
+         prefs    = ' -o- -moz- -ms- -webkit- -khtml- '.split(' '),
          domPrefs = 'Webkit Moz O ms Khtml'.split(' '),
 
-         head_var = window.head_conf && head_conf.head || "head",
-         api = window[head_var];
-
+         head_var = win.head_conf && win.head_conf.head || "head",
+         api      = win[head_var];
 
      // Thanks Paul Irish!
     function testProps(props) {
@@ -43,7 +46,7 @@
 
     function testAll(prop) {
         var camel = prop.charAt(0).toUpperCase() + prop.substr(1),
-             props   = (prop + ' ' + domPrefs.join(camel + ' ') + camel).split(' ');
+            props = (prop + ' ' + domPrefs.join(camel + ' ') + camel).split(' ');
 
         return !!testProps(props);
     }
@@ -52,8 +55,8 @@
 
         gradient: function() {
             var s1 = 'background-image:',
-                 s2 = 'gradient(linear,left top,right bottom,from(#9f9),to(#fff));',
-                 s3 = 'linear-gradient(left top,#eee,#fff);';
+                s2 = 'gradient(linear,left top,right bottom,from(#9f9),to(#fff));',
+                s3 = 'linear-gradient(left top,#eee,#fff);';
 
             style.cssText = (s1 + prefs.join(s2 + s1) + prefs.join(s3 + s1)).slice(0,-s1.length);
             return !!style.backgroundImage;
@@ -109,17 +112,25 @@
         fontface: function() {
             var ua = navigator.userAgent, parsed;
 
-            if (/*@cc_on@if(@_jscript_version>=5)!@end@*/0)
+            if (/*@cc_on@if(@_jscript_version>=5)!@end@*/0) {
                 return true;
-                
-            if (parsed = ua.match(/Chrome\/(\d+\.\d+\.\d+\.\d+)/))
+            }
+
+            if (parsed = ua.match(/Chrome\/(\d+\.\d+\.\d+\.\d+)/)) {
                 return parsed[1] >= '4.0.249.4' || 1 * parsed[1].split(".")[0] > 5;
-            if ((parsed = ua.match(/Safari\/(\d+\.\d+)/)) && !/iPhone/.test(ua))
+            }
+
+            if ((parsed = ua.match(/Safari\/(\d+\.\d+)/)) && !/iPhone/.test(ua)) {
                 return parsed[1] >= '525.13';
-            if (/Opera/.test({}.toString.call(window.opera)))
+            }
+
+            if (/Opera/.test({}.toString.call(window.opera))) {
                 return opera.version() >= '10.00';
-            if (parsed = ua.match(/rv:(\d+\.\d+\.\d+)[^b].*Gecko\//))
+            }
+
+            if (parsed = ua.match(/rv:(\d+\.\d+\.\d+)[^b].*Gecko\//)) {
                 return parsed[1] >= '1.9.1';
+            }
 
             return false;
         }
@@ -135,6 +146,4 @@
     // enable features at once
     api.feature();
 
-})();
-
-
+})(window);
