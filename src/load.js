@@ -36,9 +36,11 @@
 
             var args = arguments,
                  fn = args[args.length -1],
-                 els = {};
+                 els = {},
+                 async = false;
 
             if (!isFunc(fn)) { fn = null; }
+            if (fn && args.length === 2 || !fn && args.length === 1) { async = true; }
 
             each(args, function(el, i) {
 
@@ -49,7 +51,7 @@
                     load(el, fn && i == args.length -2 ? function() {
                         if (allLoaded(els)) { one(fn); }
 
-                    } : null);
+                    } : null, async);
                 }
             });
 
@@ -241,7 +243,7 @@
         }
     }
 
-    function load(script, callback) {
+    function load(script, callback, async) {
 
         if (script.state == LOADED) {
             return callback && callback();
@@ -276,22 +278,22 @@
                     one(fn);
                 });
             }
-        });
+        }, async);
     }
 
 
-    function scriptTag(src, callback) {
+    function scriptTag(src, callback, async) {
 
         var s = doc.createElement('script');
         s.type = 'text/' + (src.type || 'javascript');
         s.src = src.src || src;
-        s.async = false;
+        s.async = (async ? async : false);
 
         s.onreadystatechange = s.onload = function() {
 
             var state = s.readyState;
 
-            if (!callback.done && (!state || /loaded|complete/.test(state))) {
+             if (!callback.done && (!state || (isAsync ? /complete/ : /loaded|complete/).test(state))) {
                 callback.done = true;
                 callback();
             }
