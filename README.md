@@ -31,7 +31,7 @@ Future
 - After that however things will likely change a bit
  - Have a peek here [HeadJS@I-Technology](https://github.com/itechnology/headjs)
  - For example :
-     - Programatically it's very hard to use the current syntax of prefixig things with **no-**. Instead they should be suffixed with **-true/-false**. Like this it is very easy to generate variable on the fly and have them match your HeadJS rules.
+     - Programatically it's very awkward to use the current syntax of prefixing things with **no-**. Instead they should be suffixed with **-true/-false**. Like this it is very easy to generate variables on the fly and have them match your HeadJS rules.
      - Currently screen detection is based on the **outerWidth** of the navigator window, so once you add tabs, scrollbars, sidebars, & toolbars ..you are probably in for a big surprise with your design! Therefore generated classes should instead reflect the actual screen estate availiable: **innerWidth/innerHeight**
      - Right now you only get classes based on **width lt**, but what about **lte, gt, and gte** ? Not to mention **height** ! :)
 
