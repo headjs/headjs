@@ -314,8 +314,10 @@
         s.onreadystatechange = s.onload = function() {
 
             var state = s.readyState;
-
-            if (!callback.done && (!state || /loaded|complete/.test(state))) {
+			var ie10 = (api.browser.ie && api.browser.version >= 10);
+			var loaded = (!state || /loaded/.test(state));
+			var complete = (!state || /complete/.test(state));
+			if (!callback.done && (loaded || complete) && (complete || !ie10)) {
                 callback.done = true;
                 callback();
             }
