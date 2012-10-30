@@ -1,5 +1,6 @@
 github.com
 www
+.git*/
 .idea*/
 _Resharper*/
 Web.config
