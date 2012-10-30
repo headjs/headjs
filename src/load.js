@@ -85,7 +85,7 @@
 
                 // load
                 each(rest, function(el) {
-                    if (!isFunc(el)) {
+                    if (!isFunc(el) && el !=== '') {
                         preload(getScript(el));
                     }
                 });
