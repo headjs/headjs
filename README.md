@@ -23,9 +23,9 @@ This project was never announced. `git push` and it was all viral.
 	  - .index-page -> .page-index
 	- Advanced Configuration  
 	  - Expose a maximum of functionalty through head_conf, so you only get the functionality you actually require
-	    - Activate lt/gt support
-	    - Disable height support
-   	    - Configure custom height/width breakpoints 
+	    - Enable/Disable lt/gt class generation
+	    - Enable/Disable height/width support
+   	    - Configure custom height/width/browser breakpoints 
 	    - ..etc
 	- Remove tests from css3.js and let users "roll their own"
 	- Renaming files
