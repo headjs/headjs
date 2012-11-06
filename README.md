@@ -47,6 +47,7 @@ This project was never announced. `git push` and it was all viral.
   * Like this, those that already depend on HeadJS get no breaking changes.
 * At the same time there will probably be a v2.0 release that uses the above syntax, and be the defacto version for future development.
 	  
+__P.S. 70% of the preliminary work mentioned above is already done :)__
 
 ###v0.97a / 2012-10-20
 
