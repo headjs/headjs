@@ -2,8 +2,14 @@
 
 This project was never announced. `git push` and it was all viral.
 
-* Website: [http://headjs.com](http://headjs.com)
-* Support: [https://github.com/headjs/headjs/issues](https://github.com/headjs/headjs/issues)
+* Website
+  * [http://headjs.com](http://headjs.com)
+* Bugs/Support
+  * [https://github.com/headjs/headjs/issues](https://github.com/headjs/headjs/issues)
+* Find Help
+  * [http://stackoverflow.com](http://stackoverflow.com/questions/tagged/head.js)
+* Vote on Suggestions
+  * [http://headjs.uservoice.com](http://headjs.uservoice.com/forums/182905-headjs-feature-suggestions)
 
 ###RoadMap (v1.0 / v2.0) 2012-11-06
 
@@ -28,6 +34,8 @@ This project was never announced. `git push` and it was all viral.
    	    - Configure custom height/width/browser breakpoints 
 	    - ..etc
 	- Remove tests from css3.js and let users "roll their own"
+      - 80% of css related tests are probably irrevelant anyways
+        - For things like border-radius & the likes everyone uses gracefull degradation with their css anyways ..right ? :)
 	- Renaming files
 	  - head.responsive.js (can be used standalone)
 	    - old core.js with a few additions from css3.js so we can externalise the test suite
