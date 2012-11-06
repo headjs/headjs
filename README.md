@@ -2,13 +2,14 @@
 
 This project was never announced. `git push` and it was all viral.
 
-* Website
+* __WebSite__
   * [http://headjs.com](http://headjs.com)
-* Bugs/Support
+* __Bugs/Support__
   * [https://github.com/headjs/headjs/issues](https://github.com/headjs/headjs/issues)
-* Find Help
+* __Get Community Help__
   * [http://stackoverflow.com](http://stackoverflow.com/questions/tagged/head.js)
-* Vote on Suggestions
+  * _Remember to tag your questions with_: head.js
+* __Vote for Features/Suggestions__
   * [http://headjs.uservoice.com](http://headjs.uservoice.com/forums/182905-headjs-feature-suggestions)
 
 ###RoadMap (v1.0 / v2.0) 2012-11-06
