@@ -19,13 +19,14 @@ This project was never announced. `git push` and it was all viral.
 	  - .no-box-shadow -> .box-shadow-true/false
 		- jQuery(selector).addClass("box-shadow-" + head.features.boxShadow)
 		- class="localStorage-<%= bool.toString().toLower() %>"
-	  - .no-ie, .ie-true/false
+	  - .no-ie -> .ie-true/false
 	  - .index-page -> .page-index
 	- Advanced Configuration  
 	  - Expose a maximum of functionalty through head_conf, so you only get the functionality you actually require
-	  - Activate lt/gt support
-	  - Disable height support
-	  - ..etc
+	    - Activate lt/gt support
+	    - Disable height support
+   	    - Configure custom height/width breakpoints 
+	    - ..etc
 	- Remove tests from css3.js and let users "roll their own"
 	- Renaming files
 	  - head.responsive.js (can be used standalone)
