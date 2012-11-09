@@ -16,7 +16,7 @@ This project was never announced. `git push` and it was all viral.
 ###v0.98 / 2012-11-09
 
 	- Load: Fixed loading bug in IE10
-	- Load: Corrected some issues with loading from inside &lt;head&gt;
+	- Load: Corrected some issues with loading from inside <head>
 	- Load: Rewrite of large parts of code base
 	  - Started to massively document the sourcecode :)
 	- Css3: moved "touch" detection from core to here
