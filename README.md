@@ -12,6 +12,22 @@ This project was never announced. `git push` and it was all viral.
 * __Vote for Features/Suggestions__
   * [http://headjs.uservoice.com](http://headjs.uservoice.com/forums/182905-headjs-feature-suggestions)
 
+
+###v0.98 / 2012-11-09
+
+	- Load: Fixed loading bug in IE10
+	- Load: Corrected some issues with loading from inside &lt;head&gt;
+	- Load: Rewrite of large parts of code base
+	  - Started to massively document the sourcecode :)
+	- Css3: moved "touch" detection from core to here
+	- Css3: added "retina" detection
+	- Css3: replaced "font-face" detection that was using "Conditional Comments" with simplisitc browser version detection
+	- Core: Added gt, gte, lte, eq classes to width detection (lt existed already)
+	- Core: Added gt, gte, lt, lte, eq classes for browser vendor & version detection
+	- By default only lt/gt classes are activated
+		- You can of course configure to your likings via head_conf
+
+
 ###RoadMap (v1.0 / v2.0) 2012-11-06
 
 	- Conditional Loader
