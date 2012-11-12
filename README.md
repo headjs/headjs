@@ -20,16 +20,16 @@ This project was never announced. `git push` and it was all viral.
 	- Load: Rewrite of large parts of code base
 	  - Started to massively document the sourcecode :)
 	- Load: Test Only (css loading)
-	 - You can now load CSS files with head.load("somefile.css")
-	   - Consider this as under testing
-           - head.load is an alias to head.js
+	  - You can now load CSS files with head.load("somefile.css")
+	  - Consider this as under testing
+	  - head.load is an alias to head.js
 	- Css3: moved "touch" detection from core to here
 	- Css3: added "retina" detection
 	- Css3: replaced "font-face" detection that was using "Conditional Comments" with simplisitc browser version detection
 	- Core: Added gt, gte, lte, eq classes to width detection (lt existed already)
 	- Core: Added gt, gte, lt, lte, eq classes for browser vendor & version detection
 	- By default only lt/gt classes are activated
-		- You can of course configure to your likings via head_conf
+	  - You can of course configure to your likings via head_conf
 
 
 ###RoadMap (v1.0 / v2.0) 2012-11-06
