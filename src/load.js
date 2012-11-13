@@ -492,9 +492,8 @@
             // event.type == 'load' && s.readyState = undefined
 
 
-            // IE: i hate you, i hate you, i hate you !
-            // I'm sure there are somekind of internal jokes going on at MS, where they break something and have a laugh while we pull our hair out
-            if (event.type === 'load' || /loaded|complete/.test(s.readyState) && doc.documentMode < 9) {
+            // !doc.documentMode is for IE6/7, IE8+ have documentMode
+            if (event.type === 'load' || (/loaded|complete/.test(s.readyState) && (!doc.documentMode || doc.documentMode < 9))) {
                 // release event listeners               
                 s.onload = s.onreadystatechange = s.onerror = null;
                 // do callback
