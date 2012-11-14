@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>HeadJS</id>
-        <version>0.98</version>
+        <version>0.99</version>
         <title>HeadJS, the only script in your &lt;head&gt;</title>
         <authors>Tero Piirainen,Robert Hoffmann</authors>
         <owners>itechnology</owners>
@@ -16,7 +16,8 @@ HeadJS provides you with:
 
 * Asset Loader
 Load assets when you need them.
-head.load("somefile1.js", "somefile2.css", function() { done(); })
+head.load("file1.js" , "file2.js", function() { done(); })
+head.load("file1.css", "file2.css", function() { done(); })
 
 * JavaScript Organizer
 Defer execution of functions to the bottom of the page.
@@ -47,14 +48,14 @@ Need to support the new HTML5 tags in older browsers ? No problem !
 
 * And more
 ..well, a little bit :-)</description>
-        <summary>Load scripts like images. Use HTML5 and CSS3 safely. Target CSS for different screens, paths, states and browsers. Make it the only script in your HEAD. A concise solution to universal issues.</summary>
+        <summary>Load scripts on demand. Achieve responsive design with CSS that targets different screen reolutions, paths, states and browsers. Make it the only script in your HEAD. A concise solution to universal issues.</summary>
         <releaseNotes />
         <copyright>Tero Piirainen</copyright>
         <language>en-US</language>
-        <tags>javascript html html5 css css3 loader responsive design feature detection</tags>
+        <tags>javascript, html, html5, css, css3, loader, responsive design, media queries, feature detection, dependency loading, mobile, tablet</tags>
     </metadata>
     <files>
-        <file src="..\head.js" target="content\Scripts\head.js" />
-        <file src="..\head.min.js" target="content\Scripts\head.min.js" />
+        <file src="head.js" target="content\Scripts\head.js" />
+        <file src="head.min.js" target="content\Scripts\head.min.js" />
     </files>
 </package>

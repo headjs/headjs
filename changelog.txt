@@ -1,4 +1,18 @@
-﻿0.98
+﻿0.99
+ - Load: Fixed regression in IE6, caused by IE10 fix
+ - Load: CSS loading seems to work in all browsers.
+   - However a few will not trigger the callback. Over 90% do.
+   - Either don't use it, or only load css in situations when you don't need the callback triggered.
+ - Load: Conditional loading with head.test() now in evaluation phase
+   - try it, but don't rely on it yet
+   - head.test(bool, "ok.js", "failed.js", callback)
+ - All: CDN is now availiable thanks to: http://cloudflare.com
+   - Info in download section on main site
+ - Unit Tests
+   - Integrated with main site so that everyone can participate
+   - They have also been hooked up to automatically report stats back to http://browserscope.org
+
+0.98
 - Load: Fixed loading bug in IE10
 - Load: Corrected some issues with loading from inside &lt;head&gt;
 - Load: Rewrite of large parts of code base
@@ -9,7 +23,7 @@
 - Core: Added gt, gte, lte, eq classes to width detection (lt existed already)
 - Core: Added gt, gte, lt, lte, eq classes for browser vendor & version detection
 - By default only lt/gt classes are activated
-	- You can of course configure to your likings via head_conf
+  - You can of course configure to your likings via head_conf
 
 0.97a
 - Updated QUnit &amp; got unit tests running again
