@@ -2,6 +2,16 @@
 
 This project was never announced. `git push` and it was all viral.
 
+##About
+  * _Load scripts and css on demand_
+  * _Achieve responsive design with CSS that targets different screen reolutions, paths, states and browsers_
+  * _Detect various browsers and their features_
+  * _Target HTML5 and CSS3 safely_
+  * __Make it the only script in your HEAD__
+  * __A concise solution to universal problems__
+
+
+##Where
 * __WebSite__
   * [http://headjs.com](http://headjs.com)
 * __Bugs/Support__
@@ -12,6 +22,7 @@ This project was never announced. `git push` and it was all viral.
 * __Vote for Features/Suggestions__
   * [http://headjs.uservoice.com](http://headjs.uservoice.com/forums/182905-headjs-feature-suggestions)
 
+##Updates
 
 ###0.99 / 2012-11-15
 
