@@ -4,7 +4,7 @@
  * Maintainer Robert Hoffmann (itechnology)
  * License    MIT / http://bit.ly/mit-license
  *
- * Version 0.98
+ * Version 0.99
  * http://headjs.com
  */
 ; (function (win, undefined) {
@@ -306,7 +306,7 @@
  * Maintainer Robert Hoffmann (itechnology)
  * License    MIT / http://bit.ly/mit-license
  *
- * Version 0.98
+ * Version 0.99
  * http://headjs.com
  */
 ;(function(win, undefined) {

@@ -13,6 +13,22 @@ This project was never announced. `git push` and it was all viral.
   * [http://headjs.uservoice.com](http://headjs.uservoice.com/forums/182905-headjs-feature-suggestions)
 
 
+###0.99 / soon
+
+	- Load: Fixed regression in IE6, caused by IE10 fix
+	- Load: CSS loading seems to work in all browsers.
+		- However a few will not trigger the callback. Over 90% do.
+		- Either don't use it, or only load css in situations when you don't need the callback triggered.
+	- Load: Conditional loading with head.test() now in evaluation phase
+		- try it, but don't rely on it yet
+		- head.test(bool, "ok.js", "failed.js", callback)
+	- All: CDN is now availiable thanks to: http://cloudflare.com
+		- Info in download section on main site
+	- Unit Tests
+		- Integrated with main site so that everyone can participate
+		- They have also been hooked up to automatically report stats back to http://browserscope.org
+
+
 ###v0.98 / 2012-11-09
 
 	- Load: Fixed loading bug in IE10
