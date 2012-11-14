@@ -1,1 +1,0 @@
-﻿window.test1 = 1;

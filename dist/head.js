@@ -195,12 +195,15 @@
         });
     }
 
-
+    api.router = {};
+    
     // CSS "router"
     each(loc.pathname.split("/"), function (el, i) {
         if (this.length > 2 && this[i + 1] !== undefined) {
             if (i) {
-                pushClass(this.slice(1, i + 1).join("-").toLowerCase() + conf.section);
+                var test = this.slice(1, i + 1).join("-").toLowerCase() + conf.section;
+                console.log(test);
+                pushClass(test);
             }
         } else {
             // pageId
@@ -209,6 +212,7 @@
                 id = id.substring(0, index);
             }
 
+            api.router[conf.page.replace(/[^A-Z]/i, "")] = id.toLowerCase();
             html.id = id.toLowerCase() + conf.page;
 
             // on root?
@@ -342,6 +346,8 @@
                 return true;
             }
         }
+
+        return false;
     }
 
 
@@ -495,9 +501,9 @@
             ///    head.load("http://domain.com/file.js","http://domain.com/file.js", callBack)
             ///    head.load({ label1: "http://domain.com/file.js" }, { label2: "http://domain.com/file.js" }, callBack)
             ///</summary> 
-            var args = arguments,
+            var args      = arguments,
                  callback = args[args.length - 1],
-                 items = {};
+                 items    = {};
 
             if (!isFunction(callback)) {
                 callback = null;
@@ -505,7 +511,7 @@
 
             each(args, function (item, i) {
                 if (item !== callback) {
-                    item = getScript(item);
+                    item             = getScript(item);
                     items[item.name] = item;
 
                     load(item, callback && i === args.length - 2 ? function () {
@@ -535,10 +541,10 @@
                 });
 
                 return api;
-            }
+            }            
 
             // multiple arguments
-            if (next) {
+            if (!!next) {
                 /* Preload with text/cache hack (not good!)
                  * http://blog.getify.com/on-script-loaders/
                  * http://www.nczonline.net/blog/2010/12/21/thoughts-on-script-loaders/
@@ -640,7 +646,7 @@
         // shift arguments
         if (isFunction(key)) {
             callback = key;
-            key = "ALL";
+            key      = "ALL";
         }
 
         // make sure arguments are sane
@@ -725,7 +731,7 @@
         ///<summary>Converts a url to a file label</summary>
         var items = url.split("/"),
              name = items[items.length - 1],
-             i = name.indexOf("?");
+             i    = name.indexOf("?");
 
         return i !== -1 ? name.substring(0, i) : name;
     }
@@ -759,7 +765,7 @@
                 if (!!item[label]) {
                     script = {
                         name: label,
-                        url: item[label]
+                        url : item[label]
                     };
                 }
             }
@@ -767,7 +773,7 @@
         else {
             script = {
                 name: toLabel(item),
-                url: item
+                url : item
             };
         }
 

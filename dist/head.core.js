@@ -195,12 +195,15 @@
         });
     }
 
-
+    api.router = {};
+    
     // CSS "router"
     each(loc.pathname.split("/"), function (el, i) {
         if (this.length > 2 && this[i + 1] !== undefined) {
             if (i) {
-                pushClass(this.slice(1, i + 1).join("-").toLowerCase() + conf.section);
+                var test = this.slice(1, i + 1).join("-").toLowerCase() + conf.section;
+                console.log(test);
+                pushClass(test);
             }
         } else {
             // pageId
@@ -209,6 +212,7 @@
                 id = id.substring(0, index);
             }
 
+            api.router[conf.page.replace(/[^A-Z]/i, "")] = id.toLowerCase();
             html.id = id.toLowerCase() + conf.page;
 
             // on root?
