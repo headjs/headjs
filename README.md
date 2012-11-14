@@ -13,7 +13,7 @@ This project was never announced. `git push` and it was all viral.
   * [http://headjs.uservoice.com](http://headjs.uservoice.com/forums/182905-headjs-feature-suggestions)
 
 
-###0.99 / soon
+###0.99 / 2012-11-15
 
 	- Load: Fixed regression in IE6, caused by IE10 fix
 	- Load: CSS loading seems to work in all browsers.

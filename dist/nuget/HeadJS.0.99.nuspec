@@ -3,7 +3,7 @@
     <metadata>
         <id>HeadJS</id>
         <version>0.99</version>
-        <title>HeadJS, the only script in your &lt;head&gt;</title>
+        <title>HeadJS</title>
         <authors>Tero Piirainen,Robert Hoffmann</authors>
         <owners>itechnology</owners>
         <licenseUrl>http://bit.ly/mit-license</licenseUrl>
@@ -16,7 +16,7 @@ HeadJS provides you with:
 
 * Asset Loader
 Load assets when you need them.
-head.load("file1.js" , "file2.js", function() { done(); })
+head.load("file1.js" , "file2.js" , function() { done(); })
 head.load("file1.css", "file2.css", function() { done(); })
 
 * JavaScript Organizer
@@ -28,27 +28,27 @@ Detect and react to resolutions with simple css classes or js tests that work wi
 .landscape,  .lt-800, .gt-1680, if (head.mobile) { }
 
 * Browser Detection
-Detect browsers &amp; versions, and apply css or js logic to them.
+Detect browsers &amp; their version, and apply css or js logic to them.
 .gt-ie6, .lt-ie10, if (head.browser.ios) { }
 
 * Feature Detection
 Detect browser features like cssreflections, touch-enabled
-.no-cssreflections, .no-touch if (!head.touch) { }
+.no-touch if (!head.touch) { }
 
 * CSS Moderniser
 Detect css support like box-shadow, border-radius
 .no-borderradius, if (!head.borderradius) { }
 
 * CSS Router
-Detect page and section someone is on and target it with specific css.
+Detect which page and section someone is on and target it with specific css.
 .index-page, .register-page, .root-section, .user-section, 
 
-* HTML5 Enabler
+* HTML5 Shim
 Need to support the new HTML5 tags in older browsers ? No problem !
 
 * And more
 ..well, a little bit :-)</description>
-        <summary>Load scripts on demand. Achieve responsive design with CSS that targets different screen reolutions, paths, states and browsers. Make it the only script in your HEAD. A concise solution to universal issues.</summary>
+        <summary>Load scripts and css on demand. Achieve responsive design with CSS that targets different screen resolutions, paths, states and browsers. Detect various browsers and their features. Target HTML5 and CSS3 safely.</summary>
         <releaseNotes />
         <copyright>Tero Piirainen</copyright>
         <language>en-US</language>

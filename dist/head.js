@@ -195,15 +195,12 @@
         });
     }
 
-    api.router = {};
-    
+
     // CSS "router"
     each(loc.pathname.split("/"), function (el, i) {
         if (this.length > 2 && this[i + 1] !== undefined) {
             if (i) {
-                var test = this.slice(1, i + 1).join("-").toLowerCase() + conf.section;
-                console.log(test);
-                pushClass(test);
+                pushClass(this.slice(1, i + 1).join("-").toLowerCase() + conf.section);
             }
         } else {
             // pageId
@@ -212,7 +209,6 @@
                 id = id.substring(0, index);
             }
 
-            api.router[conf.page.replace(/[^A-Z]/i, "")] = id.toLowerCase();
             html.id = id.toLowerCase() + conf.page;
 
             // on root?
@@ -478,7 +474,7 @@
         domWaiters = [],
         queue      = [], // waiters for the "head ready" event
         handlers   = {}, // user functions waiting for events
-        scripts    = {}, // loadable scripts in different states
+        assets     = {}, // loadable items in various states
         isAsync    = "async" in doc.createElement("script") || "MozAppearance" in doc.documentElement.style || win.opera,
         isHeadReady,
         isDomReady,
@@ -511,7 +507,7 @@
 
             each(args, function (item, i) {
                 if (item !== callback) {
-                    item             = getScript(item);
+                    item             = getAsset(item);
                     items[item.name] = item;
 
                     load(item, callback && i === args.length - 2 ? function () {
@@ -548,24 +544,22 @@
                 /* Preload with text/cache hack (not good!)
                  * http://blog.getify.com/on-script-loaders/
                  * http://www.nczonline.net/blog/2010/12/21/thoughts-on-script-loaders/
-                 * If caching is not configured correctly on the server, then scripts will load twice !
-                 **************************************************************************************/
+                 * If caching is not configured correctly on the server, then items could load twice !
+                 *************************************************************************************/
                 each(rest, function (item) {
                     if (!isFunction(item)) {
-                        preLoad(getScript(item));
+                        preLoad(getAsset(item));
                     }
                 });
 
                 // execute
-                load(getScript(args[0]), isFunction(next) ? next : function () {
+                load(getAsset(args[0]), isFunction(next) ? next : function () {
                     api.load.apply(null, rest);
-                });
-
-
-                // single script
+                });                
             }
             else {
-                load(getScript(args[0]));
+                // single item
+                load(getAsset(args[0]));
             }
 
             return api;
@@ -655,10 +649,10 @@
         }
 
         // This can also be called when we trigger events based on filenames & labels
-        var script = scripts[key];
+        var asset = assets[key];
 
-        // script already loaded --> execute and return
-        if (script && script.state === LOADED || key === 'ALL' && allLoaded() && isDomReady) {
+        // item already loaded --> execute and return
+        if (asset && asset.state === LOADED || key === 'ALL' && allLoaded() && isDomReady) {
             one(callback);
             return api;
         }
@@ -750,20 +744,21 @@
         callback._done = 1;
     }
 
-    function getScript(item) {
+    function getAsset(item) {
         ///<summary>
-        /// Gets a script in the form of
+        /// Assets are in the form of
         /// { 
-        ///     name: label,
-        ///     url : url
+        ///     name : label,
+        ///     url  : url,
+        ///     state: state
         /// }
         ///</summary>
-        var script = {};
+        var asset = {};
 
         if (typeof item === 'object') {
             for (var label in item) {
                 if (!!item[label]) {
-                    script = {
+                    asset = {
                         name: label,
                         url : item[label]
                     };
@@ -771,24 +766,24 @@
             }
         }
         else {
-            script = {
+            asset = {
                 name: toLabel(item),
                 url : item
             };
         }
 
         // is the item already existant
-        var existing = scripts[script.name];
-        if (existing && existing.url === script.url) {
+        var existing = assets[asset.name];
+        if (existing && existing.url === asset.url) {
             return existing;
         }
 
-        scripts[script.name] = script;
-        return script;
+        assets[asset.name] = asset;
+        return asset;
     }
 
     function allLoaded(items) {
-        items = items || scripts;
+        items = items || assets;
 
         for (var name in items) {
             if (items.hasOwnProperty(name) && items[name].state !== LOADED) {
@@ -800,60 +795,60 @@
     }
 
 
-    function onPreload(script) {
-        script.state = PRELOADED;
+    function onPreload(asset) {
+        asset.state = PRELOADED;
 
-        each(script.onpreload, function (afterPreload) {
+        each(asset.onpreload, function (afterPreload) {
             afterPreload.call();
         });
     }
 
-    function preLoad(script, callback) {
-        if (script.state === undefined) {
+    function preLoad(asset, callback) {
+        if (asset.state === undefined) {
 
-            script.state = PRELOADING;
-            script.onpreload = [];
+            asset.state     = PRELOADING;
+            asset.onpreload = [];
 
-            scriptTag({ src: script.url, type: 'cache' }, function () {
-                onPreload(script);
+            loadAsset({ url: asset.url, type: 'cache' }, function () {
+                onPreload(asset);
             });
         }
     }
 
-    function load(script, callback) {
+    function load(asset, callback) {
         ///<summary>Used with normal loading logic</summary>
         callback = callback || noop;
 
-        if (script.state === LOADED) {
+        if (asset.state === LOADED) {
             callback();
             return;
         }
 
         // INFO: why would we trigger a ready event when its not really loaded yet ?
-        if (script.state === LOADING) {
-            api.ready(script.name, callback);
+        if (asset.state === LOADING) {
+            api.ready(asset.name, callback);
             return;
         }
 
-        if (script.state === PRELOADING) {
-            script.onpreload.push(function () {
-                load(script, callback);
+        if (asset.state === PRELOADING) {
+            asset.onpreload.push(function () {
+                load(asset, callback);
             });
             return;
         }
 
-        script.state = LOADING;
-
-        scriptTag(script.url, function () {
-            script.state = LOADED;
+        asset.state = LOADING;
+        
+        loadAsset(asset, function () {
+            asset.state = LOADED;
             callback();
 
-            // handlers for this script
-            each(handlers[script.name], function (fn) {
+            // handlers for this asset
+            each(handlers[asset.name], function (fn) {
                 one(fn);
             });
 
-            // dom is ready & no scripts are queued for loading
+            // dom is ready & no assets are queued for loading
             // INFO: shouldn't we be doing the same test above ?
             if (isDomReady && allLoaded()) {
                 each(handlers.ALL, function (fn) {
@@ -862,32 +857,27 @@
             }
         });
     }
-    
-    function scriptTag(src, callback) {
-        var s;
-
-        if (/\.css[^\.]*$/.test(src)) {
-            s      = doc.createElement('link');
-            s.type = 'text/' + (src.type || 'css');
-            s.rel  = 'stylesheet';
-            s.href = src.src || src;
-        }
-        else {
-            s      = doc.createElement('script');
-            s.type = 'text/' + (src.type || 'javascript');
-            s.src  = src.src || src;
-        }
-
-        loadAsset(s, callback);
-    }
 
     /* Parts inspired from: https://github.com/cujojs/curl
     ******************************************************/
-    function loadAsset(s, callback) {
+    function loadAsset(asset, callback) {
         callback = callback || noop;
 
-        s.onload  = s.onreadystatechange = process;
-        s.onerror = error;
+        var ele;
+        if (/\.css[^\.]*$/.test(asset.url)) {
+            ele      = doc.createElement('link');
+            ele.type = 'text/' + (asset.type || 'css');
+            ele.rel  = 'stylesheet';
+            ele.href = asset.url;
+        }
+        else {
+            ele      = doc.createElement('script');
+            ele.type = 'text/' + (asset.type || 'javascript');
+            ele.src  = asset.url;
+        }
+
+        ele.onload  = ele.onreadystatechange = process;
+        ele.onerror = error;
 
         /* Good read, but doesn't give much hope !
          * http://blog.getify.com/on-script-loaders/
@@ -896,16 +886,18 @@
          */
 
         // ASYNC: load in parellel and execute as soon as possible
-        s.async = false;
+        ele.async = false;
         // DEFER: load in parallel but maintain execution order
-        s.defer = false;
+        ele.defer = false;
 
         function error(event) {
+            event = event || win.event;
+            
             // need some more detailed error handling here
 
             // release event listeners
-            s.onload = s.onreadystatechange = s.onerror = null;
-
+            ele.onload = ele.onreadystatechange = ele.onerror = null;
+                        
             // do callback
             callback();
         }
@@ -955,26 +947,26 @@
 
             // event.type == 'load' && s.readyState = undefined
 
-
             // !doc.documentMode is for IE6/7, IE8+ have documentMode
-            if (event.type === 'load' || (/loaded|complete/.test(s.readyState) && (!doc.documentMode || doc.documentMode < 9))) {
+            if (event.type === 'load' || (/loaded|complete/.test(ele.readyState) && (!doc.documentMode || doc.documentMode < 9))) {
                 // release event listeners               
-                s.onload = s.onreadystatechange = s.onerror = null;
+                ele.onload = ele.onreadystatechange = ele.onerror = null;
+
                 // do callback
                 callback();
             }
 
             // emulates error on browsers that don't create an exception
             // INFO: timeout not clearing ..why ?
-            //s.timeout = win.setTimeout(function () {
+            //asset.timeout = win.setTimeout(function () {
             //    error({ type: "timeout" });
-            //}, 7000);
+            //}, 3000);
         }
 
         // use insertBefore to keep IE from throwing Operation Aborted (thx Bryan Forbes!)
         var head = doc['head'] || doc.getElementsByTagName('head')[0];
         // but insert at end of head, because otherwise if it is a stylesheet, it will not ovverride values
-        head.insertBefore(s, head.lastChild);
+        head.insertBefore(ele, head.lastChild);
     }
 
     /* Mix of stuff from jQuery & IEContentLoaded
@@ -983,7 +975,7 @@
     function domReady() {
         // Make sure body exists, at least, in case IE gets a little overzealous (jQuery ticket #5443).
         if (!doc.body) {
-            // let's not get nasty by setting a timeout too small.. (loop mania guaranteed if scripts are queued)
+            // let's not get nasty by setting a timeout too small.. (loop mania guaranteed if assets are queued)
             win.clearTimeout(api.readyTimeout);
             api.readyTimeout = win.setTimeout(domReady, 50);
             return;
@@ -1052,7 +1044,7 @@
                         // http://javascript.nwbox.com/IEContentLoaded/
                         top.doScroll("left");
                     } catch (error) {
-                        // let's not get nasty by setting a timeout too small.. (loop mania guaranteed if scripts are queued)
+                        // let's not get nasty by setting a timeout too small.. (loop mania guaranteed if assets are queued)
                         win.clearTimeout(api.readyTimeout);
                         api.readyTimeout = win.setTimeout(doScrollCheck, 50);
                         return;
@@ -1066,8 +1058,8 @@
     }
 
     /*
-        We wait for 300 ms before script loading starts. for some reason this is needed
-        to make sure scripts are cached. Not sure why this happens yet. A case study:
+        We wait for 300 ms before asset loading starts. for some reason this is needed
+        to make sure assets are cached. Not sure why this happens yet. A case study:
 
         https://github.com/headjs/headjs/issues/closed#issue/83
     */
