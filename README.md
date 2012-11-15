@@ -4,7 +4,7 @@ This project was never announced. `git push` and it was all viral.
 
 ##About
   * _Load scripts and css on demand_
-  * _Achieve responsive design with CSS that targets different screen reolutions, paths, states and browsers_
+  * _Achieve responsive design with CSS that targets different screen resolutions, paths, states and browsers_
   * _Detect various browsers and their features_
   * _Target HTML5 and CSS3 safely_
   * __Make it the only script in your HEAD__
@@ -30,6 +30,7 @@ This project was never announced. `git push` and it was all viral.
 	- Load: CSS loading seems to work in all browsers.
 		- However a few will not trigger the callback. Over 90% do.
 		- For now only load css in situations where you don't need the callback triggered.
+		- head.load("file1.css", "file2.css")
 	- Load: Conditional loading with head.test() now in evaluation phase
 		- try it, but don't rely on it yet
 		- head.test(bool, "ok.js", "failed.js", callback)
