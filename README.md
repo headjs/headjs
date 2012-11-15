@@ -29,7 +29,7 @@ This project was never announced. `git push` and it was all viral.
 	- Load: Fixed regression in IE6, caused by IE10 fix
 	- Load: CSS loading seems to work in all browsers.
 		- However a few will not trigger the callback. Over 90% do.
-		- Either don't use it, or only load css in situations when you don't need the callback triggered.
+		- For now only load css in situations where you don't need the callback triggered.
 	- Load: Conditional loading with head.test() now in evaluation phase
 		- try it, but don't rely on it yet
 		- head.test(bool, "ok.js", "failed.js", callback)
