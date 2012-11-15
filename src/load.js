@@ -487,8 +487,14 @@
 
             // event.type == 'load' && s.readyState = undefined
 
+<<<<<<< HEAD
             // !doc.documentMode is for IE6/7, IE8+ have documentMode
             if (event.type === 'load' || (/loaded|complete/.test(ele.readyState) && (!doc.documentMode || doc.documentMode < 9))) {
+=======
+
+            // !doc.documentMode is for IE6/7, IE8+ have documentMode
+            if (event.type === 'load' || (/loaded|complete/.test(s.readyState) && (!doc.documentMode || doc.documentMode < 9))) {
+>>>>>>> a0d74928923f92d86696187705f70f36813f56ec
                 // release event listeners               
                 ele.onload = ele.onreadystatechange = ele.onerror = null;
 
