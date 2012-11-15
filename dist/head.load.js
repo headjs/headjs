@@ -487,6 +487,7 @@
 
             // event.type == 'load' && s.readyState = undefined
 
+
             // !doc.documentMode is for IE6/7, IE8+ have documentMode
             if (event.type === 'load' || (/loaded|complete/.test(ele.readyState) && (!doc.documentMode || doc.documentMode < 9))) {
                 // release event listeners               
