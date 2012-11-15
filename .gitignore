@@ -1,0 +1,14 @@
+.idea*/
+_ReSharper.headjs*/
+dist/dist.chirp.config
+dist/nuget/dist.chirp.config
+dist/nuget/head.js
+dist/nuget/head.min.js
+dist/nuget/HeadJS.0.99.nupkg
+headjs.sln
+headjs.v11.suo
+Web.config
+WebWorkbench.mswwsettings
+test/unit/0.96*/
+test/unit/0.97a*/
+test/debug.html
