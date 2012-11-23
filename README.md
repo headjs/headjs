@@ -14,6 +14,8 @@ This project was never announced. `git push` and it was all viral.
 ##Where
 * __WebSite__
   * [http://headjs.com](http://headjs.com)
+* __Blog/Dev Updates__
+  * [http://www.i-technology.net](http://www.i-technology.net)
 * __Bugs/Support__
   * [https://github.com/headjs/headjs/issues](https://github.com/headjs/headjs/issues)
 * __Get Community Help__
