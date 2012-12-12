@@ -9,7 +9,7 @@
     <meta name="description" content="Load scripts and css on demand. Achieve responsive design with CSS that targets different screen resolutions, paths, states and browsers. Detect various browsers and their features. Target HTML5 and CSS3 safely." />
     <meta name="author" content="Tero Piirainen">
     
-    <!-- include the stylesheet after headjs -->    
+    <!-- include the stylesheet after headjs -->
     <link rel="stylesheet" type="text/css" href="media/css/html5.min.css" />
     <link rel="stylesheet" href="media/css/style.min.css?v=0.3">
     <link rel="icon" type="image/gif" href="media/img/favicon.gif?v=1">
@@ -32,7 +32,7 @@
 <body>
     <a href="http://github.com/headjs/headjs" onclick="trackPageView('github.com')">
         <img id="fork" alt="Fork me on GitHub" src="media/img/forkme.png">
-    </a>    
+    </a>
     <div id="wrap">
         <nav>
             <a href="#highlights">highlights</a> &bull;<a href="#theory">theory</a> &bull;<a href="#usage">usage</a> &bull;<a href="#api">api</a> &bull;<a href="#download">download <strong>(v 0.99)</strong></a>
@@ -45,15 +45,15 @@
                 Load scripts and css on demand.
                 Achieve responsive design with CSS that targets different screen reolutions, paths, states and browsers.
                 Detect various browsers and their features.
-                Target HTML5 and CSS3 safely.                               
+                Target HTML5 and CSS3 safely.
                 <br />
                 Make it the only script in your HEAD.
                 A concise solution to universal issues.
-                &nbsp; <a href="#theory">&laquo; the theory &raquo;</a>
+                  <a href="#theory">&laquo; the theory &raquo;</a>
             </p>
         </div>
         <div id="content" class="clear">
-
+            
             <h1>Highlights</h1>
             <section id="highlights">
                 
@@ -91,8 +91,8 @@
                         </figure>
                     </p>
                 </article>
-                     
-
+                
+                
                 <article>
                     <h2>Responsive Design / Media Queries</h2>
                     <p>
@@ -153,7 +153,7 @@
                     </p>
                 </article>
                 
-
+                
                 <article>
                     <h2>Browser Detection / Graceful Degradation</h2>
                     <p>
@@ -166,9 +166,9 @@
                             <figcaption><span class="caps">CSS</span></figcaption>
                         </figure>
                     </p>
-                    <p>It&#8217;s generally wiser to use feature detection <span class="caps">IE</span> is a feature in&nbsp;itself.</p>
+                    <p>It&#8217;s generally wiser to use feature detection <span class="caps">IE</span> is a feature in itself.</p>
                 </article>
-
+                
                 
                 <article>
                     <h2>Dynamic <span class="caps">CSS</span></h2>
@@ -182,9 +182,9 @@
                             <figcaption><span class="caps">HTML</span></figcaption>
                         </figure>
                     </p>
-                    <p>Whenever you call <code>head.feature()</code> your <span class="caps">CSS</span> rules will&nbsp;follow.</p>
+                    <p>Whenever you call <code>head.feature()</code> your <span class="caps">CSS</span> rules will follow.</p>
                 </article>
-
+                
                 <article>
                     <h2>CSS3 Feature Detection</h2>
                     <p>
@@ -199,10 +199,10 @@
                     </p>
                     <p>
                         The focus is on <em><span class="caps">CSS3</span> styling</em> and it&#8217;s easy to add more tests. Minimalism is
-                        a must. It&#8217;s your <span class="caps">HEAD</span>&nbsp;again.
+                        a must. It&#8217;s your <span class="caps">HEAD</span> again.
                     </p>
                 </article>
-
+                
                 <article>
                     <h2>JavaScript Feature Detection</h2>
                     <p>
@@ -231,34 +231,34 @@
                     </p>
                 </article>
             </section>
-
+            
             <h1>Theory</h1>
-            <section id="theory">                          
+            <section id="theory">
                 <h2>Script Loader</h2>
                 <p>
                     With Head <span class="caps">JS</span> your scripts load like images - completely separated from the
                     page rendering process. The page is ready sooner. Always. This is guaranteed
                     even with a single combined JavaScript file. See it&nbsp;yourself:
                 </p>
-                <p><a href="test/script.html" target="_blank" onclick="trackPageView('test/script.html')">Sample page with 5 <span class="caps">SCRIPT</span> <span class="caps">SRC</span>&nbsp;tags</a></p>
-                <p><a href="test/headjs.html" target="_blank" onclick="trackPageView('test/headjs.html')">Same scripts loaded with Head&nbsp;<span class="caps">JS</span></a></p>
+                <p><a href="test/script.html" target="_blank" onclick="trackPageView('test/script.html')">Sample page with 5 <span class="caps">SCRIPT</span> <span class="caps">SRC</span> tags</a></p>
+                <p><a href="test/headjs.html" target="_blank" onclick="trackPageView('test/headjs.html')">Same scripts loaded with Head <span class="caps">JS</span></a></p>
                 <p>
                     Non-blocking loading is the key to fast pages. Moreover Head <span class="caps">JS</span> loads scripts
                     in <em>parallel</em> no matter how many of them and what the browser is. The speed
                     difference can be dramatic especially on the initial page load when the
-                    scripts are not yet in cache. It&#8217;s your crucial first&nbsp;impression.
+                    scripts are not yet in cache. It&#8217;s your crucial first impression.
                 </p>
                 <p>
                     Pages no longer &#8220;hang&#8221; and there is less or zero &#8220;flashing&#8221; between pages.
                     User only cares when the page is ready. Unfortunately current networking tools
                     don&#8217;t highlight this crucial point. They focus on the overall loading of
-                    assets&nbsp;instead.
+                    assets instead.
                 </p>
                 <p>
                     Head <span class="caps">JS</span> can make your pages load 100% or even 400% faster. It can make the
-                    largest impact on client side&nbsp;optimization.
+                    largest impact on client side optimization.
                 </p>
-                <h2><span class="caps">SCRIPT</span>&nbsp;<span class="caps">SRC</span></h2>
+                <h2><span class="caps">SCRIPT</span> <span class="caps">SRC</span></h2>
                 <p>
                     This is from Apple.com&#8217;s <span class="caps">HEAD</span>:
                     <figure class="code">
@@ -278,7 +278,7 @@
                 </p>
                 <p>
                     With older generation browsers the scripts will be loaded sequentially. Here
-                    is a screenshot from Firefox&nbsp;3.0.
+                    is a screenshot from Firefox 3.0.
                 </p>
                 <p>
                     <img alt="sequential downloading of scripts" src="media/img/serial-load.gif" />
@@ -286,28 +286,28 @@
                 <p>
                     It&#8217;s easy to understand that this is poison for performance. The single best
                     optimization technique for script loading is to use a non-blocking and
-                    paraller script loader such as Head&nbsp;<span class="caps">JS</span>.
+                    paraller script loader such as Head <span class="caps">JS</span>.
                 </p>
-                <h2>Combining&nbsp;scripts</h2>
-                <p>There is a common misbelief that a single combined script performs best.&nbsp;Wrong:</p>
+                <h2>Combining scripts</h2>
+                <p>There is a common misbelief that a single combined script performs best. Wrong:</p>
                 <ul>
                     <li>
                         <p>
                             latest browsers and Head <span class="caps">JS</span> can load scripts in parallel. loading 3 parts
-                            in parallel instead of as a single chunk is usually&nbsp;faster.
+                            in parallel instead of as a single chunk is usually faster.
                         </p>
                     </li>
                     <li>
                         <p>
                             if an individual file is changed the whole combination changes and you
                             lose the benefits of caching. It&#8217;s better to combine only the stable files
-                            that doesn&#8217;t change&nbsp;often.
+                            that doesn&#8217;t change often.
                         </p>
                     </li>
                     <li>
                         <p>
                             many popular libraries are hosted on <span class="caps">CDN</span>. you should take the advantage of
-                            it instead of hosting&nbsp;yourself.
+                            it instead of hosting yourself.
                         </p>
                     </li>
                     <li>
@@ -315,49 +315,49 @@
                             <a href="http://www.phpied.com/iphone-caching/">iPhone 3.x</a> cannot cache files
                             larger than <strong>15kb</strong> and in iPhone 4 the limit is <strong>25kb</strong>. And this is
                             the size before gzipping. if you care about iPhones you should respect
-                            these&nbsp;limits.
+                            these limits.
                         </p>
                     </li>
                 </ul>
                 <p>
                     With Head <span class="caps">JS</span> the file amount is not <em>as</em> critical as it is with <span class="caps">SCRIPT</span> <span class="caps">SRC</span>
                     because page rendering is not blocked. Combining scripts is an important
-                    optimization method but you can go too far with&nbsp;it.
+                    optimization method but you can go too far with it.
                 </p>
-                <h2>Page styling and&nbsp;<span class="caps">CSS</span></h2>
+                <h2>Page styling and <span class="caps">CSS</span></h2>
                 <p>
                     Stylesheets needs to be
                     <a href="http://developer.yahoo.com/performance/rules.html#css_top">on top</a>. An
                     included script in the <span class="caps">HEAD</span> is the only place where a script is executed
                     before the stylesheets are loaded and where it can give a helping hand for the
                     <span class="caps">CSS</span> developer. Head <span class="caps">JS</span> takes this important role seriously and gives you
-                    following&nbsp;possibilities:
+                    following possibilities:
                 </p>
                 <ul>
                     <li>use the latest <span class="caps">CSS3</span> techniques and provide alternate <span class="caps">CSS</span> for <span class="caps">IE</span> and other
-                        old school&nbsp;browsers</li>
-                    <li>safely use <span class="caps">HTML5</span> tags even with&nbsp;<span class="caps">IE</span></li>
-                    <li>target <span class="caps">CSS</span> for specific screen widths, browsers and&nbsp;URLs</li>
+                        old school browsers</li>
+                    <li>safely use <span class="caps">HTML5</span> tags even with <span class="caps">IE</span></li>
+                    <li>target <span class="caps">CSS</span> for specific screen widths, browsers and URLs</li>
                     <li>style your pages differently depending on the application state, such as
-                        whether user is logged or&nbsp;not.</li>
+                        whether user is logged or not.</li>
                 </ul>
                 <p>
                     Essentially Head <span class="caps">JS</span> adds <span class="caps">CSS</span> class names to the <code>&lt;html&gt;</code> element. If you
                     attempt to do this in a script that is loaded with Head <span class="caps">JS</span> you can see a
                     &#8220;Flash of Unstyled Content&#8221; (<span class="caps">FOUC</span>) effect: the page is first rendered without
                     the to-be-loaded style definitions and then re-rendered when the scripts are
-                    executed. This is why the <span class="caps">CSS</span> feature detection is a core part of Head&nbsp;<span class="caps">JS</span>.
+                    executed. This is why the <span class="caps">CSS</span> feature detection is a core part of Head <span class="caps">JS</span>.
                 </p>
                 <p>
                     A script in <span class="caps">HEAD</span> blocks so it must be small. This is the essence of Head <span class="caps">JS</span>.
                     It weights only 2.5 kb when minified and gzipped. It&#8217;s preferred to load the
                     file from a <span class="caps">CDN</span>. Google: I&#8217;m <a href="http://code.google.com/p/google-ajax-apis/issues/detail?id=548">staring at
                                                                                      You</a>! (please
-                    give it a&nbsp;star)
+                    give it a star)
                 </p>
-                <p><em>Note: As crazy as it sounds <span class="caps">FUBC</span> and <span class="caps">FOUC</span> are not my&nbsp;acronyms.</em></p>
+                <p><em>Note: As crazy as it sounds <span class="caps">FUBC</span> and <span class="caps">FOUC</span> are not my acronyms.</em></p>
             </section>
-
+            
             <h1>Usage</h1>
             <section id="usage">
                 <h2>Script loading and execution</h2>
@@ -371,17 +371,17 @@
                         <figcaption>JavaScript</figcaption>
                     </figure>
                 </p>
-                <h3><span class="caps">DOM</span>&nbsp;Ready</h3>
+                <h3><span class="caps">DOM</span> Ready</h3>
                 <p>
                     With <code>head.js()</code> call your page can be ready before your scripts. You need to
-                    prepare for&nbsp;that
+                    prepare for that
                 </p>
                 <ul>
                     <li>
                         <p>
                             The &#8220;<span class="caps">DOM</span> ready&#8221; event such as <code>$(document).ready()</code> is already fired when
                                 the scripts arrive. If the loaded scripts depend on that event make sure
-                            your library can handle this. jQuery 1.4+&nbsp;works.
+                            your library can handle this. jQuery 1.4+ works.
                         </p>
                     </li>
                     <li>
@@ -389,19 +389,19 @@
                             If your scripts modify the page you can see a &#8220;flash of unbehaviored
                             content&#8221; effect (<span class="caps">FUBC</span>): a quick glimpse of unmodified <span class="caps">HTML</span> before the
                             loaded scripts act on it. You can avoid this by initially hiding the
-                            modifiable elements before your scripts make them visible and do their&nbsp;job.
+                            modifiable elements before your scripts make them visible and do their job.
                         </p>
                     </li>
                     <li>
                         <p>
                             <code>document.write()</code> statements are not supported since it&#8217;s hard or
                             impossible to know where to write to. It&#8217;s a bad programming habit anyway
-                            so it&#8217;s likely that Head <span class="caps">JS</span> will never support&nbsp;this.
+                            so it&#8217;s likely that Head <span class="caps">JS</span> will never support this.
                         </p>
                     </li>
                 </ul>
                 <h3>Enable Caching</h3>
-                <p>Make sure that the files loaded with head.js can be cached. For&nbsp;example:</p>
+                <p>Make sure that the files loaded with head.js can be cached. For example:</p>
                 <p>
                     <img alt="file caching with future expiration header" src="media/img/expires-header.gif" />
                 </p>
@@ -409,14 +409,14 @@
                     This Google Analytics script will be served from browser&#8217;s cache after the
                     initial load. A proper max-age header configuration on the web server does the
                     trick. If you care about performance this is a good habit for every JavaScript
-                    file. Not only with&nbsp;head.js.
+                    file. Not only with head.js.
                 </p>
                 <p>
                     Internally Head <span class="caps">JS</span> uses browser&#8217;s cache to preload scripts before they are
                     executed. This trick is used on Chrome, Safari and <span class="caps">IE</span>. Without caching enabled
                     a file will be <em>loaded twice</em> on the initial load. There are no issues on
                     Firefox and Opera because they execute files on the order they are
-                    programmatically inserted on the&nbsp;page.
+                    programmatically inserted on the page.
                 </p>
                 
                 <article>
@@ -454,7 +454,7 @@
                         </figure>
                     </p>
                 </article>
-
+                
                 <article>
                     <h2>Labeling Scripts</h2>
                     <p>
@@ -469,11 +469,11 @@
                     </p>
                     <p>
                         If label is not given then the file name without the path is used as the key.
-                        On the jQuery library above this would be just&nbsp;&#8220;jquery.min.js&#8221;.
+                        On the jQuery library above this would be just &#8220;jquery.min.js&#8221;.
                     </p>
                 </article>
                 
-
+                
                 <article>
                     <h2>Responsive Design / Media Queries</h2>
                     <p>
@@ -490,16 +490,16 @@
                         Today most sites are optimized for <strong>1024px</strong> but with Head <span class="caps">JS</span> you can safely
                         optimize for larger screens. Start by designing to the largest screen and then
                         add <span class="caps">CSS</span> rules for smaller ones. You can freely decide the sizes you optimize
-                        for and the amount of them. By default Head <span class="caps">JS</span> watches following screen&nbsp;widths:
+                        for and the amount of them. By default Head <span class="caps">JS</span> watches following screen widths:
                     </p>
-                    <p><strong>320, 480, 640, 768, 800, 1024, 1280, 1440, 1680,&nbsp;1920</strong></p>
+                    <p><strong>320, 480, 640, 768, 800, 1024, 1280, 1440, 1680, 1920</strong></p>
                     <p>
                         These are typical sizes for mobile phones, tablets and <span class="caps">PC</span> monitors. Here are
-                        sizes for Apple&nbsp;devices:
+                        sizes for Apple devices:
                     </p>
-                    <p>iPhone3: <strong>480 x&nbsp;320</strong></p>
-                    <p>iPhone4: <strong>960 x&nbsp;640</strong></p>
-                    <p>iPad:  <strong>1024 x&nbsp;768</strong></p>
+                    <p>iPhone3: <strong>480 x 320</strong></p>
+                    <p>iPhone4: <strong>960 x 640</strong></p>
+                    <p>iPad: <strong>1024 x 768</strong></p>
                     <p>screens: <strong>800+</strong></p>
                     <p>
                         You can provide your own set of screen widths with head_conf variable:
@@ -511,7 +511,7 @@
                             <figcaption>JavaScript</figcaption>
                         </figure>
                     </p>
-                    <p>If you resize the browser window your <span class="caps">CSS</span> rules will be dynamically&nbsp;applied.</p>
+                    <p>If you resize the browser window your <span class="caps">CSS</span> rules will be dynamically applied.</p>
                     
                     <h3>
                         <strong>You can also specify what type of detections you want to use:</strong>
@@ -520,14 +520,14 @@
                         <figure class="code">
                             <div class="highlight">
                                 <pre>
-var head_conf = screensCss: {
-                                "gt" : true,
-                                "gte": false,
-                                "lt" : true,
-                                "lte": false,
-                                "eq" : false
-};
-</pre>
+                                    var head_conf = screensCss: {
+                                        "gt" : true,
+                                        "gte": false,
+                                        "lt" : true,
+                                        "lte": false,
+                                        "eq" : false
+                                    };
+                                </pre>
                             </div>
                             <br />
                             <figcaption>JavaScript</figcaption>
@@ -553,7 +553,7 @@ var head_conf = screensCss: {
                         representing the page. The deeper your <span class="caps">URL</span> the more classes you&#8217;ll get An
                         empty page is &#8220;#index-page&#8221; and the site root is &#8220;.root-section&#8221;. <span class="caps">NOTE</span>: If you
                         have an existing id assigned for the <span class="caps">HTML</span> element it will be <em>overwritten</em>. On
-                        this case you can place the id attribute for the <span class="caps">BODY</span>&nbsp;tag.
+                        this case you can place the id attribute for the <span class="caps">BODY</span> tag.
                     </p>
                     <p>
                         You can change the these suffixes with head_conf variable.
@@ -593,24 +593,24 @@ var head_conf = screensCss: {
                     </p>
                     <p>
                         On everyday <span class="caps">CSS</span> work you assume that a feature exists and code your <span class="caps">CSS</span>
-                        accordingly and you later add support for older browsers with the aid of &#8220;no-&#8220;&nbsp;classes.
+                        accordingly and you later add support for older browsers with the aid of &#8220;no-&#8220; classes.
                     </p>
-                
-
-                    <h3><span class="caps">CSS3</span> property&nbsp;list</h3>
-                    <p>Natively detected <span class="caps">CSS3</span>&nbsp;properties</p>
+                    
+                    
+                    <h3><span class="caps">CSS3</span> property list</h3>
+                    <p>Natively detected <span class="caps">CSS3</span> properties</p>
                     <ul>
-                        <li><a href="http://www.css3.info/preview/border-image/">borderimage</a> define an image to be used instead of the normal border of an&nbsp;element</li>
-                        <li><a href="http://www.css3.info/preview/border-radius/">borderradius</a> support for rounded&nbsp;borders</li>
-                        <li><a href="http://www.css3.info/preview/box-shadow/">boxshadow</a> a simple shadow for a&nbsp;box</li>
-                        <li><a href="http://webkit.org/blog/182/css-reflections/">cssreflections</a> a reflection effect for an&nbsp;object</li>
-                        <li><a href="rotate or skew boxes">csstransforms</a> ability to&nbsp;scale</li>
-                        <li><a href="https://developer.mozilla.org/en/CSS/CSS_transitions">csstransitions</a> ability to animate changes to <span class="caps">CSS</span>&nbsp;properties</li>
-                        <li><a href="http://code.google.com/webfonts">fontface</a> ability to use custom&nbsp;fonts</li>
-                        <li><a href="http://www.css3.info/preview/multiple-backgrounds/">multiplebgs</a> ability to define multiple background properties for a&nbsp;box</li>
-                        <li><a href="http://www.css3.info/preview/opacity/">opacity</a> transparency&nbsp;support</li>
-                        <li><a href="http://www.css3.info/preview/rgba/">rgba</a> allows to specify an opacity value for a&nbsp;color</li>
-                        <li><a href="http://www.css3.info/preview/text-shadow/">textshadow</a> a simple shadow for a&nbsp;text</li>
+                        <li><a href="http://www.css3.info/preview/border-image/">borderimage</a> define an image to be used instead of the normal border of an element</li>
+                        <li><a href="http://www.css3.info/preview/border-radius/">borderradius</a> support for rounded borders</li>
+                        <li><a href="http://www.css3.info/preview/box-shadow/">boxshadow</a> a simple shadow for a box</li>
+                        <li><a href="http://webkit.org/blog/182/css-reflections/">cssreflections</a> a reflection effect for an object</li>
+                        <li><a href="rotate or skew boxes">csstransforms</a> ability to scale</li>
+                        <li><a href="https://developer.mozilla.org/en/CSS/CSS_transitions">csstransitions</a> ability to animate changes to <span class="caps">CSS</span> properties</li>
+                        <li><a href="http://code.google.com/webfonts">fontface</a> ability to use custom fonts</li>
+                        <li><a href="http://www.css3.info/preview/multiple-backgrounds/">multiplebgs</a> ability to define multiple background properties for a box</li>
+                        <li><a href="http://www.css3.info/preview/opacity/">opacity</a> transparency support</li>
+                        <li><a href="http://www.css3.info/preview/rgba/">rgba</a> allows to specify an opacity value for a color</li>
+                        <li><a href="http://www.css3.info/preview/text-shadow/">textshadow</a> a simple shadow for a text</li>
                     </ul>
                     <p>
                         You can detect more with <code>head.feature()</code> call. Here we detect <span class="caps">HTML5</span> video support.
@@ -626,13 +626,13 @@ var head_conf = screensCss: {
                         <a href="https://github.com/Modernizr/Modernizr/tree/master/feature-detects">Modernizr</a>
                         is an excellent source of tests.
                     </p>
-                </article>                                 
-                           
+                </article>
+                
                 <article>
                     <h2>JavaScript Feature Detection <a name="global-var"></a></h2>
                     <p>
                         Every feature can be found from th <code>head</code> global JavaScript variable. Here is
-                        a&nbsp;screenshot:
+                        a screenshot:
                     </p>
                     <p>
                         <img alt="Head JS global JavaScript variable" src="media/img/global-var.gif" />
@@ -652,12 +652,12 @@ var head_conf = screensCss: {
                             <figcaption><span class="caps">CSS</span></figcaption>
                         </figure>
                     </p>
-                    <p>List of supported class names for various&nbsp;browsers</p>
+                    <p>List of supported class names for various browsers</p>
                     <ul>
-                        <li><code>ie</code> Internet&nbsp;Explorer</li>
-                        <li><code>webkit</code> Webkit based browsers such as Safari and&nbsp;Chrome</li>
+                        <li><code>ie</code> Internet Explorer</li>
+                        <li><code>webkit</code> Webkit based browsers such as Safari and Chrome</li>
                         <li><code>opera</code> Opera</li>
-                        <li><code>mozilla</code> Mozilla based browsers such as&nbsp;Firefox</li>
+                        <li><code>mozilla</code> Mozilla based browsers such as Firefox</li>
                     </ul>
                     <p>
                         There are additional &#8220;less than&#8221; helper classes for <span class="caps">IE</span>.
@@ -672,12 +672,10 @@ var head_conf = screensCss: {
                     <p>
                         Versions 3 - 10 are covered. It is best to avoid browser detection if you are
                         able to do feature detection. Sometimes it&#8217;s not possible especially when it
-                        comes to&nbsp;<span class="caps">IE</span>.
+                        comes to <span class="caps">IE</span>.
                     </p>
                 </article>
-
-                    
-
+                
                 
                 <article>
                     <h2><span class="caps">HTML5</span> Enabler</h2>
@@ -691,28 +689,28 @@ var head_conf = screensCss: {
                             <figcaption><span class="caps">HTML</span></figcaption>
                         </figure>
                     </p>
-                    <h4>List of new&nbsp;tags</h4>
+                    <h4>List of new tags</h4>
                     <ul>
-                        <li><a href="http://developers.whatwg.org/text-level-semantics.html#the-abbr-element">abbr</a> an&nbsp;abbrevation</li>
-                        <li><a href="http://developers.whatwg.org/sections.html#the-article-element">article</a> defines external&nbsp;content</li>
-                        <li><a href="http://developers.whatwg.org/sections.html#the-aside-element">aside</a> defines some content aside from the content it is placed&nbsp;in</li>
-                        <li><a href="http://developers.whatwg.org/video.html#audio">audio</a> defines sound, such as music or other audio&nbsp;streams.</li>
-                        <li><a href="http://developers.whatwg.org/the-canvas-element.html#the-canvas-element">canvas</a> a container for javascript&nbsp;graphics</li>
-                        <li><a href="http://developers.whatwg.org/interactive-elements.html#the-details-element">details</a> describe details about a document, or parts of a&nbsp;document</li>
-                        <li><a href="http://developers.whatwg.org/grouping-content.html#the-figcaption-element">figcaption</a> contains a caption for the &#8220;figure&#8221;&nbsp;element</li>
-                        <li><a href="http://developers.whatwg.org/grouping-content.html#the-figcaption-element">figure</a> stand-alone content, typically used to explain parts of a&nbsp;document</li>
-                        <li><a href="http://developers.whatwg.org/sections.html#the-footer-element">footer</a> defines the footer of a section or&nbsp;document</li>
-                        <li><a href="http://developers.whatwg.org/sections.html#the-header-element">header</a> defines the header of a section or&nbsp;document</li>
-                        <li><a href="http://developers.whatwg.org/sections.html#the-hgroup-element">hgroup</a> defines the heading of a section or a&nbsp;document.</li>
-                        <li><a href="http://developers.whatwg.org/text-level-semantics.html#the-mark-element">mark</a> tag defines marked or highlighted&nbsp;text</li>
-                        <li><a href="http://developers.whatwg.org/the-button-element.html#the-meter-element">meter</a> for measurements with a known minimum and maximum&nbsp;value</li>
-                        <li><a href="http://developers.whatwg.org/sections.html#the-nav-element">nav</a> a section intended for&nbsp;navigation</li>
-                        <li><a href="http://developers.whatwg.org/the-button-element.html#the-output-element">output</a> defines different types of output, such as output written by a&nbsp;script</li>
-                        <li><a href="http://developers.whatwg.org/the-button-element.html#the-progress-element">progress</a>display the progress of a time consuming function in&nbsp;JavaScript.</li>
-                        <li><a href="http://developers.whatwg.org/sections.html#the-section-element">section</a> defines sections in a document such as chapters, headers, footers, or any other sections of the&nbsp;document.</li>
-                        <li><a href="http://developers.whatwg.org/interactive-elements.html#the-summary-element">summary</a> contains a header for the &#8220;details&#8221;&nbsp;element</li>
-                        <li><a href="http://html5doctor.com/the-time-element/">time</a> defines a time or a date, or&nbsp;both.</li>
-                        <li><a href="http://developers.whatwg.org/video.html#video">video</a> defines video, such as a movie clip or other video&nbsp;streams</li>
+                        <li><a href="http://developers.whatwg.org/text-level-semantics.html#the-abbr-element">abbr</a> an abbrevation</li>
+                        <li><a href="http://developers.whatwg.org/sections.html#the-article-element">article</a> defines external content</li>
+                        <li><a href="http://developers.whatwg.org/sections.html#the-aside-element">aside</a> defines some content aside from the content it is placed in</li>
+                        <li><a href="http://developers.whatwg.org/video.html#audio">audio</a> defines sound, such as music or other audio streams.</li>
+                        <li><a href="http://developers.whatwg.org/the-canvas-element.html#the-canvas-element">canvas</a> a container for javascript graphics</li>
+                        <li><a href="http://developers.whatwg.org/interactive-elements.html#the-details-element">details</a> describe details about a document, or parts of a document</li>
+                        <li><a href="http://developers.whatwg.org/grouping-content.html#the-figcaption-element">figcaption</a> contains a caption for the &#8220;figure&#8221; element</li>
+                        <li><a href="http://developers.whatwg.org/grouping-content.html#the-figcaption-element">figure</a> stand-alone content, typically used to explain parts of a document</li>
+                        <li><a href="http://developers.whatwg.org/sections.html#the-footer-element">footer</a> defines the footer of a section or document</li>
+                        <li><a href="http://developers.whatwg.org/sections.html#the-header-element">header</a> defines the header of a section or document</li>
+                        <li><a href="http://developers.whatwg.org/sections.html#the-hgroup-element">hgroup</a> defines the heading of a section or a document.</li>
+                        <li><a href="http://developers.whatwg.org/text-level-semantics.html#the-mark-element">mark</a> tag defines marked or highlighted text</li>
+                        <li><a href="http://developers.whatwg.org/the-button-element.html#the-meter-element">meter</a> for measurements with a known minimum and maximum value</li>
+                        <li><a href="http://developers.whatwg.org/sections.html#the-nav-element">nav</a> a section intended for navigation</li>
+                        <li><a href="http://developers.whatwg.org/the-button-element.html#the-output-element">output</a> defines different types of output, such as output written by a script</li>
+                        <li><a href="http://developers.whatwg.org/the-button-element.html#the-progress-element">progress</a> display the progress of a time consuming function in JavaScript.</li>
+                        <li><a href="http://developers.whatwg.org/sections.html#the-section-element">section</a> defines sections in a document such as chapters, headers, footers, or any other sections of the document.</li>
+                        <li><a href="http://developers.whatwg.org/interactive-elements.html#the-summary-element">summary</a> contains a header for the &#8220;details&#8221; element</li>
+                        <li><a href="http://html5doctor.com/the-time-element/">time</a> defines a time or a date, or both.</li>
+                        <li><a href="http://developers.whatwg.org/video.html#video">video</a> defines video, such as a movie clip or other video streams</li>
                     </ul>
                     <p>
                         <span class="caps">IE</span> has problems printing <span class="caps">HTML5</span> elements. You can fix that by loading a
@@ -726,50 +724,50 @@ var head_conf = screensCss: {
                         </figure>
                     </p>
                     <h3>Sounds great !?</h3>
-                    <p>                        
+                    <p>
                         <a href="http://www.truthabouthtml5.com"  style="float: left; padding: 0 5px 0 0; "><img src="media/img/truth-about-html5.jpg" /></a>
                         The truth is the stories you hear about <strong>HTML5</strong> are greatly over-exaggerated. If you're really interested in the good, the bad & the ugly about <strong>HTML5</strong>, i strongly urge you to read <em><a href="http://www.truthabouthtml5.com">The Truth about HTML5</a></em>
                     </p>
                 </article>
             </section>
-
-
+            
+            
             <h1>API</h1>
             <section id="api">
-                <h2>Method&nbsp;index</h2>
-                <h3>head.js(file1 &#8230; fileN,&nbsp;[callback])</h3>
+                <h2>Method index</h2>
+                <h3>head.js(file1 &#8230; fileN, [callback])</h3>
                 <p>
                     Immediately loads given javascript files and and executes them in the <em>order</em>
                     they are supplied. if the last argument is a function it is called after all
                     files are loaded and executed. Each file is either a string representing
-                    relative or absolute path of a JavaScript&nbsp;file.
+                    relative or absolute path of a JavaScript file.
                 </p>
                 <p>
                     Alternatively each file can be given as an object taking a form: <code>{ label:
                     file_path }</code>. The labels are a handy way to hide the actual file path from the
-                    content writers. See the <code>ready</code> method&nbsp;below.
+                    content writers. See the <code>ready</code> method below.
                 </p>
                 <h3>head.ready(callback)</h3>
                 <p>
                     Executes the given callback after <em>all</em> JavaScript files have been loaded and
-                    the document is scriptable (<span class="caps">DOM</span> is&nbsp;ready).
+                    the document is scriptable (<span class="caps">DOM</span> is ready).
                 </p>
-                <h3>head.ready(path_or_label,&nbsp;callback)</h3>
-                <p>Execute the callback immediately after the given file or label is loaded and&nbsp;executed</p>
-                <h3>head(callback), head(path_or_label,&nbsp;callback)</h3>
-                <p>A convenience shortcut for&nbsp;head.ready</p>
-                <h3>head.ready(document,&nbsp;callback)</h3>
+                <h3>head.ready(path_or_label, callback)</h3>
+                <p>Execute the callback immediately after the given file or label is loaded and executed</p>
+                <h3>head(callback), head(path_or_label, callback)</h3>
+                <p>A convenience shortcut for head.ready</p>
+                <h3>head.ready(document, callback)</h3>
                 <p>
                     Executes the given callback when document is ready. This is identical to
                     jQuery&#8217;s <a href="http://api.jquery.com/ready/">.ready()</a> method. <code>document</code> is
-                    a global variable representing the current document in a&nbsp;browser.
+                    a global variable representing the current document in a browser.
                 </p>
-                <h3>head.feature(name,&nbsp;flag)</h3>
+                <h3>head.feature(name, flag)</h3>
                 <p>
                     Enable or disable a feature. features are stored as a class name to <code>&lt;html&gt;</code>
                     element and on global <code>head</code> variable. if the flag arguments evaluates to
                     <code>true</code> a feature is enabled. Call this method in your <span class="caps">HEAD</span> before the
-                    stylesheets are&nbsp;loaded.
+                    stylesheets are loaded.
                 </p>
                 <h2>Configuration</h2>
                 <p>
@@ -783,17 +781,17 @@ var head_conf = screensCss: {
                         <figcaption><span class="caps">HTML</span></figcaption>
                     </figure>
                 </p>
-                <p>List of configuration&nbsp;variables</p>
+                <p>List of configuration variables</p>
                 <ul>
                     <li><code>head</code>: ability to change global variable name. default: &#8220;head&#8221;. Set to
-                    &#8220;<span class="caps">JS</span>&#8221; and you can <code>JS.ready()</code> for&nbsp;example</li>
-                    <li><code>screens</code>: an array of screen sizes to watch&nbsp;for</li>
-                    <li><code>section</code>: a suffix for <span class="caps">CSS</span> class representing the current &#8220;folder&#8221;. default:&nbsp;&#8221;-section&#8221;</li>
-                    <li><code>page</code>: a suffix for <span class="caps">CSS</span> <span class="caps">ID</span> representing the current page. default:&nbsp;&#8221;-page&#8221;</li>
+                    &#8220;<span class="caps">JS</span>&#8221; and you can <code>JS.ready()</code> for example</li>
+                    <li><code>screens</code>: an array of screen sizes to watch for</li>
+                    <li><code>section</code>: a suffix for <span class="caps">CSS</span> class representing the current &#8220;folder&#8221;. default: &#8221;-section&#8221;</li>
+                    <li><code>page</code>: a suffix for <span class="caps">CSS</span> <span class="caps">ID</span> representing the current page. default: &#8221;-page&#8221;</li>
                 </ul>
             </section>
-
-
+            
+            
             <h1>Download</h1>
             <section id="download">
                 <h2>Version 0.99</h2>
@@ -821,14 +819,14 @@ var head_conf = screensCss: {
                 
                 <p>
                     <strong>* <a href="https://github.com/headjs/headjs/blob/master/changelog.txt">Release notes</a></strong>
-                </p>            
-                <p>         
+                </p>
+                <p>
                     <strong><em><a href="test/unit/index.html" target="_blank" onclick="trackPageView('test/unit')">Unit Tests / BrowserScope Results</a></em></strong>
                 </p>
-                          
+                
                 <h4>Spread the word</h4>
-                <p>                                       
-                    <script type="IN/Share"></script>                        
+                <p>
+                    <script type="IN/Share"></script>
                     <a href="https://twitter.com/share" class="twitter-share-button" data-via="headjs" data-count="none">Tweet</a>
                     <span class="g-plusone" data-size="medium" data-href="http://headjs.com" data-count="false"></span>
                 </p>
@@ -837,7 +835,7 @@ var head_conf = screensCss: {
                 <p>
                     There is no way to detect if script loading failed in <span class="caps">IE</span>. For that reason a
                     feature such as <code>head.error()</code> is impossible to implement. When a script <span class="caps">URL</span>
-                    cannot be accessed Head <span class="caps">JS</span> is&nbsp;silent.
+                    cannot be accessed Head <span class="caps">JS</span> is silent.
                 </p>
                 <h2>Future</h2>
                 <p>
@@ -861,4 +859,3 @@ var head_conf = screensCss: {
     </script>
 </body>
 </html>
-
