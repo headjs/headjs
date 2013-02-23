@@ -50,7 +50,7 @@
                     item             = getAsset(item);
                     items[item.name] = item;
 
-                    load(item, callback && i === args.length - 2 ? function () {
+                    load(item, callback && (item.async || i === args.length - 2) ? function () {
                         if (allLoaded(items)) {
                             one(callback);
                         }
@@ -184,11 +184,6 @@
             key      = "ALL";
         }
 
-        // make sure arguments are sane
-        if (typeof key !== 'string' || !isFunction(callback)) {
-            return api;
-        }
-
         // queue all items from key and return. The callback will be executed if all items from key are already loaded.
         if (isArray(key)) {
             var items = {};
@@ -202,6 +197,11 @@
 
             });
 
+            return api;
+        }
+
+        // make sure arguments are sane
+        if (typeof key !== 'string' || !isFunction(callback)) {
             return api;
         }
 
@@ -314,11 +314,11 @@
 
         if (typeof item === 'object') {
             for (var label in item) {
-                if (!!item[label]) {
+                if (!!item[label] && label !== '$async' ) {
                     asset = {
                         name : label,
                         url  : item[label],
-                        async: item[async]
+                        async: item['$async']
                     };
                 }
             }
