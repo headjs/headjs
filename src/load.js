@@ -299,8 +299,9 @@
             for (var label in item) {
                 if (!!item[label]) {
                     asset = {
-                        name: label,
-                        url : item[label]
+                        name : label,
+                        url  : item[label],
+                        async: item[async]
                     };
                 }
             }
@@ -347,7 +348,7 @@
         if (asset.state === undefined) {
 
             asset.state     = PRELOADING;
-            asset.onpreload = [];
+            asset.onpreload = [callback];
 
             loadAsset({ url: asset.url, type: 'cache' }, function () {
                 onPreload(asset);
@@ -426,7 +427,7 @@
          */
 
         // ASYNC: load in parellel and execute as soon as possible
-        ele.async = false;
+        ele.async = asset.async || false;
         // DEFER: load in parallel but maintain execution order
         ele.defer = false;
 
