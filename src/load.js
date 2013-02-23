@@ -162,7 +162,8 @@
         ///    head.ready(callBack)
         ///    head.ready(document , callBack)
         ///    head.ready("file.js", callBack);
-        ///    head.ready("label"  , callBack);        
+        ///    head.ready("label"  , callBack);
+        ///    head.ready(["label1", "label2"], callback);
         ///</summary>
 
         // DOM ready check: head.ready(document, function() { });
@@ -185,6 +186,22 @@
 
         // make sure arguments are sane
         if (typeof key !== 'string' || !isFunction(callback)) {
+            return api;
+        }
+
+        // queue all items from key and return. The callback will be executed if all items from key are already loaded.
+        if (isArray(key)) {
+            var items = {};
+
+            each(key, function (item) {
+
+                items[item] = assets[item];
+                api.ready(item, function() {
+                    allLoaded(items) && one(callback);
+                });
+
+            });
+
             return api;
         }
 
