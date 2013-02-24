@@ -1,0 +1,861 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="google-site-verification" content="pqzn85yrum0AY6ugIrX0zoIEazSHL9p09us5yvHwZqw" />
+    <title>HeadJS, the only script in your &lt;head&gt;</title>
+
+    <meta name="description" content="Load scripts and css on demand. Achieve responsive design with CSS that targets different screen resolutions, paths, states and browsers. Detect various browsers and their features. Target HTML5 and CSS3 safely." />
+    <meta name="author" content="Tero Piirainen">
+    
+    <!-- include the stylesheet after headjs -->
+    <link rel="stylesheet" type="text/css" href="media/css/html5.min.css" />
+    <link rel="stylesheet" href="media/css/style.min.css?v=0.3">
+    <link rel="icon" type="image/gif" href="media/img/favicon.gif?v=1">
+    
+    <script>
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20001309-1']);
+        _gaq.push(['_trackPageview']);
+        
+        _gaq.push(['b._setAccount', 'UA-15567888-4']);
+        _gaq.push(['b._trackPageview']);
+        
+        function trackPageView(page) {
+            _gaq.push(['_trackPageview'  , page]);
+            _gaq.push(['b._trackPageview', page]);
+        }
+    </script>
+    <script src="media/libs/headjs/0.99/head.min.js"></script>
+</head>
+<body>
+    <a href="http://github.com/headjs/headjs" onclick="trackPageView('github.com')">
+        <img id="fork" alt="Fork me on GitHub" src="media/img/forkme.png">
+    </a>
+    <div id="wrap">
+        <nav>
+            <a href="#highlights">highlights</a> &bull;<a href="#theory">theory</a> &bull;<a href="#usage">usage</a> &bull;<a href="#api">api</a> &bull;<a href="#download">download <strong>(v 0.99)</strong></a>
+        </nav>
+        <div id="hero">
+            <h1>HEAD<em>JS</em></h1>
+            <h2>The only script in your &lt;HEAD&gt;</h2>
+            <h3>A tiny script that simplifies, speeds up, and modernizes your site</h3>
+            <p>
+                Load scripts and css on demand.
+                Achieve responsive design with CSS that targets different screen reolutions, paths, states and browsers.
+                Detect various browsers and their features.
+                Target HTML5 and CSS3 safely.
+                <br />
+                Make it the only script in your HEAD.
+                A concise solution to universal issues.
+                  <a href="#theory">&laquo; the theory &raquo;</a>
+            </p>
+        </div>
+        <div id="content" class="clear">
+            
+            <h1>Highlights</h1>
+            <section id="highlights">
+                
+                <article>
+                    <h2>JavaScript Loader</h2>
+                    <p>
+                        Load scripts in parallel but execute in order.
+                        <p>No WEB 2.0 site would work without all the nice scripts we are injecting into our pages today.</p>
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="nx">head</span><span class="p">.</span><span class="nx">js</span><span class="p">(</span><span class="s2">&quot;/path/to/jquery.js&quot;</span><span class="p">,</span> <span class="s2">&quot;/google/analytics.js&quot;</span><span class="p">,</span> <span class="s2">&quot;/js/site.js&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span><br />&nbsp;<br />   <span class="c1">// all done</span><br />&nbsp;<br /><span class="p">});</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption>JavaScript</figcaption>
+                        </figure>
+                    </p>
+                    <p>
+                        Head <span class="caps">JS</span> loads JavaScript files in parallel like images without <em>blocking</em> the page. Your
+                        page will be faster. Even with a single combined file.
+                    </p>
+                </article>
+                
+
+                <article>
+                    <h2>JavaScript Organizer</h2>
+                    <p>
+                        You&#8217;ve read the books and placed <span class="caps">SCRIPT</span> <span class="caps">SRC</span> tags on the bottom. Good. But can
+                        you do this?
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="c1">// use jQuery on the body of the page even though it is not included yet</span><br /><span class="nx">head</span><span class="p">.</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span><br />   <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#my&quot;</span><span class="p">).</span><span class="nx">jquery_plugin</span><span class="p">();</span><br /><span class="p">});</span><br />&nbsp;<br /><span class="c1">// load jQuery whenever you wish bottom of the page</span><br /><span class="nx">head</span><span class="p">.</span><span class="nx">js</span><span class="p">(</span><span class="s2">&quot;/path/to/jquery.js&quot;</span><span class="p">);</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption>JavaScript</figcaption>
+                        </figure>
+                    </p>
+                </article>
+                
+                
+                <article>
+                    <h2>Responsive Design / Media Queries</h2>
+                    <p>
+                        You've heard of Responsive Design, Media Queries & Mobile First. But how do you actually go about and put it into application without having to resort to some kind of mobile framework ?
+                    </p>
+                    <p>
+                        Design your pages for <strong>1980px</strong> resolution, then make them work on a <strong>10&#8221;</strong>
+                        tablet, a laptop or even a mobile phone. Viewport is the single most important thing when developing for mobile clients.
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="c">/*<em> screen size less than 1024 pixels </em>*/</span><br /><span class="nc">.lt-1024</span> <span class="nf">#hero</span> <span class="p">{</span> <span class="k">background-image</span><span class="o">:</span><span class="p">(</span><span class="k">medium</span><span class="o">.</span><span class="n">jpg</span><span class="p">);</span> <span class="p">}</span><br /><br /><span class="c">/*<em> fine tune for mobile phone </em>*/</span><br /><span class="nc">.lt-640</span> <span class="nf">#hero</span> <span class="p">{</span> <span class="k">background-image</span><span class="o">:</span><span class="p">(</span><span class="n">small</span><span class="o">.</span><span class="n">jpg</span><span class="p">);</span> <span class="p">}</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption><span class="caps">CSS</span></figcaption>
+                        </figure>
+                    </p>
+                    <p>
+                        Or you migh need to apply a different layout when a page passes from <strong>Landscape</strong> to <strong>Portrait</strong> mode.
+                        <p>Landscape</p>
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="c">/*<em> page in lanscape mode </em>*/</span><br /><span class="nc">.landscape</span> <span class="nf">#hero</span> <span class="p">{</span> <span class="k">width</span><span class="o">:</span><span class="p">800px;</span> <span class="p">}</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption><span class="caps">CSS</span></figcaption>
+                        </figure>
+                        <p>Portrait</p>
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="c">/*<em> page in portrait mode </em>*/</span><br /><span class="nc">.portrait</span> <span class="nf">#hero</span> <span class="p">{</span> <span class="k">width</span><span class="o">:</span><span class="p">300px;</span> <span class="p">}</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption><span class="caps">CSS</span></figcaption>
+                        </figure>
+                    </p>
+                    <p>
+                        If you resize the browser your <span class="caps">CSS</span> rules will dynamically follow. Head
+                        <span class="caps">JS</span> does this behind the&nbsp;scenes.
+                    </p>
+                    
+                    <h3>Look at it like Media Queries, except that it works in browsers that don't even support Media Queries.</h3>
+                    <p>
+                        <em>Head JS provides you with the following detections: <strong>.lt, .gt, .lte, .gte, .eq, .landscape, .portrait, .desktop, .mobile</strong></em>
+                    </p>
+                </article>
+                
+                <article>
+                    <h2><span class="caps">CSS</span> Router</h2>
+                    <p>
+                        Target <span class="caps">CSS</span> for specific paths and pages
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="c">/<em> <span class="caps">CSS</span> targeted for home page only </em>/</span><br /><span class="nf">#index-page</span><span class="nc">.root-section</span> <span class="p">{</span><br />&nbsp;<br /><span class="p">}</span><br />&nbsp;<br /><span class="c">/<em> make sidebar visible under /plugins  </em>/</span><br /><span class="nc">.plugins-section</span> <span class="nf">#sidebar</span> <span class="p">{</span> <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span> <span class="p">}</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption><span class="caps">CSS</span></figcaption>
+                        </figure>
+                    </p>
+                </article>
+                
+                
+                <article>
+                    <h2>Browser Detection / Graceful Degradation</h2>
+                    <p>
+                        All browsers are detected but we all love <span class="caps">IE</span>.
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="c">/<em> older than <span class="caps">IE9</span> </em>/</span><br /><span class="nc">.lt-ie9</span> <span class="nc">.box</span> <span class="p">{</span> <span class="k">padding</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span> <span class="p">}</span><br />&nbsp;<br /><span class="c">/<em> <span class="caps">CSS</span> fixes for <span class="caps">IE6</span> </em>/</span><br /><span class="nc">.ie6</span> <span class="nt">ul</span>  <span class="p">{</span> <span class="k">list-style</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span> <span class="p">}</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption><span class="caps">CSS</span></figcaption>
+                        </figure>
+                    </p>
+                    <p>It&#8217;s generally wiser to use feature detection <span class="caps">IE</span> is a feature in itself.</p>
+                </article>
+                
+                
+                <article>
+                    <h2>Dynamic <span class="caps">CSS</span></h2>
+                    <p>
+                        Style for various application states:
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="nt">&lt;script&gt;</span><br /><span class="cm">/*<em></span><br /><span class="cm">detect whether user is logged in. here we check for an</span><br /><span class="cm">existence of a cookie</span><br /><span class="cm"></em>*/</span><br /><span class="nx">head</span><span class="p">.</span><span class="nx">feature</span><span class="p">(</span><span class="s2">&quot;logged&quot;</span><span class="p">,</span> <span class="nx">mycookielib</span><span class="p">.</span><span class="nx">get_cookie</span><span class="p">(</span><span class="s2">&quot;auth_token&quot;</span><span class="p">));</span><br /><span class="nt">&lt;/script&gt;</span><br />&nbsp;<br /><span class="nt">&lt;style&gt;</span><br /><span class="c">/<em> .. and write <span class="caps">CSS</span> accordingly </em>/</span><br /><span class="nc">.logged</span> <span class="nf">#login-box</span> <span class="p">{</span> <span class="k">display</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span> <span class="p">}</span><br /><span class="nt">&lt;/style&gt;</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption><span class="caps">HTML</span></figcaption>
+                        </figure>
+                    </p>
+                    <p>Whenever you call <code>head.feature()</code> your <span class="caps">CSS</span> rules will follow.</p>
+                </article>
+                
+                <article>
+                    <h2>CSS3 Feature Detection</h2>
+                    <p>
+                        HeadJS adds classes to the <span class="caps">HTML</span> root element so that you can do this
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="c">/<em> target <span class="caps">CSS</span> for browsers without box-shadow support </em>/</span><br /><span class="nc">.no-boxshadow</span> <span class="nc">.box</span> <span class="p">{</span><br />   <span class="k">border</span><span class="o">:</span> <span class="m">2px</span> <span class="k">solid</span> <span class="m">#ddd</span><span class="p">;</span><br /><span class="p">}</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption><span class="caps">CSS</span></figcaption>
+                        </figure>
+                    </p>
+                    <p>
+                        The focus is on <em><span class="caps">CSS3</span> styling</em> and it&#8217;s easy to add more tests. Minimalism is
+                        a must. It&#8217;s your <span class="caps">HEAD</span> again.
+                    </p>
+                </article>
+                
+                <article>
+                    <h2>JavaScript Feature Detection</h2>
+                    <p>
+                        Every feature can also be found on the <code>head</code> (default) JavaScript variable.
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="k">if</span> <span class="p">(</span><span class="nx">head</span><span class="p">.</span><span class="nx">logged</span><span class="p">)</span> <span class="p">{</span><br />   <span class="c1">// do things</span><br /><span class="p">}</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption>JavaScript</figcaption>
+                        </figure>
+                    </p>
+                </article>
+                
+                <article>
+                    <h2><span class="caps">HTML5</span> Enabler</h2>
+                    <p>
+                        <span class="caps">DIV</span> is good but HeadJS let&#8217;s you be semantic and futuristic.
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="nt">&lt;style&gt;</span><br />   <span class="nt">article</span> <span class="p">{</span> <span class="k">text-shadow</span><span class="o">:</span><span class="m">0</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">#ccc</span><span class="p">;</span> <span class="p">}</span><br /><span class="nt">&lt;/style&gt;</span><br />&nbsp;<br /><span class="c">&lt;!-- works in <span class="caps">IE</span> too --&gt;</span><br /><span class="nt">&lt;article&gt;</span><br />   <span class="nt">&lt;header&gt;&lt;/header&gt;</span><br />   <span class="nt">&lt;section&gt;&lt;/section&gt;</span><br />   <span class="nt">&lt;footer&gt;&lt;/footer&gt;</span><br /><span class="nt">&lt;/article&gt;</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption><span class="caps">HTML</span></figcaption>
+                        </figure>
+                    </p>
+                </article>
+            </section>
+            
+            <h1>Theory</h1>
+            <section id="theory">
+                <h2>Script Loader</h2>
+                <p>
+                    With Head <span class="caps">JS</span> your scripts load like images - completely separated from the
+                    page rendering process. The page is ready sooner. Always. This is guaranteed
+                    even with a single combined JavaScript file. See it&nbsp;yourself:
+                </p>
+                <p><a href="test/script.html" target="_blank" onclick="trackPageView('test/script.html')">Sample page with 5 <span class="caps">SCRIPT</span> <span class="caps">SRC</span> tags</a></p>
+                <p><a href="test/headjs.html" target="_blank" onclick="trackPageView('test/headjs.html')">Same scripts loaded with Head <span class="caps">JS</span></a></p>
+                <p>
+                    Non-blocking loading is the key to fast pages. Moreover Head <span class="caps">JS</span> loads scripts
+                    in <em>parallel</em> no matter how many of them and what the browser is. The speed
+                    difference can be dramatic especially on the initial page load when the
+                    scripts are not yet in cache. It&#8217;s your crucial first impression.
+                </p>
+                <p>
+                    Pages no longer &#8220;hang&#8221; and there is less or zero &#8220;flashing&#8221; between pages.
+                    User only cares when the page is ready. Unfortunately current networking tools
+                    don&#8217;t highlight this crucial point. They focus on the overall loading of
+                    assets instead.
+                </p>
+                <p>
+                    Head <span class="caps">JS</span> can make your pages load 100% or even 400% faster. It can make the
+                    largest impact on client side optimization.
+                </p>
+                <h2><span class="caps">SCRIPT</span> <span class="caps">SRC</span></h2>
+                <p>
+                    This is from Apple.com&#8217;s <span class="caps">HEAD</span>:
+                    <figure class="code">
+                        <div class="highlight">
+                            <pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;http://images.apple.com/global/scripts/lib/prototype.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span><br /><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;http://images.apple.com/global/scripts/lib/scriptaculous.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span><br /><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;http://images.apple.com/global/scripts/browserdetect.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span><br /><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;http://images.apple.com/global/scripts/apple_core.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span><br /><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;http://images.apple.com/global/scripts/search_decorator.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span><br /><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;http://images.apple.com/global/scripts/promomanager.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span><br /><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;http://images.apple.com/home/scripts/ticker.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span><br /><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;http://images.apple.com/home/scripts/promotracker.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span><br /></pre>
+                        </div>
+                        <br />
+                        <figcaption><span class="caps">HTML</span></figcaption>
+                    </figure>
+                </p>
+                <p>
+                    All these scripts <em>block</em> the page. The page needs to wait for these to be
+                    loaded until it starts rendering itself. This is how majority of web sites are
+                    done. There is <strong>not</strong> a large difference whether the script tags are placed
+                    on top or on bottom of the page. On both cases the scripts must be loaded
+                    first. <a href="test/script.html">Compare it yourself</a>.
+                </p>
+                <p>
+                    With older generation browsers the scripts will be loaded sequentially. Here
+                    is a screenshot from Firefox 3.0.
+                </p>
+                <p>
+                    <img alt="sequential downloading of scripts" src="media/img/serial-load.gif" />
+                </p>
+                <p>
+                    It&#8217;s easy to understand that this is poison for performance. The single best
+                    optimization technique for script loading is to use a non-blocking and
+                    paraller script loader such as Head <span class="caps">JS</span>.
+                </p>
+                <h2>Combining scripts</h2>
+                <p>There is a common misbelief that a single combined script performs best. Wrong:</p>
+                <ul>
+                    <li>
+                        <p>
+                            latest browsers and Head <span class="caps">JS</span> can load scripts in parallel. loading 3 parts
+                            in parallel instead of as a single chunk is usually faster.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            if an individual file is changed the whole combination changes and you
+                            lose the benefits of caching. It&#8217;s better to combine only the stable files
+                            that doesn&#8217;t change often.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            many popular libraries are hosted on <span class="caps">CDN</span>. you should take the advantage of
+                            it instead of hosting yourself.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <a href="http://www.phpied.com/iphone-caching/">iPhone 3.x</a> cannot cache files
+                            larger than <strong>15kb</strong> and in iPhone 4 the limit is <strong>25kb</strong>. And this is
+                            the size before gzipping. if you care about iPhones you should respect
+                            these limits.
+                        </p>
+                    </li>
+                </ul>
+                <p>
+                    With Head <span class="caps">JS</span> the file amount is not <em>as</em> critical as it is with <span class="caps">SCRIPT</span> <span class="caps">SRC</span>
+                    because page rendering is not blocked. Combining scripts is an important
+                    optimization method but you can go too far with it.
+                </p>
+                <h2>Page styling and <span class="caps">CSS</span></h2>
+                <p>
+                    Stylesheets needs to be
+                    <a href="http://developer.yahoo.com/performance/rules.html#css_top">on top</a>. An
+                    included script in the <span class="caps">HEAD</span> is the only place where a script is executed
+                    before the stylesheets are loaded and where it can give a helping hand for the
+                    <span class="caps">CSS</span> developer. Head <span class="caps">JS</span> takes this important role seriously and gives you
+                    following possibilities:
+                </p>
+                <ul>
+                    <li>use the latest <span class="caps">CSS3</span> techniques and provide alternate <span class="caps">CSS</span> for <span class="caps">IE</span> and other
+                        old school browsers</li>
+                    <li>safely use <span class="caps">HTML5</span> tags even with <span class="caps">IE</span></li>
+                    <li>target <span class="caps">CSS</span> for specific screen widths, browsers and URLs</li>
+                    <li>style your pages differently depending on the application state, such as
+                        whether user is logged or not.</li>
+                </ul>
+                <p>
+                    Essentially Head <span class="caps">JS</span> adds <span class="caps">CSS</span> class names to the <code>&lt;html&gt;</code> element. If you
+                    attempt to do this in a script that is loaded with Head <span class="caps">JS</span> you can see a
+                    &#8220;Flash of Unstyled Content&#8221; (<span class="caps">FOUC</span>) effect: the page is first rendered without
+                    the to-be-loaded style definitions and then re-rendered when the scripts are
+                    executed. This is why the <span class="caps">CSS</span> feature detection is a core part of Head <span class="caps">JS</span>.
+                </p>
+                <p>
+                    A script in <span class="caps">HEAD</span> blocks so it must be small. This is the essence of Head <span class="caps">JS</span>.
+                    It weights only 2.5 kb when minified and gzipped. It&#8217;s preferred to load the
+                    file from a <span class="caps">CDN</span>. Google: I&#8217;m <a href="http://code.google.com/p/google-ajax-apis/issues/detail?id=548">staring at
+                                                                                     You</a>! (please
+                    give it a star)
+                </p>
+                <p><em>Note: As crazy as it sounds <span class="caps">FUBC</span> and <span class="caps">FOUC</span> are not my acronyms.</em></p>
+            </section>
+            
+            <h1>Usage</h1>
+            <section id="usage">
+                <h2>Script loading and execution</h2>
+                <p>
+                    All script loading is done with <code>head.js()</code>
+                    <figure class="code">
+                        <div class="highlight">
+                            <pre><span class="c1">// the most simple case. load and execute single script without blocking.</span><br /><span class="nx">head</span><span class="p">.</span><span class="nx">js</span><span class="p">(</span><span class="s2">&quot;/path/to/file.js&quot;</span><span class="p">);</span><br />&nbsp;<br /><span class="c1">// load a script and execute a function after it has been loaded</span><br /><span class="nx">head</span><span class="p">.</span><span class="nx">js</span><span class="p">(</span><span class="s2">&quot;/path/to/file.js&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span><br />&nbsp;<br /><span class="p">});</span><br />&nbsp;<br /><span class="c1">// load files in parallel but execute them in sequence</span><br /><span class="nx">head</span><span class="p">.</span><span class="nx">js</span><span class="p">(</span><span class="s2">&quot;file1.js&quot;</span><span class="p">,</span> <span class="s2">&quot;file2.js&quot;</span><span class="p">,</span> <span class="p">...</span> <span class="s2">&quot;fileN.js&quot;</span><span class="p">);</span><br />&nbsp;<br /><span class="c1">// execute function after all scripts have been loaded</span><br /><span class="nx">head</span><span class="p">.</span><span class="nx">js</span><span class="p">(</span><span class="s2">&quot;file1.js&quot;</span><span class="p">,</span> <span class="s2">&quot;file2.js&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span><br />&nbsp;<br /><span class="p">});</span><br />&nbsp;<br /><span class="c1">// files are loaded in parallel and executed in order they arrive</span><br /><span class="nx">head</span><span class="p">.</span><span class="nx">js</span><span class="p">(</span><span class="s2">&quot;file1.js&quot;</span><span class="p">);</span><br /><span class="nx">head</span><span class="p">.</span><span class="nx">js</span><span class="p">(</span><span class="s2">&quot;file2.js&quot;</span><span class="p">);</span><br /><span class="nx">head</span><span class="p">.</span><span class="nx">js</span><span class="p">(</span><span class="s2">&quot;file3.js&quot;</span><span class="p">);</span><br />&nbsp;<br /><span class="c1">// the previous can also be written as</span><br /><span class="nx">head</span><span class="p">.</span><span class="nx">js</span><span class="p">(</span><span class="s2">&quot;file1.js&quot;</span><span class="p">).</span><span class="nx">js</span><span class="p">(</span><span class="s2">&quot;file1.js&quot;</span><span class="p">).</span><span class="nx">js</span><span class="p">(</span><span class="s2">&quot;file3.js&quot;</span><span class="p">);</span><br /></pre>
+                        </div>
+                        <br />
+                        <figcaption>JavaScript</figcaption>
+                    </figure>
+                </p>
+                <h3><span class="caps">DOM</span> Ready</h3>
+                <p>
+                    With <code>head.js()</code> call your page can be ready before your scripts. You need to
+                    prepare for that
+                </p>
+                <ul>
+                    <li>
+                        <p>
+                            The &#8220;<span class="caps">DOM</span> ready&#8221; event such as <code>$(document).ready()</code> is already fired when
+                                the scripts arrive. If the loaded scripts depend on that event make sure
+                            your library can handle this. jQuery 1.4+ works.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            If your scripts modify the page you can see a &#8220;flash of unbehaviored
+                            content&#8221; effect (<span class="caps">FUBC</span>): a quick glimpse of unmodified <span class="caps">HTML</span> before the
+                            loaded scripts act on it. You can avoid this by initially hiding the
+                            modifiable elements before your scripts make them visible and do their job.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <code>document.write()</code> statements are not supported since it&#8217;s hard or
+                            impossible to know where to write to. It&#8217;s a bad programming habit anyway
+                            so it&#8217;s likely that Head <span class="caps">JS</span> will never support this.
+                        </p>
+                    </li>
+                </ul>
+                <h3>Enable Caching</h3>
+                <p>Make sure that the files loaded with head.js can be cached. For example:</p>
+                <p>
+                    <img alt="file caching with future expiration header" src="media/img/expires-header.gif" />
+                </p>
+                <p>
+                    This Google Analytics script will be served from browser&#8217;s cache after the
+                    initial load. A proper max-age header configuration on the web server does the
+                    trick. If you care about performance this is a good habit for every JavaScript
+                    file. Not only with head.js.
+                </p>
+                <p>
+                    Internally Head <span class="caps">JS</span> uses browser&#8217;s cache to preload scripts before they are
+                    executed. This trick is used on Chrome, Safari and <span class="caps">IE</span>. Without caching enabled
+                    a file will be <em>loaded twice</em> on the initial load. There are no issues on
+                    Firefox and Opera because they execute files on the order they are
+                    programmatically inserted on the page.
+                </p>
+                
+                <article>
+                    <h2>Script Organization</h2>
+                    <p>
+                        Call a function after all scripts have been loaded <em>and</em> the document iscriptable:
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="nx">head</span><span class="p">.</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span><br />&nbsp;<br /><span class="p">});</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption>JavaScript</figcaption>
+                        </figure>
+                    </p>
+                    <p>
+                        The functions supplied this way are executed in the same order as they are given.
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="c1">// call a function after a particular file has been loaded</span><br /><span class="nx">head</span><span class="p">.</span><span class="nx">ready</span><span class="p">(</span><span class="s2">&quot;file2.js&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span><br />&nbsp;<br /><span class="p">});</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption>JavaScript</figcaption>
+                        </figure>
+                    </p>
+                    <p>
+                        This makes sense if you have large script files and want to execute JavaScript
+                        before all files are loaded. Otherwise you simply use <code>head.ready()</code> which
+                        gets executed after all files are loaded.
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="c1">// a handy shortcut for head.ready()</span><br /><span class="nx">head</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span><br />&nbsp;<br /><span class="p">});</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption>JavaScript</figcaption>
+                        </figure>
+                    </p>
+                </article>
+                
+                <article>
+                    <h2>Labeling Scripts</h2>
+                    <p>
+                        By assigning labels the content developers need not to know the actual file paths.
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="c1">// call a function immediately after jQuery Tools is loaded</span><br /><span class="nx">head</span><span class="p">.</span><span class="nx">ready</span><span class="p">(</span><span class="s2">&quot;tools&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span><br />&nbsp;<br />   <span class="c1">// setup Tooltips</span><br />   <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.tip&quot;</span><span class="p">).</span><span class="nx">tooltip</span><span class="p">();</span><br />&nbsp;<br /><span class="p">});</span><br />&nbsp;<br /><span class="c1">// load scripts by assigning a label for them</span><br /><span class="nx">head</span><span class="p">.</span><span class="nx">js</span><span class="p">(</span><br />   <span class="p">{</span><span class="nx">jquery</span><span class="o">:</span> <span class="s2">&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js&quot;</span><span class="p">},</span><br />   <span class="p">{</span><span class="nx">tools</span><span class="o">:</span> <span class="s2">&quot;http://cnd.jquerytools.org/1.2.5/tiny/jquery.tools.min&quot;</span><span class="p">},</span><br />   <span class="p">{</span><span class="nx">heavy</span><span class="o">:</span> <span class="s2">&quot;http://a.heavy.library/we/dont/want/to/wait/for.js&quot;</span><span class="p">},</span><br />&nbsp;<br />   <span class="c1">// label is optional</span><br />   <span class="s2">&quot;http://can.be.mixed/with/unlabeled/files.js&quot;</span><br /><span class="p">);</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption>JavaScript</figcaption>
+                        </figure>
+                    </p>
+                    <p>
+                        If label is not given then the file name without the path is used as the key.
+                        On the jQuery library above this would be just &#8220;jquery.min.js&#8221;.
+                    </p>
+                </article>
+                
+                
+                <article>
+                    <h2>Responsive Design / Media Queries</h2>
+                    <p>
+                        Target <span class="caps">CSS</span> for various screen sizes. For example
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="c">/<em> styling for screens with resolution less than 1024 pixels </em>/</span><br /><span class="nc">.lt-1024</span> <span class="nf">#hero</span> <span class="p">{</span> <span class="k">background-image</span><span class="o">:</span><span class="p">(</span><span class="k">medium</span><span class="o">.</span><span class="n">jpg</span><span class="p">);</span> <span class="p">}</span><br />&nbsp;<br /><span class="c">/<em> styling for small mobile screens </em>/</span><br /><span class="nc">.lt-640</span> <span class="nf">#hero</span> <span class="p">{</span> <span class="k">background-image</span><span class="o">:</span><span class="p">(</span><span class="n">small</span><span class="o">.</span><span class="n">jpg</span><span class="p">);</span> <span class="p">}</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption><span class="caps">CSS</span></figcaption>
+                        </figure>
+                    </p>
+                    <p>
+                        Today most sites are optimized for <strong>1024px</strong> but with Head <span class="caps">JS</span> you can safely
+                        optimize for larger screens. Start by designing to the largest screen and then
+                        add <span class="caps">CSS</span> rules for smaller ones. You can freely decide the sizes you optimize
+                        for and the amount of them. By default Head <span class="caps">JS</span> watches following screen widths:
+                    </p>
+                    <p><strong>320, 480, 640, 768, 800, 1024, 1280, 1440, 1680, 1920</strong></p>
+                    <p>
+                        These are typical sizes for mobile phones, tablets and <span class="caps">PC</span> monitors. Here are
+                        sizes for Apple devices:
+                    </p>
+                    <p>iPhone3: <strong>480 x 320</strong></p>
+                    <p>iPhone4: <strong>960 x 640</strong></p>
+                    <p>iPad: <strong>1024 x 768</strong></p>
+                    <p>screens: <strong>800+</strong></p>
+                    <p>
+                        You can provide your own set of screen widths with head_conf variable:
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="kd">var</span> <span class="nx">head_conf</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">screens</span><span class="o">:</span> <span class="p">[</span><span class="mi">500</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">900</span><span class="p">]</span> <span class="p">};</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption>JavaScript</figcaption>
+                        </figure>
+                    </p>
+                    <p>If you resize the browser window your <span class="caps">CSS</span> rules will be dynamically applied.</p>
+                    
+                    <h3>
+                        <strong>You can also specify what type of detections you want to use:</strong>
+                    </h3>
+                    <p>
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre>
+                                    var head_conf = screensCss: {
+                                        "gt" : true,
+                                        "gte": false,
+                                        "lt" : true,
+                                        "lte": false,
+                                        "eq" : false
+                                    };
+                                </pre>
+                            </div>
+                            <br />
+                            <figcaption>JavaScript</figcaption>
+                        </figure>
+                    </p>
+                </article>
+                
+                <article>
+                    <h2><span class="caps">CSS</span> Routing <a name="routing"></a></h2>
+                    <p>
+                        Say you are on a page: <code>http://mydomain.com/addons/node/router.html</code>.
+                        Following <span class="caps">CSS</span> selectors apply:
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="nc">.addons-section</span> <span class="p">{</span> <span class="p">}</span><br />&nbsp;<br /><span class="nc">.addons-node-section</span> <span class="p">{</span> <span class="p">}</span><br />&nbsp;<br /><span class="nf">#router-page</span> <span class="p">{</span> <span class="p">}</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption><span class="caps">CSS</span></figcaption>
+                        </figure>
+                    </p>
+                    <p>
+                        For each given path you get <span class="caps">CSS</span> classes representing &#8220;folders&#8221; and an <span class="caps">ID</span>
+                        representing the page. The deeper your <span class="caps">URL</span> the more classes you&#8217;ll get An
+                        empty page is &#8220;#index-page&#8221; and the site root is &#8220;.root-section&#8221;. <span class="caps">NOTE</span>: If you
+                        have an existing id assigned for the <span class="caps">HTML</span> element it will be <em>overwritten</em>. On
+                        this case you can place the id attribute for the <span class="caps">BODY</span> tag.
+                    </p>
+                    <p>
+                        You can change the these suffixes with head_conf variable.
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="kd">var</span> <span class="nx">head_conf</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">section</span><span class="o">:</span> <span class="s1">&#39;-area&#39;</span><span class="p">,</span> <span class="nx">page</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">};</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption>JavaScript</figcaption>
+                        </figure>
+                    </p>
+                    <p>
+                        Now the selectors are:
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="nc">.addons-area</span> <span class="p">{</span> <span class="p">}</span><br />&nbsp;<br /><span class="nc">.addons-node-area</span> <span class="p">{</span> <span class="p">}</span><br />&nbsp;<br /><span class="nf">#router</span> <span class="p">{</span> <span class="p">}</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption><span class="caps">CSS</span></figcaption>
+                        </figure>
+                    </p>
+                </article> 
+                
+                <article>
+                    <h2>CSS3 Feature Detection</h2>
+                    <p>
+                        When a particular feature is supported a corresponding class name is added to
+                        the <code>&lt;html&gt;</code> element. When a feature is not supported the class name is
+                        prefixed with <code>no-</code>. For example:
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="nc">.borderimage</span> <span class="nc">.box</span> <span class="p">{</span><br />   <span class="c">/<em> style for browsers that support border images </em>/</span><br /><span class="p">}</span><br />&nbsp;<br /><span class="nc">.no-borderimage</span> <span class="nc">.box</span> <span class="p">{</span><br />   <span class="c">/<em> style for browsers that does not support border images </em>/</span><br /><span class="p">}</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption><span class="caps">CSS</span></figcaption>
+                        </figure>
+                    </p>
+                    <p>
+                        On everyday <span class="caps">CSS</span> work you assume that a feature exists and code your <span class="caps">CSS</span>
+                        accordingly and you later add support for older browsers with the aid of &#8220;no-&#8220; classes.
+                    </p>
+                    
+                    
+                    <h3><span class="caps">CSS3</span> property list</h3>
+                    <p>Natively detected <span class="caps">CSS3</span> properties</p>
+                    <ul>
+                        <li><a href="http://www.css3.info/preview/border-image/">borderimage</a> define an image to be used instead of the normal border of an element</li>
+                        <li><a href="http://www.css3.info/preview/border-radius/">borderradius</a> support for rounded borders</li>
+                        <li><a href="http://www.css3.info/preview/box-shadow/">boxshadow</a> a simple shadow for a box</li>
+                        <li><a href="http://webkit.org/blog/182/css-reflections/">cssreflections</a> a reflection effect for an object</li>
+                        <li><a href="rotate or skew boxes">csstransforms</a> ability to scale</li>
+                        <li><a href="https://developer.mozilla.org/en/CSS/CSS_transitions">csstransitions</a> ability to animate changes to <span class="caps">CSS</span> properties</li>
+                        <li><a href="http://code.google.com/webfonts">fontface</a> ability to use custom fonts</li>
+                        <li><a href="http://www.css3.info/preview/multiple-backgrounds/">multiplebgs</a> ability to define multiple background properties for a box</li>
+                        <li><a href="http://www.css3.info/preview/opacity/">opacity</a> transparency support</li>
+                        <li><a href="http://www.css3.info/preview/rgba/">rgba</a> allows to specify an opacity value for a color</li>
+                        <li><a href="http://www.css3.info/preview/text-shadow/">textshadow</a> a simple shadow for a text</li>
+                    </ul>
+                    <p>
+                        You can detect more with <code>head.feature()</code> call. Here we detect <span class="caps">HTML5</span> video support.
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="nx">head</span><span class="p">.</span><span class="nx">feature</span><span class="p">(</span><span class="s2">&quot;video&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span><br />    <span class="kd">var</span> <span class="nx">tag</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;video&#39;</span><span class="p">);</span><br />    <span class="k">return</span> <span class="o">!!</span><span class="nx">tag</span><span class="p">.</span><span class="nx">canPlayType</span><span class="p">;</span><br /><span class="p">});</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption>JavaScript</figcaption>
+                        </figure>
+                    </p>
+                    <p>
+                        <a href="https://github.com/Modernizr/Modernizr/tree/master/feature-detects">Modernizr</a>
+                        is an excellent source of tests.
+                    </p>
+                </article>
+                
+                <article>
+                    <h2>JavaScript Feature Detection <a name="global-var"></a></h2>
+                    <p>
+                        Every feature can be found from th <code>head</code> global JavaScript variable. Here is
+                        a screenshot:
+                    </p>
+                    <p>
+                        <img alt="Head JS global JavaScript variable" src="media/img/global-var.gif" />
+                    </p>
+                </article>
+                
+                
+                <article>
+                    <h2>Browser Detection <a name="browser"></a> / Graceful Degradation</h2>
+                    <p>
+                        Target <span class="caps">CSS</span> for a specific browser. For example
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="c">/<em> <span class="caps">CSS</span> for <span class="caps">IE</span> version 7 and below </em>/</span><br /><span class="nc">.lt-ie8</span> <span class="nc">.box</span> <span class="p">{</span> <span class="k">padding</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span> <span class="p">}</span><br />&nbsp;<br /><span class="c">/<em> <span class="caps">CSS</span> for <span class="caps">IE6</span> only </em>/</span><br /><span class="nc">.ie6</span> <span class="nt">ul</span>  <span class="p">{</span> <span class="k">list-style</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span> <span class="p">}</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption><span class="caps">CSS</span></figcaption>
+                        </figure>
+                    </p>
+                    <p>List of supported class names for various browsers</p>
+                    <ul>
+                        <li><code>ie</code> Internet Explorer</li>
+                        <li><code>webkit</code> Webkit based browsers such as Safari and Chrome</li>
+                        <li><code>opera</code> Opera</li>
+                        <li><code>mozilla</code> Mozilla based browsers such as Firefox</li>
+                    </ul>
+                    <p>
+                        There are additional &#8220;less than&#8221; helper classes for <span class="caps">IE</span>.
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="o">//</span> <span class="nt">tweak</span> <span class="nt"><span class="caps">CSS</span></span> <span class="nt">for</span> <span class="nt"><span class="caps">IE</span></span> <span class="nt">versions</span> <span class="nt">5</span> <span class="nt">and</span> <span class="nt">below</span><br /><span class="nc">.ie-lt6</span> <span class="nt">li</span> <span class="p">{</span><br />   <span class="k">list-style-type</span><span class="o">:</span> <span class="k">circle</span><span class="p">;</span><br /><span class="p">}</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption><span class="caps">CSS</span></figcaption>
+                        </figure>
+                    </p>
+                    <p>
+                        Versions 3 - 10 are covered. It is best to avoid browser detection if you are
+                        able to do feature detection. Sometimes it&#8217;s not possible especially when it
+                        comes to <span class="caps">IE</span>.
+                    </p>
+                </article>
+                
+                
+                <article>
+                    <h2><span class="caps">HTML5</span> Enabler</h2>
+                    <p>
+                        Head <span class="caps">JS</span> adds <span class="caps">HTML5</span> support for all browsers:
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="nt">&lt;style&gt;</span><br />   <span class="nt">article</span> <span class="p">{</span> <span class="k">text-shadow</span><span class="o">:</span><span class="m">0</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">#ccc</span><span class="p">;</span> <span class="p">}</span><br /><span class="nt">&lt;/style&gt;</span><br />&nbsp;<br /><span class="c">&lt;!-- works in <span class="caps">IE</span> too --&gt;</span><br /><span class="nt">&lt;article&gt;</span><br />   <span class="nt">&lt;header&gt;&lt;/header&gt;</span><br />   <span class="nt">&lt;section&gt;&lt;/section&gt;</span><br />   <span class="nt">&lt;footer&gt;&lt;/footer&gt;</span><br /><span class="nt">&lt;/article&gt;</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption><span class="caps">HTML</span></figcaption>
+                        </figure>
+                    </p>
+                    <h4>List of new tags</h4>
+                    <ul>
+                        <li><a href="http://developers.whatwg.org/text-level-semantics.html#the-abbr-element">abbr</a> an abbrevation</li>
+                        <li><a href="http://developers.whatwg.org/sections.html#the-article-element">article</a> defines external content</li>
+                        <li><a href="http://developers.whatwg.org/sections.html#the-aside-element">aside</a> defines some content aside from the content it is placed in</li>
+                        <li><a href="http://developers.whatwg.org/video.html#audio">audio</a> defines sound, such as music or other audio streams.</li>
+                        <li><a href="http://developers.whatwg.org/the-canvas-element.html#the-canvas-element">canvas</a> a container for javascript graphics</li>
+                        <li><a href="http://developers.whatwg.org/interactive-elements.html#the-details-element">details</a> describe details about a document, or parts of a document</li>
+                        <li><a href="http://developers.whatwg.org/grouping-content.html#the-figcaption-element">figcaption</a> contains a caption for the &#8220;figure&#8221; element</li>
+                        <li><a href="http://developers.whatwg.org/grouping-content.html#the-figcaption-element">figure</a> stand-alone content, typically used to explain parts of a document</li>
+                        <li><a href="http://developers.whatwg.org/sections.html#the-footer-element">footer</a> defines the footer of a section or document</li>
+                        <li><a href="http://developers.whatwg.org/sections.html#the-header-element">header</a> defines the header of a section or document</li>
+                        <li><a href="http://developers.whatwg.org/sections.html#the-hgroup-element">hgroup</a> defines the heading of a section or a document.</li>
+                        <li><a href="http://developers.whatwg.org/text-level-semantics.html#the-mark-element">mark</a> tag defines marked or highlighted text</li>
+                        <li><a href="http://developers.whatwg.org/the-button-element.html#the-meter-element">meter</a> for measurements with a known minimum and maximum value</li>
+                        <li><a href="http://developers.whatwg.org/sections.html#the-nav-element">nav</a> a section intended for navigation</li>
+                        <li><a href="http://developers.whatwg.org/the-button-element.html#the-output-element">output</a> defines different types of output, such as output written by a script</li>
+                        <li><a href="http://developers.whatwg.org/the-button-element.html#the-progress-element">progress</a> display the progress of a time consuming function in JavaScript.</li>
+                        <li><a href="http://developers.whatwg.org/sections.html#the-section-element">section</a> defines sections in a document such as chapters, headers, footers, or any other sections of the document.</li>
+                        <li><a href="http://developers.whatwg.org/interactive-elements.html#the-summary-element">summary</a> contains a header for the &#8220;details&#8221; element</li>
+                        <li><a href="http://html5doctor.com/the-time-element/">time</a> defines a time or a date, or both.</li>
+                        <li><a href="http://developers.whatwg.org/video.html#video">video</a> defines video, such as a movie clip or other video streams</li>
+                    </ul>
+                    <p>
+                        <span class="caps">IE</span> has problems printing <span class="caps">HTML5</span> elements. You can fix that by loading a
+                        <a href="http://www.iecss.com/print-protector/">print protector</a> script on your page:
+                        <figure class="code">
+                            <div class="highlight">
+                                <pre><span class="k">if</span> <span class="p">(</span><span class="nx">head</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">ie</span><span class="p">)</span>  <span class="p">{</span><br />   <span class="nx">head</span><span class="p">.</span><span class="nx">js</span><span class="p">(</span><span class="s2">&quot;http://www.iecss.com/print-protector/javascript/iepp.1-6-2.min.js&quot;</span><span class="p">);</span><br /><span class="p">}</span><br /></pre>
+                            </div>
+                            <br />
+                            <figcaption>JavaScript</figcaption>
+                        </figure>
+                    </p>
+                    <h3>Sounds great !?</h3>
+                    <p>
+                        <a href="http://www.truthabouthtml5.com"  style="float: left; padding: 0 5px 0 0; "><img src="media/img/truth-about-html5.jpg" /></a>
+                        The truth is the stories you hear about <strong>HTML5</strong> are greatly over-exaggerated. If you're really interested in the good, the bad & the ugly about <strong>HTML5</strong>, i strongly urge you to read <em><a href="http://www.truthabouthtml5.com">The Truth about HTML5</a></em>
+                    </p>
+                </article>
+            </section>
+            
+            
+            <h1>API</h1>
+            <section id="api">
+                <h2>Method index</h2>
+                <h3>head.js(file1 &#8230; fileN, [callback])</h3>
+                <p>
+                    Immediately loads given javascript files and and executes them in the <em>order</em>
+                    they are supplied. if the last argument is a function it is called after all
+                    files are loaded and executed. Each file is either a string representing
+                    relative or absolute path of a JavaScript file.
+                </p>
+                <p>
+                    Alternatively each file can be given as an object taking a form: <code>{ label:
+                    file_path }</code>. The labels are a handy way to hide the actual file path from the
+                    content writers. See the <code>ready</code> method below.
+                </p>
+                <h3>head.ready(callback)</h3>
+                <p>
+                    Executes the given callback after <em>all</em> JavaScript files have been loaded and
+                    the document is scriptable (<span class="caps">DOM</span> is ready).
+                </p>
+                <h3>head.ready(path_or_label, callback)</h3>
+                <p>Execute the callback immediately after the given file or label is loaded and executed</p>
+                <h3>head(callback), head(path_or_label, callback)</h3>
+                <p>A convenience shortcut for head.ready</p>
+                <h3>head.ready(document, callback)</h3>
+                <p>
+                    Executes the given callback when document is ready. This is identical to
+                    jQuery&#8217;s <a href="http://api.jquery.com/ready/">.ready()</a> method. <code>document</code> is
+                    a global variable representing the current document in a browser.
+                </p>
+                <h3>head.feature(name, flag)</h3>
+                <p>
+                    Enable or disable a feature. features are stored as a class name to <code>&lt;html&gt;</code>
+                    element and on global <code>head</code> variable. if the flag arguments evaluates to
+                    <code>true</code> a feature is enabled. Call this method in your <span class="caps">HEAD</span> before the
+                    stylesheets are loaded.
+                </p>
+                <h2>Configuration</h2>
+                <p>
+                    HeadJS is configured with a global <code>head_conf</code> variable <em>before</em> the script is
+                    loaded. For example:
+                    <figure class="code">
+                        <div class="highlight">
+                            <pre><span class="nt">&lt;script&gt;</span><br /><span class="kd">var</span> <span class="nx">head_conf</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">screens</span><span class="o">:</span> <span class="p">[</span><span class="mi">640</span><span class="p">,</span> <span class="mi">1024</span><span class="p">,</span> <span class="mi">1280</span><span class="p">,</span> <span class="mi">1680</span><span class="p">]</span> <span class="p">};</span><br /><span class="nt">&lt;/script&gt;</span><br />&nbsp;<br /><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;/js/head.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span><br /></pre>
+                        </div>
+                        <br />
+                        <figcaption><span class="caps">HTML</span></figcaption>
+                    </figure>
+                </p>
+                <p>List of configuration variables</p>
+                <ul>
+                    <li><code>head</code>: ability to change global variable name. default: &#8220;head&#8221;. Set to
+                    &#8220;<span class="caps">JS</span>&#8221; and you can <code>JS.ready()</code> for example</li>
+                    <li><code>screens</code>: an array of screen sizes to watch for</li>
+                    <li><code>section</code>: a suffix for <span class="caps">CSS</span> class representing the current &#8220;folder&#8221;. default: &#8221;-section&#8221;</li>
+                    <li><code>page</code>: a suffix for <span class="caps">CSS</span> <span class="caps">ID</span> representing the current page. default: &#8221;-page&#8221;</li>
+                </ul>
+            </section>
+            
+            
+            <h1>Download</h1>
+            <section id="download">
+                <h2>Version 0.99</h2>
+                <table>
+                    <tr>
+                        <td><a href="https://github.com/headjs/headjs/raw/v0.99/dist/head.min.js" target="_blank" onclick="trackPageView('download/head.min.js')">head.min.js</a></td>
+                        <td>Full Bundle</td>
+                        <td><small><em><strong>4.1K</strong> (minified &amp; gzipped)</em></small></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://github.com/headjs/headjs/raw/v0.99/dist/head.core.min.js" target="_blank" onclick="trackPageView('download/head.core.min.js')">head.core.min.js</a></td>
+                        <td>Responsive Design & Feature Detection Only</td>
+                        <td><small><em><strong>1.8K</strong> (minified &amp; gzipped)</em></small></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://github.com/headjs/headjs/raw/v0.99/dist/head.load.min.js" target="_blank" onclick="trackPageView('download/head.load.min.js')">head.load.min.js</a></td>
+                        <td>JavaScript Loader Only</td>
+                        <td><small><em><strong>1.9K</strong> (minified &amp; gzipped)</em></small></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://github.com/headjs/headjs" onclick="trackPageView('github.com')">Github Repository</a></td>
+                        <td colspan="2">Source Code</td>
+                    </tr>
+                </table>
+                
+                <p>
+                    <strong>* <a href="https://github.com/headjs/headjs/blob/master/changelog.txt">Release notes</a></strong>
+                </p>
+                <p>
+                    <strong><em><a href="test/unit/index.html" target="_blank" onclick="trackPageView('test/unit')">Unit Tests / BrowserScope Results</a></em></strong>
+                </p>
+                
+                <h4>Spread the word</h4>
+                <p>
+                    <script type="IN/Share"></script>
+                    <a href="https://twitter.com/share" class="twitter-share-button" data-via="headjs" data-count="none">Tweet</a>
+                    <span class="g-plusone" data-size="medium" data-href="http://headjs.com" data-count="false"></span>
+                </p>
+                <hr />
+                <h3>Issues</h3>
+                <p>
+                    There is no way to detect if script loading failed in <span class="caps">IE</span>. For that reason a
+                    feature such as <code>head.error()</code> is impossible to implement. When a script <span class="caps">URL</span>
+                    cannot be accessed Head <span class="caps">JS</span> is silent.
+                </p>
+                <h2>Future</h2>
+                <p>
+                    Head <span class="caps">JS</span> is rapidly being adopted by a large number of websites all the time. A
+                    quick <a href="http://twitter.com/search?q=headjs">Twitter search</a> reveals that it&#8217;s
+                    becoming a core client side development tool for many. The strategy is to keep Head <span class="caps">JS</span>
+                    as minimalistic as possible.
+                </p>
+            </section>
+        </div>
+    </div>
+    <footer>
+        <a href="http://cloudpanic.com/about.html" target="_blank">Created By: <strong>Tero Piirainen</strong></a> &bull;
+        <a href="http://twitter.com/search?q=headjs" target="_blank">Twitter Talk</a> &bull;
+        <a href="http://headjs.uservoice.com" target="_blank">Vote for & discuss features</a> &bull;
+        <a href="http://stackoverflow.com/questions/tagged/head.js?sort=newest" target="_blank">Ask questions & find answers</a> &bull;
+        <a href="https://github.com/headjs/headjs/issues">Report a bug</a>
+    </footer>
+    <script>
+        head.js("http://www.google-analytics.com/ga.js", "http://platform.linkedin.com/in.js", "http://platform.twitter.com/widgets.js", "https://apis.google.com/js/plusone.js");
+    </script>
+</body>
+</html>

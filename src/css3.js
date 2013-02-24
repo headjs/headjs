@@ -1,35 +1,37 @@
-/**
-    Head JS     The only script in your <HEAD>
-    Copyright   Tero Piirainen (tipiirai)
-    License     MIT / http://bit.ly/mit-license
-    Version     0.96
+/*!
+ * HeadJS     The only script in your <HEAD>    
+ * Author     Tero Piirainen  (tipiirai)
+ * Maintainer Robert Hoffmann (itechnology)
+ * License    MIT / http://bit.ly/mit-license
+ *
+ * Version 0.99
+ * http://headjs.com
+ */
+;(function(win, undefined) {
+    "use strict";
 
-    http://headjs.com
-*/
-(function() {
-    /*
-        To add a new test:
+    var doc = win.document,
+        /*
+            To add a new test:
 
-        head.feature("video", function() {
-            var tag = document.createElement('video');
-            return !!tag.canPlayType;
-        });
+            head.feature("video", function() {
+                var tag = document.createElement('video');
+                return !!tag.canPlayType;
+            });
 
-        Good place to grab more tests
+            Good place to grab more tests
 
-        https://github.com/Modernizr/Modernizr/blob/master/modernizr.js
-    */
+            https://github.com/Modernizr/Modernizr/blob/master/modernizr.js
+        */
 
-
-    /* CSS modernizer */
-    var el = document.createElement("i"),
-         style = el.style,
-         prefs = ' -o- -moz- -ms- -webkit- -khtml- '.split(' '),
+        /* CSS modernizer */
+         el       = doc.createElement("i"),
+         style    = el.style,
+         prefs    = ' -o- -moz- -ms- -webkit- -khtml- '.split(' '),
          domPrefs = 'Webkit Moz O ms Khtml'.split(' '),
 
-         head_var = window.head_conf && head_conf.head || "head",
-         api = window[head_var];
-
+         headVar = win.head_conf && win.head_conf.head || "head",
+         api     = win[headVar];
 
      // Thanks Paul Irish!
     function testProps(props) {
@@ -38,22 +40,23 @@
                 return true;
             }
         }
+
+        return false;
     }
 
 
     function testAll(prop) {
         var camel = prop.charAt(0).toUpperCase() + prop.substr(1),
-             props   = (prop + ' ' + domPrefs.join(camel + ' ') + camel).split(' ');
+            props = (prop + ' ' + domPrefs.join(camel + ' ') + camel).split(' ');
 
         return !!testProps(props);
     }
 
     var tests = {
-
         gradient: function() {
             var s1 = 'background-image:',
-                 s2 = 'gradient(linear,left top,right bottom,from(#9f9),to(#fff));',
-                 s3 = 'linear-gradient(left top,#eee,#fff);';
+                s2 = 'gradient(linear,left top,right bottom,from(#9f9),to(#fff));',
+                s3 = 'linear-gradient(left top,#eee,#fff);';
 
             style.cssText = (s1 + prefs.join(s2 + s1) + prefs.join(s3 + s1)).slice(0,-s1.length);
             return !!style.backgroundImage;
@@ -100,28 +103,45 @@
         csstransitions: function() {
             return testAll("transition");
         },
+        touch: function () {
+            return 'ontouchstart' in win;
+        },
+        retina: function () {
+            return (win.devicePixelRatio > 1);
+        },        
 
         /*
             font-face support. Uses browser sniffing but is synchronous.
-
             http://paulirish.com/2009/font-face-feature-detection/
         */
         fontface: function() {
-            var ua = navigator.userAgent, parsed;
+            var browser = api.browser.name, version = api.browser.version;
 
-            if (/*@cc_on@if(@_jscript_version>=5)!@end@*/0)
-                return true;
-                
-            if (parsed = ua.match(/Chrome\/(\d+\.\d+\.\d+\.\d+)/))
-                return parsed[1] >= '4.0.249.4' || 1 * parsed[1].split(".")[0] > 5;
-            if ((parsed = ua.match(/Safari\/(\d+\.\d+)/)) && !/iPhone/.test(ua))
-                return parsed[1] >= '525.13';
-            if (/Opera/.test({}.toString.call(window.opera)))
-                return opera.version() >= '10.00';
-            if (parsed = ua.match(/rv:(\d+\.\d+\.\d+)[^b].*Gecko\//))
-                return parsed[1] >= '1.9.1';
+            switch (browser) {
+                case "ie":
+                    return version >= 9;
 
-            return false;
+                case "chrome":
+                    return version >= 13;
+
+                case "ff":
+                    return version >= 6;
+
+                case "ios":
+                    return version >= 5;
+
+                case "android":
+                    return false;
+
+                case "webkit":
+                    return version >= 5.1;
+
+                case "opera":
+                    return version >= 10;
+
+                default:
+                    return false;
+            }
         }
     };
 
@@ -135,6 +155,4 @@
     // enable features at once
     api.feature();
 
-})();
-
-
+})(window);

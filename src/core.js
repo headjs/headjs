@@ -1,27 +1,45 @@
-/**
-    Head JS     The only script in your <HEAD>
-    Copyright   Tero Piirainen (tipiirai)
-    License     MIT / http://bit.ly/mit-license
-    Version     0.96
+﻿/*!
+ * HeadJS     The only script in your <HEAD>    
+ * Author     Tero Piirainen  (tipiirai)
+ * Maintainer Robert Hoffmann (itechnology)
+ * License    MIT / http://bit.ly/mit-license
+ *
+ * Version 0.99
+ * http://headjs.com
+ */
+; (function (win, undefined) {
+    "use strict";
 
-    http://headjs.com
-*/
-(function(doc) {
+    // gt, gte, lt, lte, eq breakpoints would have been more simple to write as ['gt','gte','lt','lte','eq']
+    // but then we would have had to loop over the collection on each resize() event,
+    // a simple object with a direct access to true/false is therefore much more efficient
+    var doc   = win.document,
+        nav   = win.navigator,
+        loc   = win.location,
+        html  = doc.documentElement,
+        klass = [],
+        conf  = {
+            screens   : [240, 320, 480, 640, 768, 800, 1024, 1280, 1440, 1680, 1920],            
+            screensCss: { "gt": true, "gte": false, "lt": true, "lte": false, "eq": false },
+            browsers  : [
+                          { ie     : { min: 6, max: 10 } }
+                       //,{ chrome : { min: 8, max: 24 } }
+                       //,{ ff     : { min: 3, max: 19 } }
+                       //,{ ios    : { min: 3, max:  6 } }
+                       //,{ android: { min: 2, max:  4 } }
+                       //,{ webkit : { min: 9, max: 12 } }
+                       //,{ opera  : { min: 9, max: 12 } }
+                        ],
+            browserCss: { "gt": true, "gte": false, "lt": true, "lte": false, "eq": true },
+            section   : "-section",
+            page      : "-page",
+            head      : "head"
+        };
 
-    var html = doc.documentElement,
-         conf = {
-            screens: [320, 480, 640, 768, 1024, 1280, 1440, 1680, 1920],
-            section: "-section",
-            page: "-page",
-            head: "head"
-         },
-         klass = [];
-
-
-    if (window.head_conf) {
-        for (var key in head_conf) {
-            if (head_conf[key] !== undefined) {
-                conf[key] = head_conf[key];
+    if (win.head_conf) {
+        for (var item in win.head_conf) {
+            if (win.head_conf[item] !== undefined) {
+                conf[item] = win.head_conf[item];
             }
         }
     }
@@ -36,26 +54,26 @@
     }
 
     function each(arr, fn) {
-        for (var i = 0, arr_length = arr.length; i < arr_length; i++) {
+        for (var i = 0, l = arr.length; i < l; i++) {
             fn.call(arr, arr[i], i);
         }
     }
 
     // API
-    var api = window[conf.head] = function() {
+    var api = win[conf.head] = function () {
         api.ready.apply(null, arguments);
     };
 
-    api.feature = function(key, enabled, queue) {
+    api.feature = function (key, enabled, queue) {
 
         // internal: apply all classes
         if (!key) {
-            html.className += ' ' + klass.join( ' ' );
+            html.className += ' ' + klass.join(' ');
             klass = [];
-            return;
+            return api;
         }
 
-        if (Object.prototype.toString.call(enabled) == '[object Function]') {
+        if (Object.prototype.toString.call(enabled) === '[object Function]') {
             enabled = enabled.call();
         }
 
@@ -72,84 +90,212 @@
         return api;
     };
 
+    // no queue here, so we can remove any eventual pre-existing no-js class
+    api.feature("js", true);
+
     // browser type & version
-    var ua = navigator.userAgent.toLowerCase();
+    var ua     = nav.userAgent.toLowerCase(),
+        mobile = /mobile|midp/.test(ua);
 
-    ua = /(webkit)[ \/]([\w.]+)/.exec( ua ) ||
-        /(opera)(?:.*version)?[ \/]([\w.]+)/.exec( ua ) ||
-        /(msie) ([\w.]+)/.exec( ua ) ||
-        !/compatible/.test( ua ) && /(mozilla)(?:.*? rv:([\w.]+))?/.exec( ua ) || [];
+    // useful for enabling/disabling feature (we can consider a desktop navigator to have more cpu/gpu power)        
+    api.feature("mobile" , mobile , true);
+    api.feature("desktop", !mobile, true);
+
+    // http://www.zytrax.com/tech/web/browser_ids.htm
+    // http://www.zytrax.com/tech/web/mobile_ids.html
+    ua = /(chrome|firefox)[ \/]([\w.]+)/.exec(ua) || // Chrome & Firefox
+         /(iphone|ipad|ipod)(?:.*version)?[ \/]([\w.]+)/.exec(ua) || // Mobile IOS
+         /(android)(?:.*version)?[ \/]([\w.]+)/.exec(ua) || // Mobile Webkit
+         /(webkit|opera)(?:.*version)?[ \/]([\w.]+)/.exec(ua) || // Safari & Opera
+         /(msie) ([\w.]+)/.exec(ua) || [];
 
 
-    if (ua[1] == 'msie') {
-        ua[1] = 'ie';
-        ua[2] = document.documentMode || ua[2];
+    var browser = ua[1],
+        version = parseFloat(ua[2]);    
+    
+    switch (browser) {
+        case 'msie':
+            browser = 'ie';
+            version = doc.documentMode || version;
+            break;
+
+        case 'firefox':
+            browser = 'ff';
+            break;
+
+        case 'ipod':
+        case 'ipad':
+        case 'iphone':
+            browser = 'ios';
+            break;
+
+        case 'webkit':
+            browser = 'safari';
+            break;
     }
 
-    pushClass(ua[1]);
 
-    api.browser = { version: ua[2] };
-    api.browser[ua[1]] = true;
+    // Browser vendor and version
+    api.browser = {
+        name   : browser,
+        version: version
+    };
+    api.browser[browser] = true;
 
-    // IE specific
-    if (api.browser.ie) {
+    for (var i = 0, l = conf.browsers.length; i < l; i++) {
+        for (var key in conf.browsers[i]) {            
+            if (browser === key) {
+                pushClass(key);
 
-        pushClass("ie" + parseFloat(ua[2]));
+                var min = conf.browsers[i][key].min;
+                var max = conf.browsers[i][key].max;
 
-        // IE versions
-        for (var ver = 3; ver < 11; ver++) {
-            if (parseFloat(ua[2]) < ver) { pushClass("lt-ie" + ver); }
+                for (var v = min; v <= max; v++) {
+                    if (version > v) {
+                        if (conf.browserCss["gt"])
+                            pushClass("gt-" + key + v);
+
+                        if (conf.browserCss["gte"])
+                            pushClass("gte-" + key + v);
+        }
+                    
+                    else if (version < v) {
+                        if (conf.browserCss["lt"])
+                            pushClass("lt-" + key + v);
+                        
+                        if (conf.browserCss["lte"])
+                            pushClass("lte-" + key + v);
         }
 
-        // HTML5 support
-        each("abbr|article|aside|audio|canvas|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|summary|time|video".split("|"), function(el) {
+                    else if (version === v) {
+                        if (conf.browserCss["lte"])
+                            pushClass("lte-" + key + v);
+                        
+                        if (conf.browserCss["eq"])
+                            pushClass("eq-" + key + v);
+
+                        if (conf.browserCss["gte"])
+                            pushClass("gte-" + key + v);
+                    }
+                }
+            }
+            else {
+                pushClass('no-' + key);
+            }
+        }
+    }
+
+
+    // IE lt9 specific
+    if (browser === "ie" && version < 9) {
+        // HTML5 support : you still need to add html5 css initialization styles to your site
+        // See: assets/html5.css
+        each("abbr|article|aside|audio|canvas|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|summary|time|video".split("|"), function (el) {
             doc.createElement(el);
         });
-                
     }
-    
+
 
     // CSS "router"
-    each(location.pathname.split("/"), function(el, i) {
-
+    each(loc.pathname.split("/"), function (el, i) {
         if (this.length > 2 && this[i + 1] !== undefined) {
-            if (i) { pushClass(this.slice(1, i+1).join("-") + conf.section); }
-
+            if (i) {
+                pushClass(this.slice(1, i + 1).join("-").toLowerCase() + conf.section);
+            }
         } else {
-
             // pageId
             var id = el || "index", index = id.indexOf(".");
-            if (index > 0) { id = id.substring(0, index); }
-            html.id = id + conf.page;
+            if (index > 0) {
+                id = id.substring(0, index);
+            }
+
+            html.id = id.toLowerCase() + conf.page;
 
             // on root?
-            if (!i) { pushClass("root" + conf.section); }
-      }
+            if (!i) {
+                pushClass("root" + conf.section);
+            }
+        }
     });
 
 
-    // screen resolution: w-100, lt-480, lt-1024 ...
+    // basic screen info
+    api.screen = {
+        height: win.screen.height,
+        width : win.screen.width
+    };
+
+    // viewport resolutions: w-100, lt-480, lt-1024 ...
     function screenSize() {
-        var w = window.outerWidth || html.clientWidth;
+        // remove earlier sizes
+        html.className = html.className.replace(/ (w-|eq-|gt-|gte-|lt-|lte-|portrait|no-portrait|landscape|no-landscape)\d+/g, "");
 
-        // remove earlier widths
-        html.className = html.className.replace(/ (w|lt)-\d+/g, "");
+        // Viewport width
+        var iw = win.innerWidth || html.clientWidth,
+            ow = win.outerWidth || win.screen.width;
+        
+        api.screen['innerWidth'] = iw;
+        api.screen['outerWidth'] = ow;
+        
+        // for debugging purposes, not really useful for anything else
+        pushClass("w-" + iw);
 
-        // add new ones
-        pushClass("w-" + Math.round(w / 100) * 100);
+        each(conf.screens, function (width) {
+            if (iw > width) {
+                if (conf.screensCss["gt"])
+                    pushClass("gt-" + width);
+                
+                if (conf.screensCss["gte"])
+                    pushClass("gte-" + width);
+            }
 
-        each(conf.screens, function(width) {
-            if (w <= width) { pushClass("lt-" + width); }
+            else if (iw < width) {
+                if (conf.screensCss["lt"])
+                    pushClass("lt-" + width);
+                
+                if (conf.screensCss["lte"])
+                    pushClass("lte-" + width);
+            }
+
+            else if (iw === width) {
+                if (conf.screensCss["lte"])
+                    pushClass("lte-" + width);
+
+                if (conf.screensCss["eq"])
+                    pushClass("e-q" + width);
+
+                if (conf.screensCss["gte"])
+                    pushClass("gte-" + width);
+            }
         });
+        
 
-        api.feature();
+        // Viewport height
+        var ih = win.innerHeight || html.clientHeight,
+            oh = win.outerHeight || win.screen.height;
+
+        api.screen['innerHeight'] = ih;
+        api.screen['outerHeight'] = oh;
+             
+        // no need for onChange event to detect this
+        api.feature("portrait" , (ih > iw));
+        api.feature("landscape", (ih < iw));
     }
 
     screenSize();
-    window.onresize = screenSize;
 
-    api.feature("js", true).feature();
+    // Throttle navigators from triggering too many resize events
+    var resizeId = 0;
+    function onResize() {
+        win.clearTimeout(resizeId);
+        resizeId = win.setTimeout(screenSize, 100);
+    }
 
-})(document);
+    // Manually attach, as to not overwrite existing handler
+    if (win.addEventListener) {
+        win.addEventListener("resize", onResize, false);
 
-
+    } else {
+        win.attachEvent("onresize", onResize);
+    }
+})(window);
