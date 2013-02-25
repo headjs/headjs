@@ -193,7 +193,7 @@
     }
     
     pushClass(browser);
-    pushClass(browser + parseInt(version));
+    pushClass(browser + parseInt(version, 10));
 
 
 

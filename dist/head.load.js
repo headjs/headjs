@@ -444,7 +444,7 @@
          */
 
         // ASYNC: load in parellel and execute as soon as possible
-        ele.async = asset.async || false;
+        ele.async = !!asset.async;
         // DEFER: load in parallel but maintain execution order
         ele.defer = false;
 
@@ -592,7 +592,7 @@
         var top = false;
 
         try {
-            top = win.frameElement == null && doc.documentElement;
+            top = win.frameElement === null && doc.documentElement;
         } catch (e) { }
 
         if (top && top.doScroll) {
