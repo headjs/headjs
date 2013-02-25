@@ -365,7 +365,7 @@
         if (asset.state === undefined) {
 
             asset.state     = PRELOADING;
-            asset.onpreload = [callback];
+            asset.onpreload = callback ? [callback] : [];
 
             loadAsset({ url: asset.url, type: 'cache' }, function () {
                 onPreload(asset);
