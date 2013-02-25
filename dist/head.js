@@ -565,7 +565,7 @@
                  * If caching is not configured correctly on the server, then items could load twice !
                  *************************************************************************************/
                 each(rest, function (item) {
-                    if (!isFunction(item)) {
+                    if (!isFunction(item) && item !== '') {
                         preLoad(getAsset(item));
                     }
                 });
