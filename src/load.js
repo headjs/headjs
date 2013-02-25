@@ -314,11 +314,11 @@
 
         if (typeof item === 'object') {
             for (var label in item) {
-                if (!!item[label] && label !== '$async' ) {
+                if (!!item[label] && label !== 'async' ) {
                     asset = {
                         name : label,
                         url  : item[label],
-                        async: item['$async']
+                        async: item['async']
                     };
                 }
             }

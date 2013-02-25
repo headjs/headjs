@@ -95,7 +95,7 @@
 
     // browser type & version
     var ua     = nav.userAgent.toLowerCase(),
-        mobile = /mobile|midp/.test(ua);
+        mobile = /mobile|midp|(windows nt 6\.2.+arm|touch)/.test(ua);
 
     // useful for enabling/disabling feature (we can consider a desktop navigator to have more cpu/gpu power)        
     api.feature("mobile" , mobile , true);
@@ -191,6 +191,10 @@
             }
         }
     }
+    
+    pushClass(browser);
+    pushClass(browser + parseInt(version));
+
 
 
     // IE lt9 specific

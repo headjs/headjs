@@ -95,7 +95,7 @@
 
     // browser type & version
     var ua     = nav.userAgent.toLowerCase(),
-        mobile = /mobile|midp/.test(ua);
+        mobile = /mobile|midp|(windows nt 6\.2.+arm|touch)/.test(ua);
 
     // useful for enabling/disabling feature (we can consider a desktop navigator to have more cpu/gpu power)        
     api.feature("mobile" , mobile , true);
@@ -191,6 +191,10 @@
             }
         }
     }
+    
+    pushClass(browser);
+    pushClass(browser + parseInt(version));
+
 
 
     // IE lt9 specific
@@ -524,7 +528,7 @@
                     item             = getAsset(item);
                     items[item.name] = item;
 
-                    load(item, callback && i === args.length - 2 ? function () {
+                    load(item, callback && (item.async || i === args.length - 2) ? function () {
                         if (allLoaded(items)) {
                             one(callback);
                         }
@@ -636,7 +640,8 @@
         ///    head.ready(callBack)
         ///    head.ready(document , callBack)
         ///    head.ready("file.js", callBack);
-        ///    head.ready("label"  , callBack);        
+        ///    head.ready("label"  , callBack);
+        ///    head.ready(["label1", "label2"], callback);
         ///</summary>
 
         // DOM ready check: head.ready(document, function() { });
@@ -655,6 +660,22 @@
         if (isFunction(key)) {
             callback = key;
             key      = "ALL";
+        }
+
+        // queue all items from key and return. The callback will be executed if all items from key are already loaded.
+        if (isArray(key)) {
+            var items = {};
+
+            each(key, function (item) {
+
+                items[item] = assets[item];
+                api.ready(item, function() {
+                    allLoaded(items) && one(callback);
+                });
+
+            });
+
+            return api;
         }
 
         // make sure arguments are sane
@@ -771,10 +792,11 @@
 
         if (typeof item === 'object') {
             for (var label in item) {
-                if (!!item[label]) {
+                if (!!item[label] && label !== 'async' ) {
                     asset = {
-                        name: label,
-                        url : item[label]
+                        name : label,
+                        url  : item[label],
+                        async: item['async']
                     };
                 }
             }
@@ -821,7 +843,7 @@
         if (asset.state === undefined) {
 
             asset.state     = PRELOADING;
-            asset.onpreload = [];
+            asset.onpreload = [callback];
 
             loadAsset({ url: asset.url, type: 'cache' }, function () {
                 onPreload(asset);
@@ -900,7 +922,7 @@
          */
 
         // ASYNC: load in parellel and execute as soon as possible
-        ele.async = false;
+        ele.async = asset.async || false;
         // DEFER: load in parallel but maintain execution order
         ele.defer = false;
 
