@@ -77,6 +77,50 @@ asyncTest('jshint, jquery, knockout (trigger via label)', function () {
     });       
 });
 
+asyncTest('async option', function () {
+    expect(12);
+
+    head
+    .js(
+        {spin       : 'http://fgnass.github.com/spin.js/dist/spin.min.js',          async: true},
+        {stapes     : 'http://hay.github.com/stapes/stapes.min.js'},
+        {notificon  : 'https://raw.github.com/makeable/Notificon/master/notificon.js'},
+        {tinyDOM    : 'https://raw.github.com/ctult/TinyDOM/master/tinyDOM.min.js', async: true},
+        {underscore : 'http://underscorejs.org/underscore-min.js',                  async: true},
+        {sly        : 'https://raw.github.com/digitarald/sly/master/Sly.js'},
+
+        function(){
+            ok(!!Spinner,   "Callback: Spinner");
+            ok(!!Stapes,    "Callback: Stapes");
+            ok(!!Notificon, "Callback: Notificon");
+            ok(!!tinyDOM,   "Callback: tinyDOM");
+            ok(!!_,         "Callback: _");
+            ok(!!Sly,       "Callback: Sly");
+
+            start();
+        }
+    )
+
+    .ready(['spin', 'underscore', 'tinyDOM'], function() {
+        ok(!!Spinner, "Label: ready('spin')");
+        ok(!!_,       "Label: ready('underscore')");
+        ok(!!tinyDOM, "Label: ready('tinyDOM')");
+    })
+
+    .ready('stapes', function() {
+        QUnit.step(1, "step1 stapes");
+    })
+
+    .ready('notificon', function() {
+        QUnit.step(2, "step2 notificon");
+    })
+
+    .ready('sly', function() {
+        QUnit.step(3, "step3 sly");
+    })
+    ;
+
+});
 
 // INFO: will make had fail (and nothing else continues!) if file not exists
 asyncTest("css (load)", function () {
