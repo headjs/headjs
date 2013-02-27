@@ -307,21 +307,26 @@
         /// { 
         ///     name : label,
         ///     url  : url,
-        ///     state: state
+        ///     state: state,
+        ///     async: boolean
         /// }
         ///</summary>
         var asset = {};
 
         if (typeof item === 'object') {
+            var options = item['options'] || {};
+
             for (var label in item) {
-                if (!!item[label] && label !== 'async' ) {
+                if (!!item[label] && label !== 'options' ) {
                     asset = {
                         name : label,
                         url  : item[label],
-                        async: item['async']
+                        async: !!options['async']
                     };
+
                 }
             }
+
         }
         else {
             asset = {
