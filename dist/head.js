@@ -522,6 +522,13 @@
             if (!isFunction(callback)) {
                 callback = null;
             }
+            
+            if (isArray(args[0])) {
+                args[0].push(callback);
+                api.load.apply(null, args[0]);
+                
+                return api;
+            }
 
             each(args, function (item, i) {
                 if (item !== callback) {
@@ -555,8 +562,8 @@
                 });
 
                 return api;
-            }            
-
+            }
+            
             // multiple arguments
             if (!!next) {
                 /* Preload with text/cache hack (not good!)
@@ -565,11 +572,11 @@
                  * If caching is not configured correctly on the server, then items could load twice !
                  *************************************************************************************/
                 each(rest, function (item) {
-                    if (!isFunction(item) && item !== '') {
+                    if (!isFunction(item) && !!item) {
                         preLoad(getAsset(item));
                     }
                 });
-
+                
                 // execute
                 load(getAsset(args[0]), isFunction(next) ? next : function () {
                     api.load.apply(null, rest);
@@ -786,18 +793,24 @@
         ///     name : label,
         ///     url  : url,
         ///     state: state
+        ///     async: boolean
         /// }
         ///</summary>
         var asset = {};
 
         if (typeof item === 'object') {
+            var options = item['options'] || { };
+            
             for (var label in item) {
-                if (!!item[label] && label !== 'async' ) {
+                if (!!item[label] && label !== 'options') {
                     asset = {
                         name : label,
                         url  : item[label],
-                        async: item['async']
+                        async: !!options['async']
                     };
+                    
+                    // Inline IF, if callback is present
+                    isFunction(options['callback']) && api.ready(label, options['callback']);
                 }
             }
         }
@@ -843,7 +856,7 @@
         if (asset.state === undefined) {
 
             asset.state     = PRELOADING;
-            asset.onpreload = callback ? [callback] : [];
+            asset.onpreload = isFunction(callback) ? [callback] : [];
 
             loadAsset({ url: asset.url, type: 'cache' }, function () {
                 onPreload(asset);
@@ -854,7 +867,7 @@
     function load(asset, callback) {
         ///<summary>Used with normal loading logic</summary>
         callback = callback || noop;
-
+        
         if (asset.state === LOADED) {
             callback();
             return;
