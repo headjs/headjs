@@ -324,6 +324,7 @@
                         async: !!options['async']
                     };
 
+                    options['callback'] && api.ready(label, options['callback']);
                 }
             }
 

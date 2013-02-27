@@ -122,6 +122,63 @@ asyncTest('async option', function () {
 
 });
 
+asyncTest('callback option', function () {
+    expect(8);
+
+    function callbackSpin() {
+        QUnit.step(1, "step1 spin");
+    }
+
+    function callbackStapes() {
+        QUnit.step(2, "step2 stapes");
+    }
+
+    function callbackUnderscore() {
+        ok(!!_, "Label: ready('underscore')");
+    }
+
+    head
+    .js(
+        {
+            spin   : 'http://fgnass.github.com/spin.js/dist/spin.min.js',
+            options: {
+                callback: callbackSpin
+            }
+        },
+        {
+            stapes     : 'http://hay.github.com/stapes/stapes.min.js',
+            options: {
+                callback: callbackStapes
+            }
+        },
+        {
+            underscore : 'http://underscorejs.org/underscore-min.js',
+            options: {
+                async: true,
+                callback: callbackUnderscore
+            }
+        },
+        {
+            sly    : 'https://raw.github.com/digitarald/sly/master/Sly.js',
+            options: {
+                callback: function() {
+                    QUnit.step(3, "step3 sly");
+                }
+            }
+        },
+
+        function(){
+            ok(!!Spinner,   "Callback: Spinner");
+            ok(!!Stapes,    "Callback: Stapes");
+            ok(!!_,         "Callback: _");
+            ok(!!Sly,       "Callback: Sly");
+
+            start();
+        }
+    );
+
+});
+
 // INFO: will make had fail (and nothing else continues!) if file not exists
 asyncTest("css (load)", function () {
     expect(1);
