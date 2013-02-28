@@ -540,6 +540,22 @@
         // but insert at end of head, because otherwise if it is a stylesheet, it will not ovverride values
         head.insertBefore(ele, head.lastChild);
     }
+    
+
+    /* Parts inspired from: https://github.com/jrburke/requirejs
+    ************************************************************/
+    function init() {
+        var items =  doc.getElementsByTagName('script');
+        
+        //Look for a script with a data-head-init attribute
+        for (var i = 0, l = items.length; i < l; i++) {
+            var dataMain = items[0].getAttribute('data-head-init');
+            if (!!dataMain) {
+                api.load(dataMain);
+                return;
+            } 
+        }
+    }
 
     /* Mix of stuff from jQuery & IEContentLoaded
      * http://dev.w3.org/html5/spec/the-end.html#the-end
@@ -555,9 +571,11 @@
 
         if (!isDomReady) {
             isDomReady = true;
+            
+            init();
             each(domWaiters, function (fn) {
                 one(fn);
-            });
+            });                        
         }
     }
 
