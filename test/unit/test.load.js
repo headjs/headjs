@@ -82,11 +82,11 @@ asyncTest('async option', function () {
 
     head
     .js(
-        {spin       : 'http://fgnass.github.com/spin.js/dist/spin.min.js',          async: true},
+        {spin       : 'http://fgnass.github.com/spin.js/dist/spin.min.js',          options: {async: true} },
         {stapes     : 'http://hay.github.com/stapes/stapes.min.js'},
         {notificon  : 'https://raw.github.com/makeable/Notificon/master/notificon.js'},
-        {tinyDOM    : 'https://raw.github.com/ctult/TinyDOM/master/tinyDOM.min.js', async: true},
-        {underscore : 'http://underscorejs.org/underscore-min.js',                  async: true},
+        {tinyDOM    : 'https://raw.github.com/ctult/TinyDOM/master/tinyDOM.min.js', options: {async: true} },
+        {underscore : 'http://underscorejs.org/underscore-min.js',                  options: {async: true} },
         {sly        : 'https://raw.github.com/digitarald/sly/master/Sly.js'},
 
         function(){
@@ -119,6 +119,63 @@ asyncTest('async option', function () {
         QUnit.step(3, "step3 sly");
     })
     ;
+
+});
+
+asyncTest('callback option', function () {
+    expect(8);
+
+    function callbackSpin() {
+        QUnit.step(1, "step1 spin");
+    }
+
+    function callbackStapes() {
+        QUnit.step(2, "step2 stapes");
+    }
+
+    function callbackUnderscore() {
+        ok(!!_, "Label: ready('underscore')");
+    }
+
+    head
+    .js(
+        {
+            spin   : 'http://fgnass.github.com/spin.js/dist/spin.min.js',
+            options: {
+                callback: callbackSpin
+            }
+        },
+        {
+            stapes     : 'http://hay.github.com/stapes/stapes.min.js',
+            options: {
+                callback: callbackStapes
+            }
+        },
+        {
+            underscore : 'http://underscorejs.org/underscore-min.js',
+            options: {
+                async: true,
+                callback: callbackUnderscore
+            }
+        },
+        {
+            sly    : 'https://raw.github.com/digitarald/sly/master/Sly.js',
+            options: {
+                callback: function() {
+                    QUnit.step(3, "step3 sly");
+                }
+            }
+        },
+
+        function(){
+            ok(!!Spinner,   "Callback: Spinner");
+            ok(!!Stapes,    "Callback: Stapes");
+            ok(!!_,         "Callback: _");
+            ok(!!Sly,       "Callback: Sly");
+
+            start();
+        }
+    );
 
 });
 
