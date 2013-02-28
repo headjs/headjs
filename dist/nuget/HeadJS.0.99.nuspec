@@ -15,12 +15,12 @@
 HeadJS provides you with:
 
 * Asset Loader
-Load assets when you need them.
+Load scripts and stylesheets when you need them.
 head.load("file1.js" , "file2.js" , function() { done(); })
 head.load("file1.css", "file2.css", function() { done(); })
 
 * JavaScript Organizer
-Defer execution of functions to the bottom of the page.
+Defer execution to the bottom of page.
 head.ready(function() { imReady(); })
 
 * Responsive Design
@@ -48,7 +48,7 @@ Need to support the new HTML5 tags in older browsers ? No problem !
 
 * And more
 ..well, a little bit :-)</description>
-        <summary>Load scripts and css on demand. Achieve responsive design with CSS that targets different screen resolutions, paths, states and browsers. Detect various browsers and their features. Target HTML5 and CSS3 safely.</summary>
+        <summary>Load scripts and stylesheets on demand. Achieve responsive design with CSS that targets different screen resolutions, paths, states and browsers. Detect various browsers and their features. Target HTML5 and CSS3 safely.</summary>
         <releaseNotes />
         <copyright>Tero Piirainen</copyright>
         <language>en-US</language>

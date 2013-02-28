@@ -95,7 +95,7 @@
 
     // browser type & version
     var ua     = nav.userAgent.toLowerCase(),
-        mobile = /mobile|midp/.test(ua);
+        mobile = /mobile|midp|(windows nt 6\.2.+arm|touch)/.test(ua);
 
     // useful for enabling/disabling feature (we can consider a desktop navigator to have more cpu/gpu power)        
     api.feature("mobile" , mobile , true);
@@ -152,30 +152,37 @@
 
                 for (var v = min; v <= max; v++) {
                     if (version > v) {
-                        if (conf.browserCss["gt"])
+                        if (conf.browserCss.gt) {
                             pushClass("gt-" + key + v);
+                        }
 
-                        if (conf.browserCss["gte"])
+                        if (conf.browserCss.gte) {
                             pushClass("gte-" + key + v);
-        }
+                        }
+                    }
                     
                     else if (version < v) {
-                        if (conf.browserCss["lt"])
+                        if (conf.browserCss.lt) {
                             pushClass("lt-" + key + v);
-                        
-                        if (conf.browserCss["lte"])
+                        }
+
+                        if (conf.browserCss.lte) {
                             pushClass("lte-" + key + v);
-        }
+                        }
+                    }
 
                     else if (version === v) {
-                        if (conf.browserCss["lte"])
+                        if (conf.browserCss.lte) {
                             pushClass("lte-" + key + v);
-                        
-                        if (conf.browserCss["eq"])
-                            pushClass("eq-" + key + v);
+                        }
 
-                        if (conf.browserCss["gte"])
+                        if (conf.browserCss.eq) {
+                            pushClass("eq-" + key + v);
+                        }
+
+                        if (conf.browserCss.gte) {
                             pushClass("gte-" + key + v);
+                        }
                     }
                 }
             }
@@ -184,6 +191,10 @@
             }
         }
     }
+    
+    pushClass(browser);
+    pushClass(browser + parseInt(version, 10));
+
 
 
     // IE lt9 specific
@@ -234,38 +245,45 @@
         var iw = win.innerWidth || html.clientWidth,
             ow = win.outerWidth || win.screen.width;
         
-        api.screen['innerWidth'] = iw;
-        api.screen['outerWidth'] = ow;
+        api.screen.innerWidth = iw;
+        api.screen.outerWidth = ow;
         
         // for debugging purposes, not really useful for anything else
         pushClass("w-" + iw);
 
         each(conf.screens, function (width) {
             if (iw > width) {
-                if (conf.screensCss["gt"])
+                if (conf.screensCss.gt) {
                     pushClass("gt-" + width);
-                
-                if (conf.screensCss["gte"])
+                }
+
+                if (conf.screensCss.gte) {
                     pushClass("gte-" + width);
+                }
             }
 
             else if (iw < width) {
-                if (conf.screensCss["lt"])
+                if (conf.screensCss.lt) {
                     pushClass("lt-" + width);
-                
-                if (conf.screensCss["lte"])
+                }
+
+                if (conf.screensCss.lte) {
                     pushClass("lte-" + width);
+                }
             }
 
             else if (iw === width) {
-                if (conf.screensCss["lte"])
+                if (conf.screensCss.lte) {
                     pushClass("lte-" + width);
+                }
 
-                if (conf.screensCss["eq"])
+                if (conf.screensCss.eq) {
                     pushClass("e-q" + width);
+                }
 
-                if (conf.screensCss["gte"])
+                if (conf.screensCss.gte) {
                     pushClass("gte-" + width);
+                }
             }
         });
         
@@ -274,8 +292,8 @@
         var ih = win.innerHeight || html.clientHeight,
             oh = win.outerHeight || win.screen.height;
 
-        api.screen['innerHeight'] = ih;
-        api.screen['outerHeight'] = oh;
+        api.screen.innerHeight = ih;
+        api.screen.outerHeight = oh;
              
         // no need for onChange event to detect this
         api.feature("portrait" , (ih > iw));

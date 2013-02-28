@@ -4,7 +4,7 @@ This project was never announced. `git push` and it was all viral.
 
 ##About
   * _Load scripts and css on demand_
-  * _Achieve responsive design with CSS that targets different screen reolutions, paths, states and browsers_
+  * _Achieve responsive design with CSS that targets different screen resolutions, paths, states and browsers_
   * _Detect various browsers and their features_
   * _Target HTML5 and CSS3 safely_
   * __Make it the only script in your HEAD__
@@ -14,6 +14,8 @@ This project was never announced. `git push` and it was all viral.
 ##Where
 * __WebSite__
   * [http://headjs.com](http://headjs.com)
+* __Blog/Dev Updates__
+  * [http://www.i-technology.net](http://www.i-technology.net/search/label/headjs)
 * __Bugs/Support__
   * [https://github.com/headjs/headjs/issues](https://github.com/headjs/headjs/issues)
 * __Get Community Help__
@@ -29,7 +31,8 @@ This project was never announced. `git push` and it was all viral.
 	- Load: Fixed regression in IE6, caused by IE10 fix
 	- Load: CSS loading seems to work in all browsers.
 		- However a few will not trigger the callback. Over 90% do.
-		- Either don't use it, or only load css in situations when you don't need the callback triggered.
+		- For now only load css in situations where you don't need the callback triggered.
+		- head.load("file1.css", "file2.css")
 	- Load: Conditional loading with head.test() now in evaluation phase
 		- try it, but don't rely on it yet
 		- head.test(bool, "ok.js", "failed.js", callback)
@@ -46,13 +49,17 @@ This project was never announced. `git push` and it was all viral.
 	- Load: Corrected some issues with loading from inside <head>
 	- Load: Rewrite of large parts of code base
 	  - Started to massively document the sourcecode :)
+	- Load: Test Only (css loading)
+	  - You can now load CSS files with head.load("somefile.css")
+	  - Consider this as under testing
+	  - head.load is an alias to head.js
 	- Css3: moved "touch" detection from core to here
 	- Css3: added "retina" detection
 	- Css3: replaced "font-face" detection that was using "Conditional Comments" with simplisitc browser version detection
 	- Core: Added gt, gte, lte, eq classes to width detection (lt existed already)
 	- Core: Added gt, gte, lt, lte, eq classes for browser vendor & version detection
 	- By default only lt/gt classes are activated
-		- You can of course configure to your likings via head_conf
+	  - You can of course configure to your likings via head_conf
 
 
 ###RoadMap (v1.0 / v2.0) 2012-11-06

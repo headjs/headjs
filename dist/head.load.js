@@ -44,13 +44,20 @@
             if (!isFunction(callback)) {
                 callback = null;
             }
+            
+            if (isArray(args[0])) {
+                args[0].push(callback);
+                api.load.apply(null, args[0]);
+                
+                return api;
+            }
 
             each(args, function (item, i) {
                 if (item !== callback) {
                     item             = getAsset(item);
                     items[item.name] = item;
 
-                    load(item, callback && i === args.length - 2 ? function () {
+                    load(item, callback && (item.async || i === args.length - 2) ? function () {
                         if (allLoaded(items)) {
                             one(callback);
                         }
@@ -77,8 +84,8 @@
                 });
 
                 return api;
-            }            
-
+            }
+            
             // multiple arguments
             if (!!next) {
                 /* Preload with text/cache hack (not good!)
@@ -87,11 +94,11 @@
                  * If caching is not configured correctly on the server, then items could load twice !
                  *************************************************************************************/
                 each(rest, function (item) {
-                    if (!isFunction(item)) {
+                    if (!isFunction(item) && !!item) {
                         preLoad(getAsset(item));
                     }
                 });
-
+                
                 // execute
                 load(getAsset(args[0]), isFunction(next) ? next : function () {
                     api.load.apply(null, rest);
@@ -162,7 +169,8 @@
         ///    head.ready(callBack)
         ///    head.ready(document , callBack)
         ///    head.ready("file.js", callBack);
-        ///    head.ready("label"  , callBack);        
+        ///    head.ready("label"  , callBack);
+        ///    head.ready(["label1", "label2"], callback);
         ///</summary>
 
         // DOM ready check: head.ready(document, function() { });
@@ -181,6 +189,22 @@
         if (isFunction(key)) {
             callback = key;
             key      = "ALL";
+        }
+
+        // queue all items from key and return. The callback will be executed if all items from key are already loaded.
+        if (isArray(key)) {
+            var items = {};
+
+            each(key, function (item) {
+
+                items[item] = assets[item];
+                api.ready(item, function() {
+                    allLoaded(items) && one(callback);
+                });
+
+            });
+
+            return api;
         }
 
         // make sure arguments are sane
@@ -291,17 +315,24 @@
         ///     name : label,
         ///     url  : url,
         ///     state: state
+        ///     async: boolean
         /// }
         ///</summary>
         var asset = {};
 
         if (typeof item === 'object') {
+            var options = item['options'] || { };
+            
             for (var label in item) {
-                if (!!item[label]) {
+                if (!!item[label] && label !== 'options') {
                     asset = {
-                        name: label,
-                        url : item[label]
+                        name : label,
+                        url  : item[label],
+                        async: !!options['async']
                     };
+                    
+                    // Inline IF, if callback is present
+                    isFunction(options['callback']) && api.ready(label, options['callback']);
                 }
             }
         }
@@ -347,7 +378,7 @@
         if (asset.state === undefined) {
 
             asset.state     = PRELOADING;
-            asset.onpreload = [];
+            asset.onpreload = isFunction(callback) ? [callback] : [];
 
             loadAsset({ url: asset.url, type: 'cache' }, function () {
                 onPreload(asset);
@@ -358,7 +389,7 @@
     function load(asset, callback) {
         ///<summary>Used with normal loading logic</summary>
         callback = callback || noop;
-
+        
         if (asset.state === LOADED) {
             callback();
             return;
@@ -426,7 +457,7 @@
          */
 
         // ASYNC: load in parellel and execute as soon as possible
-        ele.async = false;
+        ele.async = !!asset.async;
         // DEFER: load in parallel but maintain execution order
         ele.defer = false;
 
@@ -487,6 +518,7 @@
 
             // event.type == 'load' && s.readyState = undefined
 
+
             // !doc.documentMode is for IE6/7, IE8+ have documentMode
             if (event.type === 'load' || (/loaded|complete/.test(ele.readyState) && (!doc.documentMode || doc.documentMode < 9))) {
                 // release event listeners               
@@ -504,9 +536,25 @@
         }
 
         // use insertBefore to keep IE from throwing Operation Aborted (thx Bryan Forbes!)
-        var head = doc['head'] || doc.getElementsByTagName('head')[0];
+        var head = doc.head || doc.getElementsByTagName('head')[0];
         // but insert at end of head, because otherwise if it is a stylesheet, it will not ovverride values
         head.insertBefore(ele, head.lastChild);
+    }
+    
+
+    /* Parts inspired from: https://github.com/jrburke/requirejs
+    ************************************************************/
+    function init() {
+        var items =  doc.getElementsByTagName('script');
+        
+        //Look for a script with a data-head-init attribute
+        for (var i = 0, l = items.length; i < l; i++) {
+            var dataMain = items[0].getAttribute('data-head-init');
+            if (!!dataMain) {
+                api.load(dataMain);
+                return;
+            } 
+        }
     }
 
     /* Mix of stuff from jQuery & IEContentLoaded
@@ -523,9 +571,11 @@
 
         if (!isDomReady) {
             isDomReady = true;
+            
+            init();
             each(domWaiters, function (fn) {
                 one(fn);
-            });
+            });                        
         }
     }
 
@@ -543,7 +593,7 @@
             doc.detachEvent("onreadystatechange", domContentLoaded);
             domReady();
         }
-    };
+    }
 
     // Catch cases where ready() is called after the browser event has already occurred.
     // we once tried to use readyState "interactive" here, but it caused issues like the one
@@ -573,7 +623,7 @@
         var top = false;
 
         try {
-            top = win.frameElement == null && doc.documentElement;
+            top = win.frameElement === null && doc.documentElement;
         } catch (e) { }
 
         if (top && top.doScroll) {
