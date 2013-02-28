@@ -254,6 +254,10 @@
         // does nothing
     }
 
+    function scripts() {
+        return document.getElementsByTagName('script');
+    }
+
     function each(arr, callback) {
         if (!arr) {
             return;
@@ -541,6 +545,23 @@
         head.insertBefore(ele, head.lastChild);
     }
 
+    /* Parts inspired from: https://github.com/jrburke/requirejs
+    ************************************************************/
+    function loadDataMain() {
+
+        var dataMain;
+
+        //Look for a data-main script attribute
+        each(scripts(), function (script) {
+
+            //Look for a data-main attribute to set main script for the page to load.
+            dataMain = script.getAttribute('data-main');
+            dataMain && api.load( dataMain );
+
+        });
+
+    }
+
     /* Mix of stuff from jQuery & IEContentLoaded
      * http://dev.w3.org/html5/spec/the-end.html#the-end
      ***************************************************/
@@ -559,6 +580,9 @@
                 one(fn);
             });
         }
+
+        loadDataMain();
+
     }
 
     function domContentLoaded() {
