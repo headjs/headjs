@@ -1,4 +1,6 @@
-﻿0.99
+﻿1.0
+ - ..in progress
+0.99
  - Load: Fixed regression in IE6, caused by IE10 fix
  - Load: CSS loading seems to work in all browsers.
    - However a few will not trigger the callback. Over 90% do.
