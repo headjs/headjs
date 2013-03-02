@@ -179,6 +179,45 @@ asyncTest('callback option', function () {
 
 });
 
+asyncTest("loading from array", function () {
+    expect(8);
+
+    head
+    .js(
+        [{
+            // warning: if label is 'jquery', seems like the jQuery object is assigned instead of a simple label
+            jq: 'http://code.jquery.com/jquery-1.9.1.min.js',
+            options: {
+                async: true,
+                callback: function () {
+                    ok(!!jQuery, "Label: ready('jq')");
+                }
+            }
+        },
+        {
+            underscore: 'http://underscorejs.org/underscore-min.js',
+            options: {
+                async: true,
+                callback: function () {
+                    ok(!!_, "Label: ready('underscore')");
+                    QUnit.step(1, "step1 -> underscore callback");
+                }
+            }
+        }], function() {
+            ok(!!jQuery,  "Callback: jQuery");
+            ok(!!_,       "Callback: underscore");
+            QUnit.step(3, "step3 -> all ready");
+
+            start();
+        }
+    )
+    .ready(['underscore'], function () {
+        ok(!!_, "Label: ready('underscore')");
+        QUnit.step(2, "step2 -> ready(underscore)");
+    });
+
+});
+
 // INFO: will make had fail (and nothing else continues!) if file not exists
 asyncTest("css (load)", function () {
     expect(1);
