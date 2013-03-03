@@ -58,15 +58,11 @@ asyncTest('jshint, jquery, knockout (trigger via label)', function () {
     head.ready("jshint", function () {               
         ok(!!JSHINT, "Label: ready('jshint')");
         QUnit.step(1, "step1 jshint");
-        
-        start();
     });
     
     head.ready("jquery", function () {
         ok(!!jQuery, "Label: ready('jquery')");
         QUnit.step(2, "step2 jquery");
-        
-        start();
     });
     
     head.ready("knockout", function () {
@@ -79,6 +75,13 @@ asyncTest('jshint, jquery, knockout (trigger via label)', function () {
 
 asyncTest('async option', function () {
     expect(12);
+
+    /**
+      * The start() method needs to be called in the last callback.
+      * This 'count' variable is because the async option.
+      * When we have some callback asynchronous, we can not guarantee which callback will be the last one.
+      */
+    var count = 0;
 
     head
     .js(
@@ -96,8 +99,6 @@ asyncTest('async option', function () {
             ok(!!tinyDOM,   "Callback: tinyDOM");
             ok(!!_,         "Callback: _");
             ok(!!Sly,       "Callback: Sly");
-
-            start();
         }
     )
 
@@ -105,6 +106,8 @@ asyncTest('async option', function () {
         ok(!!Spinner, "Label: ready('spin')");
         ok(!!_,       "Label: ready('underscore')");
         ok(!!tinyDOM, "Label: ready('tinyDOM')");
+
+        (++count === 2) && start();
     })
 
     .ready('stapes', function() {
@@ -117,6 +120,7 @@ asyncTest('async option', function () {
 
     .ready('sly', function() {
         QUnit.step(3, "step3 sly");
+        (++count === 2) && start();
     })
     ;
 
@@ -124,6 +128,9 @@ asyncTest('async option', function () {
 
 asyncTest('callback option', function () {
     expect(8);
+
+    // See the 'count variable' description in the 'async option' test.
+    var count = 0;
 
     function callbackSpin() {
         QUnit.step(1, "step1 spin");
@@ -135,6 +142,7 @@ asyncTest('callback option', function () {
 
     function callbackUnderscore() {
         ok(!!_, "Label: ready('underscore')");
+        (++count === 3) && start();
     }
 
     head
@@ -163,6 +171,7 @@ asyncTest('callback option', function () {
             options: {
                 callback: function() {
                     QUnit.step(3, "step3 sly");
+                    (++count === 3) && start();
                 }
             }
         },
@@ -173,14 +182,17 @@ asyncTest('callback option', function () {
             ok(!!_,         "Callback: _");
             ok(!!Sly,       "Callback: Sly");
 
-            start();
+            (++count === 3) && start();
         }
     );
 
 });
 
 asyncTest("loading from array", function () {
-    expect(8);
+    expect(7);
+
+    // See the 'count variable' description in the 'async option' test.
+    var count = 0;
 
     head
     .js(
@@ -188,32 +200,42 @@ asyncTest("loading from array", function () {
             // warning: if label is 'jquery', seems like the jQuery object is assigned instead of a simple label
             jq: 'http://code.jquery.com/jquery-1.9.1.min.js',
             options: {
-                async: true,
+                async: false,
                 callback: function () {
                     ok(!!jQuery, "Label: ready('jq')");
                 }
             }
         },
         {
+            stapes: 'http://hay.github.com/stapes/stapes.min.js',
+            options: {
+                async: false,
+                callback: function () {
+                    ok(!!Stapes, "Label: ready('stapes')");
+                }
+            }
+        },
+        {
             underscore: 'http://underscorejs.org/underscore-min.js',
             options: {
-                async: true,
+                async: false,
                 callback: function () {
                     ok(!!_, "Label: ready('underscore')");
-                    QUnit.step(1, "step1 -> underscore callback");
+                    (++count === 3) && start();
                 }
             }
         }], function() {
             ok(!!jQuery,  "Callback: jQuery");
+            ok(!!Stapes,  "Callback: Stapes");
             ok(!!_,       "Callback: underscore");
-            QUnit.step(3, "step3 -> all ready");
 
-            start();
+            (++count === 3) && start();
         }
     )
     .ready(['underscore'], function () {
         ok(!!_, "Label: ready('underscore')");
-        QUnit.step(2, "step2 -> ready(underscore)");
+
+        (++count === 3) && start();
     });
 
 });
