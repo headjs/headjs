@@ -13,6 +13,19 @@ function getStyle(ele, styleProp) {
     return y;
 }
 
+asyncTest("head option in head_conf", function() {
+    expect(1);
+
+    head_conf = {head: 'headJS'};
+    head.js( {head: "../../media/libs/headjs/0.99/head.min.js"}, function() {
+        ok(!!headJS, "Callback: headJS");
+        head_conf = null;
+
+        start();
+    });
+
+});
+
 asyncTest("jquery, mootools (trigger via callback)", function() {
     expect(2);
     
