@@ -201,7 +201,7 @@
     if (browser === "ie" && version < 9) {
         // HTML5 support : you still need to add html5 css initialization styles to your site
         // See: assets/html5.css
-        each("abbr|article|aside|audio|canvas|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|summary|time|video".split("|"), function (el) {
+        each("abbr|article|aside|audio|canvas|details|figcaption|figure|footer|header|hgroup|main|mark|meter|nav|output|progress|section|summary|time|video".split("|"), function (el) {
             doc.createElement(el);
         });
     }
