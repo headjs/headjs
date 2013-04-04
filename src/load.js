@@ -57,11 +57,42 @@
                     item             = getAsset(item);
                     items[item.name] = item;
 
-                    load(item, callback && (item.async || i === args.length - 2) ? function () {
-                        if (allLoaded(items)) {
-                            one(callback);
-                        }
-
+                    /**
+                      * It's not safe to compare using:
+                      *   "i === args.length - 2"
+                      *
+                      * For example:
+                      *   head.js(
+                      *       {stapes    : 'http://hay.github.com/stapes/stapes.min.js'},
+                      *       {underscore: 'http://underscorejs.org/underscore-min.js'}
+                      *   );
+                      *
+                      *   head
+                      *   .js(
+                      *       {jq        : 'http://code.jquery.com/jquery-1.9.1.min.js'},
+                      *       {stapes    : 'http://hay.github.com/stapes/stapes.min.js'},
+                      *       {underscore: 'http://underscorejs.org/underscore-min.js'},
+                      *       function() {
+                      *          console.log('all ready');
+                      *       })
+                      *   .ready('jq',         function(){ console.log('jq ready') })
+                      *   .ready('stapes',     function(){ console.log('stapes ready') })
+                      *   .ready('underscore', function(){ console.log('underscore ready') })
+                      *   ;
+                      *
+                      * From this example, headJS was called twice.
+                      * So.. At the second calling, the 'underscore' and 'stapes' are ready (they exist already,
+                      * they most come from cache and not really loading).
+                      * If there is a comparison using 'i === args.length - 2',
+                      * the underscore label is ready, but jq label does not.
+                      * So... the callback bellow:
+                      *     function() {
+                      *         console.log('all ready');
+                      *     }
+                      * can not be called, because the jq label is not ready and not exist already.
+                      */
+                    load(item, callback ? function () {
+                        allLoaded(items) && one(callback);
                     } : null);
                 }
             });
@@ -331,6 +362,10 @@
                         async: !!options['async']
                     };
                     
+                    // If the label is not exist, it's necessary to put this label inside the 'assets' variable.
+                    // It because the 'api.ready method' needs the label key already exist in the assets.
+                    !assets[label] && (assets[label] = asset);
+
                     // Inline IF, if callback is present
                     isFunction(options['callback']) && api.ready(label, options['callback']);
                 }
