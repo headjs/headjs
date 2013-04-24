@@ -58,15 +58,11 @@ asyncTest('jshint, jquery, knockout (trigger via label)', function () {
     head.ready("jshint", function () {               
         ok(!!JSHINT, "Label: ready('jshint')");
         QUnit.step(1, "step1 jshint");
-        
-        start();
     });
     
     head.ready("jquery", function () {
         ok(!!jQuery, "Label: ready('jquery')");
         QUnit.step(2, "step2 jquery");
-        
-        start();
     });
     
     head.ready("knockout", function () {
