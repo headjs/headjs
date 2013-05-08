@@ -46,7 +46,7 @@ asyncTest("jquery (trigger via filename)", function () {
 });
 
 
-asyncTest('jshint, jquery, knockout (trigger via label)', function () {
+asyncTest('jshint, jquery, knockout (trigger via label)', function (assert) {
     expect(6);
 
     head.js(
@@ -57,27 +57,27 @@ asyncTest('jshint, jquery, knockout (trigger via label)', function () {
 
     head.ready("jshint", function () {               
         ok(!!JSHINT, "Label: ready('jshint')");
-        QUnit.step(1, "step1 jshint");
+        assert.step(1, "step1 jshint");
         
         start();
     });
     
     head.ready("jquery", function () {
         ok(!!jQuery, "Label: ready('jquery')");
-        QUnit.step(2, "step2 jquery");
+        assert.step(2, "step2 jquery");
         
         start();
     });
     
     head.ready("knockout", function () {
         ok(!!ko, "Label: ready('knockout')");
-        QUnit.step(3, "step3 knockout");
+        assert.step(3, "step3 knockout");
         
         start();
     });       
 });
 
-asyncTest('async option', function () {
+asyncTest('async option', function (assert) {
     expect(12);
 
     head
@@ -108,29 +108,28 @@ asyncTest('async option', function () {
     })
 
     .ready('stapes', function() {
-        QUnit.step(1, "step1 stapes");
+        assert.step(1, "step1 stapes");
     })
 
     .ready('notificon', function() {
-        QUnit.step(2, "step2 notificon");
+        assert.step(2, "step2 notificon");
     })
 
     .ready('sly', function() {
-        QUnit.step(3, "step3 sly");
-    })
-    ;
+       assert.step(3, "step3 sly");
+    });
 
 });
 
-asyncTest('callback option', function () {
+asyncTest('callback option', function (assert) {
     expect(8);
 
     function callbackSpin() {
-        QUnit.step(1, "step1 spin");
+        assert.step(1, "step1 spin");
     }
 
     function callbackStapes() {
-        QUnit.step(2, "step2 stapes");
+        assert.step(2, "step2 stapes");
     }
 
     function callbackUnderscore() {
@@ -162,7 +161,7 @@ asyncTest('callback option', function () {
             sly    : 'https://raw.github.com/digitarald/sly/master/Sly.js',
             options: {
                 callback: function() {
-                    QUnit.step(3, "step3 sly");
+                    assert.step(3, "step3 sly");
                 }
             }
         },

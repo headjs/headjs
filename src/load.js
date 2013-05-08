@@ -456,7 +456,7 @@
          * https://hacks.mozilla.org/2009/06/defer/
          */
 
-        // ASYNC: load in parellel and execute as soon as possible
+        // ASYNC: load in parallel and execute as soon as possible
         ele.async = !!asset.async;
         // DEFER: load in parallel but maintain execution order
         ele.defer = false;
