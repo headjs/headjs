@@ -33,7 +33,7 @@ asyncTest("jquery (trigger via filename)", function () {
 });
 
 
-asyncTest('jshint, jquery, knockout (trigger via label)', function () {
+asyncTest('jshint, jquery, knockout (trigger via label)', function (assert) {
     expect(6);
 
     head.js(
@@ -44,17 +44,17 @@ asyncTest('jshint, jquery, knockout (trigger via label)', function () {
 
     head.ready("jshint", function () {               
         ok(!!JSHINT, "Label: ready('jshint')");
-        QUnit.step(1, "step1 jshint");
+        assert.step(1, "step1 jshint");
     });
     
     head.ready("jquery", function () {
         ok(!!jQuery, "Label: ready('jquery')");
-        QUnit.step(2, "step2 jquery");
+        assert.step(2, "step2 jquery");
     });
     
     head.ready("knockout", function () {
         ok(!!ko, "Label: ready('knockout')");
-        QUnit.step(3, "step3 knockout");
+        assert.step(3, "step3 knockout");
         
         start();
     });       
