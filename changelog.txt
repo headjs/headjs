@@ -1,5 +1,5 @@
 ﻿1.0
-..in progress
+.....in progress
 
  - * Detect Windows 8 Mobile, Kindle, and other Android devices
  - * Add browser & version systematically no matter what configured
