@@ -1,4 +1,4 @@
-module('head.load-css.js');
+module('Load');
 
 function getStyle(ele, styleProp) {
     var y = "";
@@ -14,15 +14,15 @@ function getStyle(ele, styleProp) {
 }
 
 // INFO: will make had fail (and nothing else continues!) if file not exists
-asyncTest("css (load)", function () {
+asyncTest("ready(cssFileName).load(cssFilePath)", function () {
     expect(1);
 
     head.ready("test.css", function () {
         var result = getStyle(document.getElementById("browserscope"), "display");
-        ok(result === "block", "Filename: ready('test.css')");
+        ok(result === "block", "Ready: test.css");
 
         start();
-    });
+    })
 
-    head.js("assets/test.css");
+    .load("assets/test.css");
 });

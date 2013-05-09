@@ -1,14 +1,12 @@
 /**
  * Unittests: javascript loader
  */
+module('Responsive');
 
-module('head.responsive.js');
+test("head.touch, head.screen.width, ...", function () {
+    expect(7);
 
-test("detections", function () {
-    expect(8);
-
-    ok(typeof head.js        === "function", 'head.js');
-    ok(typeof head.touch     === "boolean", 'head.touch');
+    ok(typeof head.touch              === "boolean", 'head.touch');
     ok(typeof head.screen.width       === "number" , 'screen.width');
     ok(typeof head.screen.height      === "number" , 'screen.height');
     ok(typeof head.screen.innerWidth  === "number" , 'screen.innerWidth');
