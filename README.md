@@ -2,6 +2,8 @@
 
 This project was never announced. `git push` and it was all viral.
 
+[![Build Status](https://travis-ci.org/headjs/headjs.png?branch=master)](https://travis-ci.org/headjs/headjs)
+
 ##About
   * _Load scripts and css on demand_
   * _Achieve responsive design with CSS that targets different screen resolutions, paths, states and browsers_
