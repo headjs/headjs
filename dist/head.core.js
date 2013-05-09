@@ -23,8 +23,8 @@
             screensCss: { "gt": true, "gte": false, "lt": true, "lte": false, "eq": false },
             browsers  : [
                           { ie     : { min: 6, max: 10 } }
-                       //,{ chrome : { min: 8, max: 24 } }
-                       //,{ ff     : { min: 3, max: 19 } }
+                       //,{ chrome : { min: 8, max: 26 } }
+                       //,{ ff     : { min: 3, max: 21 } }
                        //,{ ios    : { min: 3, max:  6 } }
                        //,{ android: { min: 2, max:  4 } }
                        //,{ webkit : { min: 9, max: 12 } }
@@ -49,7 +49,7 @@
     }
 
     function removeClass(name) {
-        var re = new RegExp("\\b" + name + "\\b");
+        var re = new RegExp(" \\b" + name + "\\b");
         html.className = html.className.replace(re, '');
     }
 
@@ -95,7 +95,7 @@
 
     // browser type & version
     var ua     = nav.userAgent.toLowerCase(),
-        mobile = /mobile|midp/.test(ua);
+        mobile = /mobile|android|kindle|silk|midp|(windows nt 6\.2.+arm|touch)/.test(ua);
 
     // useful for enabling/disabling feature (we can consider a desktop navigator to have more cpu/gpu power)        
     api.feature("mobile" , mobile , true);
@@ -134,7 +134,6 @@
             break;
     }
 
-
     // Browser vendor and version
     api.browser = {
         name   : browser,
@@ -152,29 +151,29 @@
 
                 for (var v = min; v <= max; v++) {
                     if (version > v) {
-                        if (conf.browserCss["gt"])
+                        if (conf.browserCss.gt)
                             pushClass("gt-" + key + v);
 
-                        if (conf.browserCss["gte"])
+                        if (conf.browserCss.gte)
                             pushClass("gte-" + key + v);
-        }
+                    }
                     
                     else if (version < v) {
-                        if (conf.browserCss["lt"])
+                        if (conf.browserCss.lt)
                             pushClass("lt-" + key + v);
                         
-                        if (conf.browserCss["lte"])
+                        if (conf.browserCss.lte)
                             pushClass("lte-" + key + v);
-        }
+                    }
 
                     else if (version === v) {
-                        if (conf.browserCss["lte"])
+                        if (conf.browserCss.lte)
                             pushClass("lte-" + key + v);
                         
-                        if (conf.browserCss["eq"])
+                        if (conf.browserCss.eq)
                             pushClass("eq-" + key + v);
 
-                        if (conf.browserCss["gte"])
+                        if (conf.browserCss.gte)
                             pushClass("gte-" + key + v);
                     }
                 }
@@ -184,23 +183,24 @@
             }
         }
     }
-
+    
+    pushClass(browser);
+    pushClass(browser + parseInt(version, 10));
 
     // IE lt9 specific
     if (browser === "ie" && version < 9) {
         // HTML5 support : you still need to add html5 css initialization styles to your site
         // See: assets/html5.css
-        each("abbr|article|aside|audio|canvas|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|summary|time|video".split("|"), function (el) {
+        each("abbr|article|aside|audio|canvas|details|figcaption|figure|footer|header|hgroup|main|mark|meter|nav|output|progress|section|summary|time|video".split("|"), function (el) {
             doc.createElement(el);
         });
     }
-
 
     // CSS "router"
     each(loc.pathname.split("/"), function (el, i) {
         if (this.length > 2 && this[i + 1] !== undefined) {
             if (i) {
-                pushClass(this.slice(1, i + 1).join("-").toLowerCase() + conf.section);
+                pushClass(this.slice(i, i + 1).join("-").toLowerCase() + conf.section);
             }
         } else {
             // pageId
@@ -218,7 +218,6 @@
         }
     });
 
-
     // basic screen info
     api.screen = {
         height: win.screen.height,
@@ -234,48 +233,47 @@
         var iw = win.innerWidth || html.clientWidth,
             ow = win.outerWidth || win.screen.width;
         
-        api.screen['innerWidth'] = iw;
-        api.screen['outerWidth'] = ow;
+        api.screen.innerWidth = iw;
+        api.screen.outerWidth = ow;
         
         // for debugging purposes, not really useful for anything else
         pushClass("w-" + iw);
 
         each(conf.screens, function (width) {
             if (iw > width) {
-                if (conf.screensCss["gt"])
+                if (conf.screensCss.gt)
                     pushClass("gt-" + width);
                 
-                if (conf.screensCss["gte"])
+                if (conf.screensCss.gte)
                     pushClass("gte-" + width);
             }
 
             else if (iw < width) {
-                if (conf.screensCss["lt"])
+                if (conf.screensCss.lt)
                     pushClass("lt-" + width);
                 
-                if (conf.screensCss["lte"])
+                if (conf.screensCss.lte)
                     pushClass("lte-" + width);
             }
 
             else if (iw === width) {
-                if (conf.screensCss["lte"])
+                if (conf.screensCss.lte)
                     pushClass("lte-" + width);
 
-                if (conf.screensCss["eq"])
+                if (conf.screensCss.eq)
                     pushClass("e-q" + width);
 
-                if (conf.screensCss["gte"])
+                if (conf.screensCss.gte)
                     pushClass("gte-" + width);
             }
         });
         
-
         // Viewport height
         var ih = win.innerHeight || html.clientHeight,
             oh = win.outerHeight || win.screen.height;
 
-        api.screen['innerHeight'] = ih;
-        api.screen['outerHeight'] = oh;
+        api.screen.innerHeight = ih;
+        api.screen.outerHeight = oh;
              
         // no need for onChange event to detect this
         api.feature("portrait" , (ih > iw));

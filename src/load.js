@@ -505,7 +505,7 @@
         }
 
         // use insertBefore to keep IE from throwing Operation Aborted (thx Bryan Forbes!)
-        var head = doc['head'] || doc.getElementsByTagName('head')[0];
+        var head = doc.head || doc.getElementsByTagName('head')[0];
         // but insert at end of head, because otherwise if it is a stylesheet, it will not ovverride values
         head.insertBefore(ele, head.lastChild);
     }
@@ -544,7 +544,7 @@
             doc.detachEvent("onreadystatechange", domContentLoaded);
             domReady();
         }
-    };
+    }
 
     // Catch cases where ready() is called after the browser event has already occurred.
     // we once tried to use readyState "interactive" here, but it caused issues like the one

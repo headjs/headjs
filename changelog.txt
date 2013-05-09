@@ -1,4 +1,22 @@
 ﻿1.0
+ - * Improved CSS Router
+   - https://github.com/headjs/headjs/issues/227
+ - * Added "main" HTML5 element to shim
+   - https://github.com/headjs/headjs/pull/230
+ - * Always add small shortcut to browser & version no matter what browser breakpoints configured
+   - Makes it possible to work without any breakpoints at all
+ - Load file via data attribute on HeadJS script tag
+   - https://github.com/headjs/headjs/pull/213
+ - Add options as a property label
+   - https://github.com/headjs/headjs/pull/215
+ - Allow ASYNC loading
+   - https://github.com/headjs/headjs/issues/204
+ - Prevent loading empty strings
+   - https://github.com/headjs/headjs/pull/184
+ - * Fixed CSS classes getting bigger on successive resizes under Chrome
+   - https://github.com/headjs/headjs/issues/226
+ - * Cleaned up a bunch of syntaxt to conform to JSHint
+
  - ..in progress
 0.99
  - Load: Fixed regression in IE6, caused by IE10 fix
