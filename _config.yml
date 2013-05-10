@@ -1,2 +1,3 @@
-﻿safe: true
+﻿auto: true
+safe: true
 watch: true
