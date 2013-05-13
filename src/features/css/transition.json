@@ -1,7 +1,0 @@
-﻿// Test for css transition support
-{
-    "name"  : "transition",
-    "result": function () { 
-        return api.cssPropertyExists("transition");
-	}
-}
