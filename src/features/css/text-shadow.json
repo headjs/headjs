@@ -1,0 +1,8 @@
+﻿// Test for css text-shadow support
+{
+    "name"  : "textShadow",
+    "result": function () { 
+		var el = document.createElement("i");
+		return el.style.textShadow === '';
+	}
+}

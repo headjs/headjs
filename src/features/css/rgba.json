@@ -1,0 +1,11 @@
+﻿// Test for css rgba support
+{
+    "name"  : "rgba",
+    "result": function () { 
+		var ele   = document.createElement("i"),
+			style = ele.style;
+    
+		style.cssText = "background-color:rgba(0,0,0,0.5)";
+		return !!style.backgroundColor;
+	}
+}

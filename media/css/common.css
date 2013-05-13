@@ -1,0 +1,241 @@
+﻿/* Custom code
+ *************/
+.group:before, .group:after {
+    content: ""!important;
+    display: table!important;
+}
+.group:after {
+    clear: both!important;
+}
+.group {
+    zoom: 1!important;
+    overflow: visible;
+}
+.float-l {
+    float: left;
+}
+.float-r {
+    float: right;
+}
+.clear-l {
+    clear: left;
+}
+.clear-r {
+    clear: right;
+}
+.clear-b {
+    clear: both;
+}
+.relative {
+    position: relative;
+}
+.absolute {
+    position: absolute;
+}
+.relative.top, .absolute.top {
+    top: 0;
+}
+.relative.bottom, .absolute.bottom {
+    bottom: 0;
+}
+.relative.right, .absolute.right {
+    right: 0;
+}
+.relative.left, .absolute.left {
+    left: 0;
+}
+.fixed {
+    position: fixed;
+}
+.center {
+    text-align: center;
+}
+
+/* Some code from bootstrap */
+.code-example {
+    position: relative;
+    margin: 15px 0;
+    padding: 39px 19px 14px;
+    *padding-top: 19px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+/* Echo out a label for the example */
+.code-example:after {
+    content: attr(data-title);
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    color: #9da0a4;
+    -webkit-border-radius: 4px 0 4px 0;
+    -moz-border-radius: 4px 0 4px 0;
+    border-radius: 4px 0 4px 0;
+}
+
+pre {
+    white-space: pre-wrap;
+}
+ol.linenums {
+    margin: 0 0 0 -10px;
+}
+
+.lt-ie8 ol.linenums {
+    margin: 0 0 0 25px;
+}
+
+
+/* Buttons
+  *********/
+.button,
+.button:visited,
+.button:link {
+  display: inline-block;
+  color: white;
+  text-decoration: none;
+  font-family: "Arial Narrow", Arial;
+  font-variant: small-caps;
+}
+.button {
+  background-color: black;
+  padding: 5px 15px;
+  font-size: 13px;
+  /* Size Variations */
+
+  /* Form Variations */
+
+  /* Color Variations */
+
+}
+.button:hover {
+  background-color: #6A6A6A;
+}
+.button.rounded {
+  border-radius: 5px;
+}
+.button.large {
+  font-size: 22px;
+  padding: 10px 15px;
+}
+.button.small {
+  font-size: 11px;
+  padding: 5px 10px;
+}
+
+/* Common
+ *********/
+html {
+    /* Keeps pages from flickering when going from page with scrollbar to page without */
+    overflow-y: scroll;
+}
+
+body {   
+    background-color: #F9F9F9;
+    /*font-size: 14px;*/
+    font: 13px/1.42857 'Courier New', 'Lucida Console', monospace, Verdana;
+    /*font: 14px/1.42857 Helvetica, Arial, "Lucida Grande", sans-serif;*/
+    text-rendering: optimizeLegibility;
+}
+img {
+    border: 0;
+}
+img.logo {
+    width: 100%;
+    border-radius: 5px;
+}
+.github {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+}
+a:link, a:visited {
+    color: inherit;
+}
+a:active, a:hover, a:focus {
+    color: #777777;
+}
+
+/* Main Menu
+  **********/
+li.active {
+    font-size: 15px;
+    font-weight: bold;
+}
+.lt-480 .vanish-480 {
+    display: none;
+}
+ul.menu {
+    padding: 0;
+}
+.lt-480 ul.menu {
+    text-align: left;
+}
+.menu li {
+    float: left;
+    list-style-type: none;
+    padding: 0 20px 0 0;
+}
+.lt-480 .menu li {
+    padding: 0 0 10px 0;
+    display: block;
+    background-color: #06112A;
+    color: white;
+    line-height: 1;
+    padding: 5px;
+    width: 100%;
+    font-weight: bold;
+}
+
+/* Site Content
+ **************/
+.container {
+    position: relative;
+    width: auto;                
+    max-width: 940px;
+    margin: 0 auto;
+}
+.lt-ie7 .container {
+    width: 940px;
+}
+.container.main {
+    background-color: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px 4px 4px 4px;
+    padding: 0 18px;
+    -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+.lt-ie8 .container.main {
+    width: 905px;
+}
+/* Up button */
+a.up {
+    background-color: #CCCCCC;
+    border-radius: 30px 30px 0 0;
+    bottom: 0;
+    margin: 0 0 0 -60px;
+    padding: 5px 5px 0;
+    position: fixed;
+    text-decoration: none;
+}
+hr {
+    border: 1px solid #AA0000;
+    color: #AA0000;
+}
+h1, h2 {
+    color: #777777;
+    font-variant: small-caps;
+}
+
+small {
+    font-size: 12px;
+}
+

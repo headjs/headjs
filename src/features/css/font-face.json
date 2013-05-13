@@ -1,0 +1,35 @@
+﻿// Test for css font-face support
+// This test is not very good ..modernizr does a way better job at this, but also require a good bit of extra code to detect it too
+// ..so your milage may vary
+{
+    "name"  : "fontFace",
+    "result": function () { 
+		var browser = api.browser.name, version = api.browser.version;
+
+		switch (browser) {
+			case "ie":
+				return version >= 9;
+
+			case "chrome":
+				return version >= 13;
+
+			case "ff":
+				return version >= 6;
+
+			case "ios":
+				return version >= 5;
+
+			case "android":
+				return false;
+
+			case "webkit":
+				return version >= 5.1;
+
+			case "opera":
+				return version >= 10;
+
+			default:
+				return false;
+		}
+	}
+}

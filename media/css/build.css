@@ -1,0 +1,36 @@
+﻿fieldset label {
+    display: block;
+}
+
+fieldset li:hover {
+    background-color: #ccc;
+}
+        
+fieldset li {
+    list-style-type: none;
+} 
+
+fieldset ol {
+    padding: 0;
+}
+
+.breakpoint {
+    background-color: white;
+    border: 1px outset black;
+    border-radius: 10px 10px 10px 10px;
+    color: black;
+    display: inline-block;
+    font-family: Georgia;
+    margin: 2px 0;
+    padding: 0 4px 2px 0;
+} 
+.breakpoint a {
+    color: black;
+    padding: 0 5px 0 0;  
+}  
+.breakpoint span {
+    padding: 0 0 0 5px;
+}    
+.breakpoint:hover {
+    background-color: #ccc;
+}  

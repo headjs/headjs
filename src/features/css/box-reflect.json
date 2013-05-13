@@ -1,0 +1,7 @@
+﻿// Test for css box-reflect support
+{
+    "name"  : "boxReflect",
+    "result": function () { 
+		return api.cssPropertyExists("boxReflect");
+	}
+}

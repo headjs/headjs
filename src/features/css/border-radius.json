@@ -1,0 +1,7 @@
+﻿// Test for css border-radius support
+{
+    "name"  : "borderRadius",
+    "result": function () { 
+		return api.cssPropertyExists("borderRadius");
+	}
+}

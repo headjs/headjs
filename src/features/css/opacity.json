@@ -1,0 +1,8 @@
+﻿// Test for css opacity support
+{
+    "name"  : "opacity",
+    "result": function () { 
+		var el = document.createElement("i");
+		return el.style.opacity === '';
+	}
+}

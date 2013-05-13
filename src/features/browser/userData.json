@@ -1,0 +1,12 @@
+﻿// Test for browser userData support
+{
+    "name"  : "userData",
+    "result": function () { 
+        try {
+            return !!(document.documentElement && document.documentElement.addBehavior);
+        }
+        catch (e) { }
+    
+        return false;
+	}
+}

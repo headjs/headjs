@@ -1,0 +1,11 @@
+﻿changed browser min/max in conf section to array of supported browsers
+ - like this if you only want to detect certain browsers you don't have to go through the full min/max scenario (min:6, max:24)
+ - instead you can now do this [3,15,24], and it will only tests 3 versions, instead of 19 !
+added array caching to browser version looping
+added browser and browser version no matter what tests are enabled
+ - like this you will always get at least something like .ff, .ff17
+ - it also pretty much renders the .browser-eqXX test obsolete
+ - it's not costly at all, and is probably enough in most cases instead of having to declare a bunch of versions to test
+ added the possibility to disable html5 shim in conf section for those who don't care about it
+ fixed some formatting in CSS Router. Now replacing . with -
+ 
