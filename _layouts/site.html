@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html class="no-js" itemscope="itemscope" itemtype="http://schema.org/WebApplication" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>{{ page.title }}</title>
+        
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="google-site-verification" content="pqzn85yrum0AY6ugIrX0zoIEazSHL9p09us5yvHwZqw" />
+        
+        <meta itemprop="description" name="description" content="Load scripts and stylesheets on demand. Achieve responsive design with CSS that targets different screen resolutions, paths, states and browsers. Detect various browsers and their features. Target HTML5 and CSS3 safely." />
+        <meta itemprop="keywords" name="keywords" content="loader,polyfill,feature detection,responsive design,css3,html5" />
+        
+        <meta itemprop="dateModified" content="{{ site.time | date_to_xmlschema }}" />
+        <meta itemprop="softwareVersion" content="0.99" />
+        <meta itemprop="releaseNotes" content="https://raw.github.com/headjs/headjs/master/changelog.txt" />
+        <meta itemprop="fileFormat" content="application/javascript" />
+        <meta itemprop="image" content="http://headjs.com/media/img/logo-small.jpg" />
+        <meta itemprop="thumbnailUrl" content="http://headjs.com/media/img/favicon.png" />
+        <meta itemprop="isFamilyFriendly" content="true" />  
+        
+        <link rel="icon" type="image/gif" href="media/img/favicon.png" />         
+        {% for item in page.css %}
+        <link rel="stylesheet" href="{{item}}" />
+        {% endfor %}
+        {% for item in page.header_js %}
+        <script src="{{item}}"></script>
+        {% endfor %}
+    </head>
+    <body>
+        {{ content }}
+                
+        {% for item in page.footer_js %}
+        <script src="{{item}}"></script>
+        {% endfor %}
+        
+        
+        {% include footer.txt %}
+
+        {% include analytics.txt %}
+        {% include uservoice.txt %}
+        <script>
+            head.js("http://www.google-analytics.com/ga.js", "http://platform.linkedin.com/in.js", "http://platform.twitter.com/widgets.js", "https://apis.google.com/js/plusone.js");
+        </script>
+    </body>
+</html>

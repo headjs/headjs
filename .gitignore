@@ -1,6 +1,7 @@
 # git ignore file
 .idea*/
 _ReSharper.headjs*/
+_site*/
 dist/dist.chirp.config
 dist/nuget/dist.chirp.config
 dist/nuget/head.js
