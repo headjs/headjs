@@ -274,7 +274,7 @@ button:active {
     overflow-x: auto;
 }
 
-.c,
+/*.c,
 .cm {
     color: #998;
     font-style: italic;
@@ -467,7 +467,7 @@ button:active {
 
 .gt {
     color: #a00;
-}
+}*/
 
 #fork {
     position: absolute;
