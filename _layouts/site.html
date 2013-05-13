@@ -18,13 +18,11 @@
         <meta itemprop="thumbnailUrl" content="http://headjs.com/media/img/favicon.png" />
         <meta itemprop="isFamilyFriendly" content="true" />  
         
-        <link rel="icon" type="image/gif" href="media/img/favicon.png" />         
-        {% for item in page.css %}
-        <link rel="stylesheet" href="{{item}}" />
-        {% endfor %}
-        {% for item in page.header_js %}
-        <script src="{{item}}"></script>
-        {% endfor %}
+        <link rel="stylesheet" href="media/css/html5.min.css" />
+        <link rel="stylesheet" href="media/css/syntax.min.css" />
+        <link rel="stylesheet" href="media/css/style.min.css" />
+
+        <script src="media/libs/headjs/0.99/head.min.js"></script>
     </head>
     <body>
         {{ content }}                       
