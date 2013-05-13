@@ -10,6 +10,3 @@ dist/nuget/HeadJS.0.99.nupkg
 headjs.sln
 headjs.v11.suo
 Web.config
-test/unit/0.96*/
-test/unit/0.97a*/
-test/debug.html
