@@ -27,11 +27,7 @@
         {% endfor %}
     </head>
     <body>
-        {{ content }}
-                
-        {% for item in page.footer_js %}
-        <script src="{{item}}"></script>
-        {% endfor %}           
+        {{ content }}                       
 
         {% include analytics.txt %}
         {% include uservoice.txt %}
