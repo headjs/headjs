@@ -23,6 +23,7 @@
         <!-- include the stylesheet after headjs -->    
         <link rel="stylesheet" type="text/css" href="media/css/html5.min.css" />
         <link rel="stylesheet" href="media/css/style.min.css" />
+        <link rel="stylesheet" href="media/css/syntax.min.css" />
         <link rel="icon" type="image/gif" href="media/img/favicon.png" />
     
         {% include analytics.txt %}
@@ -64,10 +65,13 @@
                             Load scripts in parallel but execute in order.
                             <p>No WEB 2.0 site would work without all the nice scripts we are injecting into our pages today.</p>
                             <figure class="code">
-                                <div class="highlight">
-                                    <pre><span class="nx">head</span><span class="p">.</span><span class="nx">js</span><span class="p">(</span><span class="s2">&quot;/path/to/jquery.js&quot;</span><span class="p">,</span> <span class="s2">&quot;/google/analytics.js&quot;</span><span class="p">,</span> <span class="s2">&quot;/js/site.js&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span><br />&nbsp;<br />   <span class="c1">// all done</span><br />&nbsp;<br /><span class="p">});</span><br /></pre>
-                                </div>
-                                <br />
+                                {% highlight js %}
+                                    head.js("/path/to/jquery.js", "/google/analytics.js", "/js/site.js", function() {
+ 
+                                       // all done
+ 
+                                    });
+                                {% endhighlight %}
                                 <figcaption>JavaScript</figcaption>
                             </figure>
                         </p>
