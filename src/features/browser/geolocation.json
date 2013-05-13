@@ -1,0 +1,7 @@
+﻿// Test for browser geolocation support
+{
+    "name"  : "geolocation",
+    "result": function () { 
+        return "geolocation" in navigator;
+    }
+}

@@ -1,0 +1,152 @@
+﻿[
+	{
+		"id"         : "flash",
+		"title"      : "Flash",
+		"category"   : "browser",
+		"description": "Detect if browser supports a version of Adobe Flash runtime",
+		"package"    : "features/browser/flash.json"
+	},
+	{
+		"id"         : "geolocation",
+		"title"      : "GeoLocation",
+		"category"   : "browser",
+		"description": "Test for browser geolocation support",
+		"package"    : "features/browser/geolocation.json",
+		"url":       "http://caniuse.com/#feat=geolocation"
+	},
+	{
+		"id"         : "localStorage",
+		"title"      : "LocalStorage",
+		"category"   : "browser",
+		"description": "Test for browser localStorage support",
+		"package"    : "features/browser/localStorage.json",
+		"url":       "http://caniuse.com/#feat=namevalue-storage"
+	},
+	{
+		"id"         : "silverlight",
+		"title"      : "SilverLight",
+		"category"   : "browser",
+		"description": "Test for browser silverlight support",
+		"package"    : "features/browser/silverlight.json"
+	},
+	{
+		"id"         : "userData",
+		"title"      : "UserData",
+		"category"   : "browser",
+		"description": "Test for browser userData support",
+		"package"    : "features/browser/userData.json"
+	},
+
+
+	{
+		"id"         : "border-image",
+		"title"      : "Border Image",
+		"category"   : "css",
+		"description": "Test for css border-image support",
+		"package"    : "features/css/border-image.json",
+		"url":       "http://caniuse.com/#feat=border-image"
+	},
+	{
+		"id"         : "border-radius",
+		"title"      : "Border Radius",
+		"category"   : "css",
+		"description": "Test for css border-radius support",
+		"package"    : "features/css/border-radius.json",
+		"url":       "http://caniuse.com/#feat=border-radius"
+	},
+	{
+		"id"         : "box-reflect",
+		"title"      : "Box Reflect",
+		"category"   : "css",
+		"description": "Test for css box-reflect support",
+		"package"    : "features/css/box-reflect.json",
+		"url":       "http://caniuse.com/#feat=css-reflections"
+	},
+	{
+		"id"         : "box-shadow",
+		"title"      : "Box Shadow",
+		"category"   : "css",
+		"description": "Test for css box-shadow support",
+		"package"    : "features/css/box-shadow.json",
+		"url":       "http://caniuse.com/#feat=css-boxshadow"
+	},
+	{
+		"id"         : "font-face",
+		"title"      : "Font Face",
+		"category"   : "css",
+		"description": "Test for css @font-face support",
+		"package"    : "features/css/font-face.json",
+		"url":       "http://caniuse.com/#feat=fontface"
+	},
+	{
+		"id"         : "gradient",
+		"title"      : "Gradient",
+		"category"   : "css",
+		"description": "Test for css gradient support",
+		"package"    : "features/css/gradient.json",
+		"url":       "http://caniuse.com/#feat=css-gradients"
+	},
+	{
+		"id"         : "multiple-background",
+		"title"      : "Multiple Background",
+		"category"   : "css",
+		"description": "Test for css multiple-background support",
+		"package"    : "features/css/multiple-background.json",
+		"url":       "http://caniuse.com/#feat=multibackgrounds"
+	},
+	{
+		"id"         : "opacity",
+		"title"      : "Opcaity",
+		"category"   : "css",
+		"description": "Test for css opacity support",
+		"package"    : "features/css/opacity.json",
+		"url":       "http://caniuse.com/#feat=css-opacity"
+	},
+	{
+		"id"         : "rgba",
+		"title"      : "RGBA",
+		"category"   : "css",
+		"description": "Test for css rgba support",
+		"package"    : "features/css/rgba.json",
+		"url":       "http://caniuse.com/#feat=css3-colors"
+	},
+	{
+		"id"         : "text-shadow",
+		"title"      : "Text Shadow",
+		"category"   : "css",
+		"description": "Test for css text-shadow support",
+		"package"    : "features/css/text-shadow.json",
+		"url":       "http://caniuse.com/#feat=css-textshadow"
+	},
+	{
+		"id"         : "transform",
+		"title"      : "Transform",
+		"category"   : "css",
+		"description": "Test for css transform support",
+		"package"    : "features/css/transform.json",
+		"url":       "http://caniuse.com/#feat=transforms2d"
+	},
+	{
+		"id"         : "transition",
+		"title"      : "transition",
+		"category"   : "css",
+		"description": "Test for css transition support",
+		"package"    : "features/css/transition.json",
+		"url":       "http://caniuse.com/#feat=css-transitions"
+	},
+
+	{
+		"id"         : "retina",
+		"title"      : "Retina",
+		"category"   : "device",
+		"description": "Test for device retina support",
+		"package"    : "features/device/retina.json"
+	},
+	{
+		"id"         : "touch",
+		"title"      : "Touch",
+		"category"   : "device",
+		"description": "Test for device touch support",
+		"package"    : "features/device/touch.json"
+	}
+]

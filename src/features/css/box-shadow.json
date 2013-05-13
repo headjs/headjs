@@ -1,0 +1,7 @@
+﻿// Test for css box-shadow support
+{
+    "name"  : "boxShadow",
+    "result": function () { 
+		return api.cssPropertyExists("boxShadow");
+	}
+}

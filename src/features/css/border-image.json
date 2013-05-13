@@ -1,0 +1,7 @@
+﻿// Test for css border-image support
+{
+    "name"  : "borderImage",
+    "result": function () { 
+		return api.cssPropertyExists("borderImage");
+	}
+}

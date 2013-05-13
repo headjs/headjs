@@ -1,0 +1,11 @@
+﻿// Test for css multiple-background support
+{
+    "name"  : "multipleBackground",
+    "result": function () { 
+		var ele   = document.createElement("i"),
+			style = ele.style;
+    
+		style.cssText = "background:url(//:),url(//:),red url(//:)";
+		return new RegExp("(url\\s*\\(.*?){3}").test(style.background);
+	}
+}

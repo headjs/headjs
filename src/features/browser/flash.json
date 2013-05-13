@@ -1,0 +1,22 @@
+﻿// Test for browser flash support
+{
+    "name"  : "flash",
+    "result": function () {
+        if (!!navigator.plugins["Shockwave Flash"]) {
+            return true;
+        }
+
+        var minVersion = 9;
+        var maxVersion = 11;                        
+        for (var i = maxVersion; i >= minVersion; i--)
+        {
+            try
+            {
+                return !!new window.ActiveXObject("ShockwaveFlash.ShockwaveFlash." + i);
+            }
+            catch (e) { }
+        }                        
+
+        return false;
+    }
+}

@@ -1,0 +1,17 @@
+﻿// Test for css gradient support
+{
+    "name"  : "gradient",
+    "result": function () { 
+		var el    = document.createElement("i"),
+			style = el.style,
+			prefs = ' -o- -moz- -ms- -webkit- -khtml- '.split(' ');
+    
+		var s1 = 'background-image:',
+			s2 = 'gradient(linear,left top,right bottom,from(#9f9),to(#fff));',
+			s3 = 'linear-gradient(left top,#eee,#fff);';
+
+		style.cssText = (s1 + prefs.join(s2 + s1) + prefs.join(s3 + s1)).slice(0, -s1.length);
+    
+		return !!style.backgroundImage;
+	}
+}

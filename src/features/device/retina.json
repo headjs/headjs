@@ -1,0 +1,7 @@
+﻿// Test for device retina support
+{
+    "name"  : "retina",
+    "result": function () { 
+		return "name" in window;
+	}
+}

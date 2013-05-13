@@ -1,0 +1,261 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Head.JS, the only script in your HEAD</title>
+        
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="google-site-verification" content="pqzn85yrum0AY6ugIrX0zoIEazSHL9p09us5yvHwZqw" />
+        
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,target-densityDpi=device-dpi" />
+        <meta http-equiv="cleartype" content="on" />
+        
+        <meta name="description" content="Load scripts and stylesheets on demand. Achieve responsive design with CSS that targets different screen resolutions, paths, states and browsers. Detect various browsers and their features. Target HTML5 and CSS3 safely." />
+        <meta name="author" content="Tero Piirainen" />
+    
+	    <meta property="og:title" content="HeadJS, The only script in your &lt;HEAD&gt;"/>
+	    <meta property="og:type" content="website" />
+	    <meta property="og:url" content="http://headjs.com" />
+	    <meta property="og:image" content="http://headjs.com/media/img/logo-small.jpg" />
+	    <meta property="og:site_name" content="Head JS" />
+        <meta property="og:description" content="Load scripts and stylesheets on demand. Achieve responsive design with CSS that targets different screen resolutions, paths, states and browsers. Detect various browsers and their features. Target HTML5 and CSS3 safely." />
+        
+        <link rel="icon" type="image/gif" href="../media/img/favicon.png" />
+
+        <!--[if lte IE 9]>
+        <link rel="stylesheet" type="text/css" href="../media/css/html5.min.css" />
+        <![endif]-->        
+        <script src="../media/libs/headjs/1.00/head.core.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="../media/libs/prettify/prettify.css" />
+        <link rel="stylesheet" type="text/css" href="../media/css/common.css" />
+        <link rel="stylesheet" type="text/css" href="../media/css/home.css" />
+        
+        <script>
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-20001309-1']);
+            _gaq.push(['_trackPageview']);
+
+            _gaq.push(['b._setAccount', 'UA-15567888-4']);
+            _gaq.push(['b._trackPageview']);
+
+            function trackPageView(page) {
+                _gaq.push(['_trackPageview'  , page]);
+                _gaq.push(['b._trackPageview', page]);
+            }
+        </script>
+    </head>
+    <body itemscope="itemscope" itemtype="http://schema.org/Product">
+        <!-- ..maybe maybe not -->
+        <span itemprop="aggregateRating" itemscope="itemscope" itemtype="http://schema.org/AggregateRating"><meta itemprop="ratingValue" content="4.8" /></span>        
+
+        <a href="http://github.com/headjs/headjs" onclick="trackPageView('github.com')" class="github">
+            <img alt="Fork me on GitHub" src="../media/img/forkme.png" />
+        </a>
+        
+        <div class="container">
+            <ul class="menu group center">
+                <li class="active"><a href="index.html">About</a></li>
+                <li><a href="api.html">Api</a></li>
+                <li><a href="tests.html">Tests</a></li>
+                <li><a href="build.html">Download</a></li>
+            </ul>
+            <a href="index.html"><img src="../media/img/logo.jpg" class="logo vanish-480" /></a>  
+        </div>        
+                
+        <div class="container main">
+            <h1 itemprop="name">HeadJS</h1>
+            <div itemprop="description">
+                <h2>The only script in your &lt;HEAD&gt;</h2>
+                <h3>A tiny script that simplifies, speeds up, and modernizes your site</h3>
+
+                Load javascript and stylesheets on demand.<br />
+                Achieve responsive design with CSS that targets different screen resolutions, paths, states and browsers.<br />
+                Detect various browsers and their features.
+                Target HTML5 and CSS3 safely.
+            </div>
+            <p>
+                <strong>Make it the only script in your HEAD.</strong>
+                &laquo; A concise solution to universal problems &raquo;
+            </p>            
+            
+            <hr/>
+            
+            <h2>Load javascript and stylesheets on demand</h2>
+            <div class="intro">
+                Load assets in parallel but execute them in order.
+                
+            </div>
+            <div class="code-example" data-title="JavaScript">
+                <p>No WEB 2.0 site would work without all the nice scripts we are injecting into our pages today.</p>
+                <pre class="prettyprint linenums">
+/* Queue scripts and fire a callback when loading is finished */
+head.load("file1.js", "file2.js", callback);
+                    
+/* Then load up some css */
+head.load("file1.css", "file2.css");
+                                       
+/* Load a script, give it a label */
+head.load({
+    jQuery: "file1.js"
+});
+                    
+/* Then attach the callback later */
+head.ready("jQuery",  callback);
+          
+/* Or load a couple of files base on a specific condition */                              
+head.test({
+            test    : head.localStorage,
+            success : ["file1.js", "file2.js"],
+            failure : ["poly1.js", "poly2.js"],
+            callback: function() {
+                storeMyStuff();        
+            }
+); 
+                    
+/* Simplified version */
+head.test(condition, "success.js", "failure.js" , callback);
+                </pre>
+
+                <p>
+                    Head JS loads files in parallel without <em>blocking</em> the page. Your
+                    page will be faster. Even with a single combined file.
+                </p>
+            </div>    
+            
+            
+            
+
+            
+            <h2>Achieve responsive design with CSS that targets different screen resolutions, paths, states and browsers</h2>
+            <div class="intro">
+                HeadJS will detect screen resolutions, features, browsers and automatically generate dynamic css/javascript classes that you can then target.                
+            </div>
+            <div class="code-example" data-title="CSS / JavaScript">
+                <p>Often you will need to adapt your design or code logic depending on resolution, where the user is, or what browser he is using.</p>
+                <pre class="prettyprint linenums">
+/* Only apply margin to IE < 6 */
+.ie-lt6 {
+    margin: 10px;                   
+}                   
+
+/* Resize elements based on resolution */
+.lt-800 .container {
+    width: 600px; 
+}                  
+.gt-1024 .container {
+    width: 1000px; 
+}  
+                    
+/* Change style based on feature support */
+.no-border-radius table {
+    border: 1px dashed black;
+}
+ 
+/* Change elements on individual pages thank's to the CSS Router */                   
+.index-page .ads {
+    display: none;                   
+}
+
+/* Do something if the user is on a mobile device */                    
+if (head.mobile) {
+    head.load("iscroll.js");
+}
+                </pre>
+                <p>
+                    All feature detections are both accessible via css classes, and javascript properties.
+                </p>
+            </div>      
+            
+            
+            
+            
+            <h2>Target HTML5 and CSS3 safely</h2>
+            <div class="intro">
+                You want to start using HTML5 semantics but are put off by it because you still have a large audience of users using non compatible browsers ?               
+            </div>
+            <div class="code-example" data-title="HTML">
+                <p>DIV's are good, but HeadJS let’s you be semantic and futuristic.</p>
+                <pre class="prettyprint linenums language-html">
+/* Use CSS3 semantics */
+&lt;style&gt;
+    article { text-shadow:0 0 1px #ccc; }
+&lt;/style&gt;
+ 
+<!-- works in IE too -->
+&lt;article&gt;
+   &lt;header&gt;&lt;/header&gt;
+   &lt;section&gt;&lt;/section&gt;
+   &lt;footer&gt;&lt;/footer&gt;
+&lt;/article&gt;
+                </pre>
+                <p>
+                    HeadJS will detect if IE < 9 is present, and inject the necessary HTML5 shim for you.
+                </p>
+            </div>  
+            
+            
+            <h1>head.ready(?)</h1>
+            <div class="center">
+                <div class="group" style="max-width: 350px; margin: 0 auto">
+                    <div class="float-l">
+                        <h2>Api Documentation</h2>
+                        <a href="api.html" title="Read the docs"><img src="../media/img/docs.png"/></a>
+                    </div>
+                    <div class="float-r">
+                        <h2>Download</h2>
+                        <a href="build.html" title="Download HeadJS"><img src="../media/img/download.png"/></a>
+                    </div>
+                </div>
+            </div>
+
+            <h4>Spread the word</h4>
+            <div>                                       
+                <script type="IN/Share"></script>                        
+                <a href="https://twitter.com/share" class="twitter-share-button" data-via="headjs" data-count="none">Tweet</a>
+                <span class="g-plusone" data-size="medium" data-href="http://headjs.com" data-count="false"></span>
+            </div>
+            <h2>Featured On</h2>               
+            <hr/>         
+            <div style="text-align: center">
+                <p class="featured">
+                    <a style="padding:10px;" href="http://net.tutsplus.com/articles/web-roundups/for-your-script-loading-needs/" target="_blank" title="For Your Script Loading Needs"><img src="../media/img/featured/net.tutsplus.com.gif" alt="For Your Script Loading Needs" /></a>
+                    <a style="padding:10px;" href="http://www.webappers.com/2010/12/01/head-js-speeds-up-simplifies-modernizes-your-site" target="_blank" title="Head JS Speeds Up, Simplifies & Modernizes Your Site"><img src="../media/img/featured/webappers.com.png" alt="Head JS Speeds Up, Simplifies & Modernizes Your Site" /></a>
+                    <a style="padding:10px;" href="http://coding.smashingmagazine.com/2011/06/10/useful-html-css-and-javascript-tools-and-libraries" target="_blank" title="Useful HTML-, CSS- and JavaScript Tools and Libraries"><img src="../media/img/featured/smashingmagazine.com.png" alt="Useful HTML-, CSS- and JavaScript Tools and Libraries"/></a>                        
+                    <a style="padding:10px;" href="http://www.smashingapps.com/2011/01/27/13-most-robust-wordpress-plugins-to-speed-up-your-blogs-loading-time.html" target="_blank" title="13 Most Robust WordPress Plugins To Speed Up Your Blog’s Loading Time"><img src="../media/img/featured/smashing-apps.com.png" alt="13 Most Robust WordPress Plugins To Speed Up Your Blog’s Loading Time"/></a>                                    
+                    <a style="padding:10px;" href="http://www.netmagazine.com/features/essential-javascript-top-five-script-loaders" target="_blank" title="Essential JavaScript: the top five script loaders"><img src="../media/img/featured/netmagazine.com.png" alt="Essential JavaScript: the top five script loaders"/></a>                                    
+                    <a style="padding:10px;" href="http://www.noupe.com/javascript/javascript-turbo-head-js-speeds-up-your-website-73078.html" target="_blank" title="JavaScript-Turbo: Head.js Speeds Up Your Website"><img src="../media/img/featured/noupe.com.png" alt="JavaScript-Turbo: Head.js Speeds Up Your Website" /></a>                                   
+                    <a style="padding:10px;" href="http://speckyboy.com/2011/09/28/40-new-jquery-plugins" target="_blank" title="40 New jQuery Plugins"><img src="../media/img/featured/speckyboy.com.png" alt="40 New jQuery Plugins"/></a>
+                </p>
+            </div>
+            
+            <a href="#" class="up">Top</a> 
+        </div>        
+        
+        <div class="container center">
+            <small>
+                <span itemscope="itemscope" itemtype="http://schema.org/Person">
+                    <a href="http://cloudpanic.com/about.html" target="_blank" itemprop="url">Created By: <strong itemprop="author">Tero Piirainen</strong></a> &bull;
+                </span>
+                <span itemscope="itemscope" itemtype="http://schema.org/Person">
+                    <a href="http://careers.stackoverflow.com/roberthoffmann" target="_blank" itemprop="url">Maintained By: <strong itemprop="contributor">Robert Hoffmann</strong></a> &bull;
+                </span>
+                <a href="http://twitter.com/search?q=headjs" target="_blank">Twitter Talk</a> &bull;
+                <a href="http://headjs.uservoice.com" target="_blank">Feature Requests</a> &bull;
+                <a href="http://stackoverflow.com/questions/tagged/head.js?sort=newest" target="_blank">Community Support</a> &bull;
+                <a href="https://github.com/headjs/headjs/issues">Bug Reports</a>
+            </small>
+        </div>
+        
+        <script src="../media/js/common.js"></script>
+        <script src="../media/libs/prettify/prettify.js"></script>
+        <script>
+            prettyPrint();
+        </script>
+
+        <script src="//www.google-analytics.com/ga.js" async="async"></script>
+        <script src="//platform.linkedin.com/in.js" async="async"></script>
+        <script src="//platform.twitter.com/widgets.js" async="async"></script>
+        <script src="//apis.google.com/js/plusone.js" async="async"></script>
+    </body>
+</html>

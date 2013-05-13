@@ -1,0 +1,7 @@
+﻿// Test for css transform support
+{
+    "name"  : "transform",
+    "result": function () { 
+		return api.cssPropertyExists("transform");
+	}
+}
