@@ -58,6 +58,21 @@ scripts: ["/site/assets/libs/jquery/jquery-1.10.0-beta1.min.js", "https://cdn.mo
         </ol>
     </li>
     <li>
+        Event Handling
+        <ol>
+            <li>head.on(name, callback)</li>
+            <ol>
+                <li>head.on("w-lt800", callback)</li>
+                <li>head.on("ie6", callback)</li>
+            </ol>
+            <li>head.off(name, callback)</li>
+
+        </ol>
+        <ol>
+            <li>Custom Detections</li>
+        </ol>
+    </li>
+    <li>
         Feature Detection
         <ol>
             <li>head.feature(name, bool)</li>
@@ -72,7 +87,8 @@ scripts: ["/site/assets/libs/jquery/jquery-1.10.0-beta1.min.js", "https://cdn.mo
     </li>
     <li>
         Ressource Loading
-        <ol><li>head.load(css|js)</li></ol>
+        <ol><li>head.js(js, callback)</li></ol>
+        <ol><li>head.css(css, callback)</li></ol>
         <ol><li>head.test(condition, callback)</li></ol>
     </li>
     <li>
