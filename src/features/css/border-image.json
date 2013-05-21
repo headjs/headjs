@@ -2,6 +2,6 @@
 {
     "name"  : "borderImage",
     "result": function () { 
-		return api.cssPropertyExists("borderImage");
+		  return api.cssPropertyExists("borderImage");
 	}
 }

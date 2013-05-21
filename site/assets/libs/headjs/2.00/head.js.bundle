@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bundle minify="true" runOnBuild="true" output="head.js">
+  <!--The order of the <file> elements determines the order of them when bundled.-->
+  <file>/site/assets/libs/headjs/2.00/head.ready.js</file>
+  <file>/site/assets/libs/headjs/2.00/head.features.js</file>
+  <file>/site/assets/libs/headjs/2.00/head.responsive.js</file>
+  <file>/site/assets/libs/headjs/2.00/head.load.js</file>
+  <file>/site/assets/libs/headjs/2.00/head.monitoring.js</file>  
+</bundle>

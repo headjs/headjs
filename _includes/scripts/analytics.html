@@ -1,0 +1,17 @@
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-15567888-4', { 'name': 'itech', 'cookieDomain': 'none' });
+    ga('create', 'UA-20001309-1', { 'name': 'cloud', 'cookieDomain': '.headjs.com' });
+  
+    ga('itech.send', 'pageview');
+    ga('cloud.send', 'pageview');
+    
+    function trackPageView(page) {
+        window.ga('itech.send', 'pageview', { 'page': page });
+        window.ga('cloud.send', 'pageview', { 'page': page });
+    }
+</script>

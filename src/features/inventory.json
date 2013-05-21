@@ -36,6 +36,20 @@
 		"description": "Test for browser userData support",
 		"package"    : "features/browser/userData.json"
 	},
+	{
+		"id"         : "hashChange",
+		"title"      : "HashChange",
+		"category"   : "browser",
+		"description": "Test for browser hashChange support",
+		"package"    : "features/browser/hashChange.json"
+	},
+	{
+		"id"         : "history",
+		"title"      : "History",
+		"category"   : "browser",
+		"description": "Test for browser history support",
+		"package"    : "features/browser/history.json"
+	},
 
 
 	{

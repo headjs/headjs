@@ -1,0 +1,4 @@
+head: 
+  release: 0.99
+  beta: 2.00
+sections: ['about', 'documentation', 'tests', 'download']

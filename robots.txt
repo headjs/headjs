@@ -1,2 +1,2 @@
-﻿User-agent: *
+User-agent: *
 Disallow: /test/unit/

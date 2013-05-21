@@ -2,6 +2,6 @@
 {
     "name"  : "retina",
     "result": function () { 
-		return "name" in window;
-	}
+		  return "name" in window;
+	 }
 }

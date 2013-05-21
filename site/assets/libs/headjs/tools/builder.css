@@ -1,0 +1,41 @@
+﻿/*BULDER*/
+.bp, .bid, .toggle {
+    cursor: pointer;
+}  
+.bp,  
+.bid,
+.toggle,
+.undeline {                        
+    border-bottom: 1px dashed #ccc;
+}    
+.bid:hover,
+.toggle:hover {
+    background-color: #F2F2F2;
+}
+.line-through {
+    text-decoration: line-through;
+}
+#head-conf input {
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px dashed #ccc;
+    margin: 1px 0;
+}
+#head-conf input:focus {
+    border: 1px solid #02CD00;
+}
+.bp:hover {
+    background-color: #F8E8E8;
+}
+.button.add {
+    font-size: 10px;
+    padding: 0;
+    color: #ccc;
+    background-color: white;
+    border-bottom: 1px dashed #ccc;
+}
+.button.add:hover {
+    background-color: #02CD00;
+    color: black;
+} 

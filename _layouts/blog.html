@@ -1,0 +1,4 @@
+---
+layout: main
+---
+{{ content }}
