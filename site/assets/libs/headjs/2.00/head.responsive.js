@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  * HeadJS     The only script in your <HEAD>    
  * Author     Tero Piirainen  (tipiirai)
  * Maintainer Robert Hoffmann (itechnology)
@@ -87,7 +87,8 @@
 
         // apply class to HTML element
         if (!queue) {
-            removeClass(key + '-false');
+            removeClass(key + '-true');
+            removeClass(key + '-false');            
             removeClass(key);
             api.feature();
         }
@@ -239,6 +240,11 @@
         height: win.screen.height,
         width : win.screen.width
     };
+    
+    api.viewport = {
+        height: win.innerHeight || html.clientHeight,
+        width : win.innerWidth  || html.clientWidth
+    };    
 
     // viewport resolutions: w-100, lt-480, lt-1024 ...
     function screenSize() {
@@ -249,8 +255,8 @@
         var iw = win.innerWidth || html.clientWidth,
             ow = win.outerWidth || win.screen.width;
         
-        api.screen.innerWidth = iw;
-        api.screen.outerWidth = ow;
+        api.viewport.width = iw;
+        api.browser.width  = ow;
         
         // for debugging purposes, not really useful for anything else
         pushClass("w-" + iw);
@@ -288,14 +294,14 @@
         var ih = win.innerHeight || html.clientHeight,
             oh = win.outerHeight || win.screen.height;
 
-        api.screen.innerHeight = ih;
-        api.screen.outerHeight = oh;
+        api.viewport.height = ih;
+        api.browser.height  = oh;
 
         // for debugging purposes, not really useful for anything else
         pushClass("h-" + ih);
 
         each(conf.heights, function (height) {
-            if (iw > height) {
+            if (ih > height) {
                 if (conf.heightCss.gt)
                     pushClass("h-gt" + height);
                 
@@ -303,15 +309,15 @@
                     pushClass("h-gte" + height);
             }
 
-            else if (iw < width) {
+            else if (ih < height) {
                 if (conf.heightCss.lt)
-                    pushClass("h-lt" + width);
+                    pushClass("h-lt" + height);
                 
                 if (conf.heightCss.lte)
                     pushClass("h-lte" + height);
             }
 
-            else if (iw === width) {
+            else if (ih === height) {
                 if (conf.heightCss.lte)
                     pushClass("h-lte" + height);
 
