@@ -27,9 +27,11 @@ But feel free to look around, some nice features are comming up.
 
 
 
-<div class="group" style="border-top: 1px dotted black; padding: 10px;">                        
-    <div class="float-l" style="width:100%">
-        <button onclick="blog.loadComments(this)">Show Comments</button>   
-        <div class="comments" data-forum='posts/2013/may' data-label="Leave a comment"></div>
+<div style="border-top: 1px dotted black; padding: 10px;">                        
+    <div style="width:100%;">                        
+        <div onclick="blog.loadComments(this, 'posts/2013/may', 'Leave a comment')" style="cursor: pointer;">
+            <h2>Show Comments</h2>
+        </div>
     </div>
 </div>
+<div id="moot"></div>
