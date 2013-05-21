@@ -326,6 +326,6 @@ fieldset ol {
 
 
 /*MOOT*/
-.comments.moot {
+#moot {
     max-width: none;
 }

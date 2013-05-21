@@ -13,7 +13,7 @@ If you are reading this, then you found the new site :)
 This site is in full migration, so don't take heed of any content you may come across
 ..chances are things are incomplete or mixed up.
 
-But feel free to look around, there some nice features comming up.
+But feel free to look around, some nice features are comming up.
 
 * Migrating to [Jekyll](http://jekyllrb.com) engine for site generation
   - logical layouts

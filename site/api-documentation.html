@@ -127,10 +127,9 @@ scripts: ["/site/assets/libs/jquery/jquery-1.10.0-beta1.min.js", "https://cdn.mo
         page will be faster. Even with a single combined file.
     </p>
     
-    <div class="group">                        
-        <div class="float-l" style="width:100%">
-            <button onclick="blog.loadComments(this)">Show Comments</button>   
-            <div class="comments" data-forum='api/v2.0/head.load()' data-label='Leave a comment'></div>
+    <div style="width:100%;">                        
+        <div onclick="blog.loadComments(this, 'api/v2.0/head.load()', 'Leave a comment')" style="cursor: pointer;">
+            <h2>Show Comments</h2>
         </div>
     </div>
 </div>   
@@ -179,10 +178,9 @@ scripts: ["/site/assets/libs/jquery/jquery-1.10.0-beta1.min.js", "https://cdn.mo
         All feature detections are both accessible via css classes, and javascript properties.
     </p>
     
-    <div class="group">                        
-        <div class="float-l" style="width:100%">
-            <button onclick="blog.loadComments(this)">Show Comments</button>   
-            <div class="comments" data-forum='api/v2.0/head.test()' data-label='Leave a comment'></div>
+    <div style="width:100%;">                            
+        <div onclick="blog.loadComments(this, 'api/v2.0/head.test()', 'Leave a comment')" style="cursor: pointer;">
+            <h2>Show Comments</h2>
         </div>
     </div>
 </div>
@@ -222,3 +220,5 @@ scripts: ["/site/assets/libs/jquery/jquery-1.10.0-beta1.min.js", "https://cdn.mo
 </div>  
 
 {% include sections/download.html %}
+
+<div id="moot"></div>
