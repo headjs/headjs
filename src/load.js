@@ -409,6 +409,13 @@
             ele.type = 'text/' + (asset.type || 'css');
             ele.rel  = 'stylesheet';
             ele.href = asset.url;
+            if (ele.onload !== null) {   // to support browsers which dont have an onload event on link tags
+                var img = document.createElement('img');
+                img.onerror = function(){
+                    process({"type":"load"});
+                }
+                img.src = asset.url;
+            }
         }
         else {
             ele      = doc.createElement('script');
