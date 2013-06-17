@@ -1,0 +1,81 @@
+framework: qunit
+
+src_files:
+  - dist/head.js
+  - media/libs/qunit/qunit-assert-step.js
+  - media/libs/qunit/qunit-assert-step-testem-custom-adapter.js
+  - test/unit/test.responsive.js
+  - test/unit/test.feature.js
+  - test/unit/test.load.js
+
+launchers:
+  Win7_Firefox:
+    command: node media/libs/saucelauncher/webdriver.js 'firefox' '21' 'Windows 7'
+    protocol: browser
+
+  Win7_Chrome:
+    command: node media/libs/saucelauncher/webdriver.js 'chrome' '27' 'Windows 7'
+    protocol: browser
+
+  Win7_Opera:
+    command: node media/libs/saucelauncher/webdriver.js 'opera' '12' 'Windows 7'
+    protocol: browser
+
+  Win7_Safari:
+    command: node media/libs/saucelauncher/webdriver.js 'safari' '5' 'Windows 7'
+    protocol: browser
+
+  Win7_IE_8:
+    command: node media/libs/saucelauncher/webdriver.js 'internet explorer' '8' 'Windows 7'
+    protocol: browser
+
+  Win7_IE_9:
+    command: node media/libs/saucelauncher/webdriver.js 'internet explorer' '9' 'Windows 7'
+    protocol: browser
+
+  Win8_Firefox:
+    command: node media/libs/saucelauncher/webdriver.js 'firefox' '21' 'Windows 8'
+    protocol: browser
+
+  Win8_Chrome:
+    command: node media/libs/saucelauncher/webdriver.js 'chrome' '27' 'Windows 8'
+    protocol: browser
+
+  Win8_IE_10:
+    command: node media/libs/saucelauncher/webdriver.js 'internet explorer' '10' 'Windows 8'
+    protocol: browser
+
+  WinXP_Firefox:
+    command: node media/libs/saucelauncher/webdriver.js 'firefox' '21' 'Windows XP'
+    protocol: browser
+
+  WinXP_Chrome:
+    command: node media/libs/saucelauncher/webdriver.js 'chrome' '27' 'Windows XP'
+    protocol: browser
+
+  WinXP_Opera:
+    command: node media/libs/saucelauncher/webdriver.js 'opera' '12' 'Windows XP'
+    protocol: browser
+
+  WinXP_IE_6:
+    command: node media/libs/saucelauncher/webdriver.js 'internet explorer' '6' 'Windows XP'
+    protocol: browser
+
+  WinXP_IE_7:
+    command: node media/libs/saucelauncher/webdriver.js 'internet explorer' '7' 'Windows XP'
+    protocol: browser
+
+  WinXP_IE_8:
+    command: node media/libs/saucelauncher/webdriver.js 'internet explorer' '8' 'Windows XP'
+    protocol: browser
+
+  iPhone:
+    command: node media/libs/saucelauncher/webdriver.js 'iphone' '6' 'OS X 10.8'
+    protocol: browser
+
+  iPad:
+    command: node media/libs/saucelauncher/webdriver.js 'ipad' '6' 'OS X 10.8'
+    protocol: browser
+
+launch_in_ci: [Win7_Firefox, Win7_Chrome, Win7_Opera, Win7_Safari, Win7_IE_8, Win7_IE_9, Win8_Firefox, Win8_Chrome, Win8_IE_10, WinXP_Firefox, WinXP_Chrome, WinXP_Opera, WinXP_IE_6, WinXP_IE_7, WinXP_IE_8, iPhone, iPad]
+launch_in_dev: [phantomjs]
