@@ -1,0 +1,13 @@
+{
+  "name": "headjs",
+  "version": "0.0.99",
+  "description": "The only script in your HEAD",
+  "devDependencies": {
+    "wd": "*",
+    "saucelauncher": "*",
+    "q": "*",
+    "request": "*",
+    "grunt": "*",
+    "grunt-contrib-qunit": "*"
+  }
+}
