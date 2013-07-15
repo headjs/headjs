@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  * HeadJS     The only script in your <HEAD>    
  * Author     Tero Piirainen  (tipiirai)
  * Maintainer Robert Hoffmann (itechnology)
