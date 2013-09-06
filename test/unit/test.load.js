@@ -89,13 +89,18 @@ asyncTest("load(jsFilePath, jsFilePath, callback)", function() {
 asyncTest("ready(jsFileName).load(jsFilePath)", function () {
     expect(1);
     
-    head.ready("jquery.min.js", function() {        
-        ok(!!jQuery, "Ready: jquery.min.js");
+    // Remove the window variables for jQuery.
+    window.$ = window.jQuery = undefined;
+
+    // Define a label before any sources.
+    head.ready("jQueryT1", function() {        
+        ok(!!window.jQuery, "Ready: jquery.min.js");
         
         start();
     })
         
-    .load(libs.jquery());    
+    // Load a different jQuery version - the new loader is too smart to be fooled by the prior test that erases the jQuery window reference after it's already loaded if we don't specify a new source.
+    .load({ jQueryT1: ['http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.2.min.js', function () { return !!window.jQuery; }] });
 });
 
 
