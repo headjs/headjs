@@ -1,4 +1,5 @@
-﻿/*!
+﻿///#source 1 1 /headjs/dist/head.core.js
+/*!
  * HeadJS     The only script in your <HEAD>    
  * Author     Tero Piirainen  (tipiirai)
  * Maintainer Robert Hoffmann (itechnology)
@@ -13,27 +14,27 @@
     // gt, gte, lt, lte, eq breakpoints would have been more simple to write as ['gt','gte','lt','lte','eq']
     // but then we would have had to loop over the collection on each resize() event,
     // a simple object with a direct access to true/false is therefore much more efficient
-    var doc = win.document,
-        nav = win.navigator,
-        loc = win.location,
-        html = doc.documentElement,
+    var doc   = win.document,
+        nav   = win.navigator,
+        loc   = win.location,
+        html  = doc.documentElement,
         klass = [],
-        conf = {
-            screens: [240, 320, 480, 640, 768, 800, 1024, 1280, 1440, 1680, 1920],
+        conf  = {
+            screens   : [240, 320, 480, 640, 768, 800, 1024, 1280, 1440, 1680, 1920],            
             screensCss: { "gt": true, "gte": false, "lt": true, "lte": false, "eq": false },
-            browsers: [
-                          { ie: { min: 6, max: 10 } }
+            browsers  : [
+                          { ie     : { min: 6, max: 10 } }
                        //,{ chrome : { min: 8, max: 26 } }
                        //,{ ff     : { min: 3, max: 21 } }
                        //,{ ios    : { min: 3, max:  6 } }
                        //,{ android: { min: 2, max:  4 } }
                        //,{ webkit : { min: 9, max: 12 } }
                        //,{ opera  : { min: 9, max: 12 } }
-            ],
+                        ],
             browserCss: { "gt": true, "gte": false, "lt": true, "lte": false, "eq": true },
-            section: "-section",
-            page: "-page",
-            head: "head"
+            section   : "-section",
+            page      : "-page",
+            head      : "head"
         };
 
     if (win.head_conf) {
@@ -94,11 +95,11 @@
     api.feature("js", true);
 
     // browser type & version
-    var ua = nav.userAgent.toLowerCase(),
+    var ua     = nav.userAgent.toLowerCase(),
         mobile = /mobile|android|kindle|silk|midp|(windows nt 6\.2.+arm|touch)/.test(ua);
 
     // useful for enabling/disabling feature (we can consider a desktop navigator to have more cpu/gpu power)        
-    api.feature("mobile", mobile, true);
+    api.feature("mobile" , mobile , true);
     api.feature("desktop", !mobile, true);
 
     // http://www.zytrax.com/tech/web/browser_ids.htm
@@ -111,8 +112,8 @@
 
 
     var browser = ua[1],
-        version = parseFloat(ua[2]);
-
+        version = parseFloat(ua[2]);    
+    
     switch (browser) {
         case 'msie':
             browser = 'ie';
@@ -136,13 +137,13 @@
 
     // Browser vendor and version
     api.browser = {
-        name: browser,
+        name   : browser,
         version: version
     };
     api.browser[browser] = true;
 
     for (var i = 0, l = conf.browsers.length; i < l; i++) {
-        for (var key in conf.browsers[i]) {
+        for (var key in conf.browsers[i]) {            
             if (browser === key) {
                 pushClass(key);
 
@@ -157,11 +158,11 @@
                         if (conf.browserCss.gte)
                             pushClass("gte-" + key + v);
                     }
-
+                    
                     else if (version < v) {
                         if (conf.browserCss.lt)
                             pushClass("lt-" + key + v);
-
+                        
                         if (conf.browserCss.lte)
                             pushClass("lte-" + key + v);
                     }
@@ -169,7 +170,7 @@
                     else if (version === v) {
                         if (conf.browserCss.lte)
                             pushClass("lte-" + key + v);
-
+                        
                         if (conf.browserCss.eq)
                             pushClass("eq-" + key + v);
 
@@ -183,7 +184,7 @@
             }
         }
     }
-
+    
     pushClass(browser);
     pushClass(browser + parseInt(version, 10));
 
@@ -221,7 +222,7 @@
     // basic screen info
     api.screen = {
         height: win.screen.height,
-        width: win.screen.width
+        width : win.screen.width
     };
 
     // viewport resolutions: w-100, lt-480, lt-1024 ...
@@ -232,10 +233,10 @@
         // Viewport width
         var iw = win.innerWidth || html.clientWidth,
             ow = win.outerWidth || win.screen.width;
-
+        
         api.screen.innerWidth = iw;
         api.screen.outerWidth = ow;
-
+        
         // for debugging purposes, not really useful for anything else
         pushClass("w-" + iw);
 
@@ -243,7 +244,7 @@
             if (iw > width) {
                 if (conf.screensCss.gt)
                     pushClass("gt-" + width);
-
+                
                 if (conf.screensCss.gte)
                     pushClass("gte-" + width);
             }
@@ -251,7 +252,7 @@
             else if (iw < width) {
                 if (conf.screensCss.lt)
                     pushClass("lt-" + width);
-
+                
                 if (conf.screensCss.lte)
                     pushClass("lte-" + width);
             }
@@ -267,16 +268,318 @@
                     pushClass("gte-" + width);
             }
         });
-
+        
         // Viewport height
         var ih = win.innerHeight || html.clientHeight,
             oh = win.outerHeight || win.screen.height;
 
         api.screen.innerHeight = ih;
         api.screen.outerHeight = oh;
-
+             
         // no need for onChange event to detect this
-        api.feature("portrait", (ih > iw));
+        api.feature("portrait" , (ih > iw));
+        api.feature("landscape", (ih < iw));
+    }
+
+    screenSize();
+
+    // Throttle navigators from triggering too many resize events
+    var resizeId = 0;
+    function onResize() {
+        win.clearTimeout(resizeId);
+        resizeId = win.setTimeout(screenSize, 100);
+    }
+
+    // Manually attach, as to not overwrite existing handler
+    if (win.addEventListener) {
+        win.addEventListener("resize", onResize, false);
+
+    } else {
+        win.attachEvent("onresize", onResize);
+    }
+})(window);
+
+
+///#source 1 1 /headjs/dist/head.css3.js
+/*!
+ * HeadJS     The only script in your <HEAD>    
+ * Author     Tero Piirainen  (tipiirai)
+ * Maintainer Robert Hoffmann (itechnology)
+ * License    MIT / http://bit.ly/mit-license
+ *
+ * Version 0.99
+ * http://headjs.com
+ */
+; (function (win, undefined) {
+    "use strict";
+
+    // gt, gte, lt, lte, eq breakpoints would have been more simple to write as ['gt','gte','lt','lte','eq']
+    // but then we would have had to loop over the collection on each resize() event,
+    // a simple object with a direct access to true/false is therefore much more efficient
+    var doc   = win.document,
+        nav   = win.navigator,
+        loc   = win.location,
+        html  = doc.documentElement,
+        klass = [],
+        conf  = {
+            screens   : [240, 320, 480, 640, 768, 800, 1024, 1280, 1440, 1680, 1920],            
+            screensCss: { "gt": true, "gte": false, "lt": true, "lte": false, "eq": false },
+            browsers  : [
+                          { ie     : { min: 6, max: 10 } }
+                       //,{ chrome : { min: 8, max: 26 } }
+                       //,{ ff     : { min: 3, max: 21 } }
+                       //,{ ios    : { min: 3, max:  6 } }
+                       //,{ android: { min: 2, max:  4 } }
+                       //,{ webkit : { min: 9, max: 12 } }
+                       //,{ opera  : { min: 9, max: 12 } }
+                        ],
+            browserCss: { "gt": true, "gte": false, "lt": true, "lte": false, "eq": true },
+            section   : "-section",
+            page      : "-page",
+            head      : "head"
+        };
+
+    if (win.head_conf) {
+        for (var item in win.head_conf) {
+            if (win.head_conf[item] !== undefined) {
+                conf[item] = win.head_conf[item];
+            }
+        }
+    }
+
+    function pushClass(name) {
+        klass[klass.length] = name;
+    }
+
+    function removeClass(name) {
+        var re = new RegExp(" \\b" + name + "\\b");
+        html.className = html.className.replace(re, '');
+    }
+
+    function each(arr, fn) {
+        for (var i = 0, l = arr.length; i < l; i++) {
+            fn.call(arr, arr[i], i);
+        }
+    }
+
+    // API
+    var api = win[conf.head] = function () {
+        api.ready.apply(null, arguments);
+    };
+
+    api.feature = function (key, enabled, queue) {
+
+        // internal: apply all classes
+        if (!key) {
+            html.className += ' ' + klass.join(' ');
+            klass = [];
+            return api;
+        }
+
+        if (Object.prototype.toString.call(enabled) === '[object Function]') {
+            enabled = enabled.call();
+        }
+
+        pushClass((enabled ? '' : 'no-') + key);
+        api[key] = !!enabled;
+
+        // apply class to HTML element
+        if (!queue) {
+            removeClass('no-' + key);
+            removeClass(key);
+            api.feature();
+        }
+
+        return api;
+    };
+
+    // no queue here, so we can remove any eventual pre-existing no-js class
+    api.feature("js", true);
+
+    // browser type & version
+    var ua     = nav.userAgent.toLowerCase(),
+        mobile = /mobile|android|kindle|silk|midp|(windows nt 6\.2.+arm|touch)/.test(ua);
+
+    // useful for enabling/disabling feature (we can consider a desktop navigator to have more cpu/gpu power)        
+    api.feature("mobile" , mobile , true);
+    api.feature("desktop", !mobile, true);
+
+    // http://www.zytrax.com/tech/web/browser_ids.htm
+    // http://www.zytrax.com/tech/web/mobile_ids.html
+    ua = /(chrome|firefox)[ \/]([\w.]+)/.exec(ua) || // Chrome & Firefox
+         /(iphone|ipad|ipod)(?:.*version)?[ \/]([\w.]+)/.exec(ua) || // Mobile IOS
+         /(android)(?:.*version)?[ \/]([\w.]+)/.exec(ua) || // Mobile Webkit
+         /(webkit|opera)(?:.*version)?[ \/]([\w.]+)/.exec(ua) || // Safari & Opera
+         /(msie) ([\w.]+)/.exec(ua) || [];
+
+
+    var browser = ua[1],
+        version = parseFloat(ua[2]);    
+    
+    switch (browser) {
+        case 'msie':
+            browser = 'ie';
+            version = doc.documentMode || version;
+            break;
+
+        case 'firefox':
+            browser = 'ff';
+            break;
+
+        case 'ipod':
+        case 'ipad':
+        case 'iphone':
+            browser = 'ios';
+            break;
+
+        case 'webkit':
+            browser = 'safari';
+            break;
+    }
+
+    // Browser vendor and version
+    api.browser = {
+        name   : browser,
+        version: version
+    };
+    api.browser[browser] = true;
+
+    for (var i = 0, l = conf.browsers.length; i < l; i++) {
+        for (var key in conf.browsers[i]) {            
+            if (browser === key) {
+                pushClass(key);
+
+                var min = conf.browsers[i][key].min;
+                var max = conf.browsers[i][key].max;
+
+                for (var v = min; v <= max; v++) {
+                    if (version > v) {
+                        if (conf.browserCss.gt)
+                            pushClass("gt-" + key + v);
+
+                        if (conf.browserCss.gte)
+                            pushClass("gte-" + key + v);
+                    }
+                    
+                    else if (version < v) {
+                        if (conf.browserCss.lt)
+                            pushClass("lt-" + key + v);
+                        
+                        if (conf.browserCss.lte)
+                            pushClass("lte-" + key + v);
+                    }
+
+                    else if (version === v) {
+                        if (conf.browserCss.lte)
+                            pushClass("lte-" + key + v);
+                        
+                        if (conf.browserCss.eq)
+                            pushClass("eq-" + key + v);
+
+                        if (conf.browserCss.gte)
+                            pushClass("gte-" + key + v);
+                    }
+                }
+            }
+            else {
+                pushClass('no-' + key);
+            }
+        }
+    }
+    
+    pushClass(browser);
+    pushClass(browser + parseInt(version, 10));
+
+    // IE lt9 specific
+    if (browser === "ie" && version < 9) {
+        // HTML5 support : you still need to add html5 css initialization styles to your site
+        // See: assets/html5.css
+        each("abbr|article|aside|audio|canvas|details|figcaption|figure|footer|header|hgroup|main|mark|meter|nav|output|progress|section|summary|time|video".split("|"), function (el) {
+            doc.createElement(el);
+        });
+    }
+
+    // CSS "router"
+    each(loc.pathname.split("/"), function (el, i) {
+        if (this.length > 2 && this[i + 1] !== undefined) {
+            if (i) {
+                pushClass(this.slice(i, i + 1).join("-").toLowerCase() + conf.section);
+            }
+        } else {
+            // pageId
+            var id = el || "index", index = id.indexOf(".");
+            if (index > 0) {
+                id = id.substring(0, index);
+            }
+
+            html.id = id.toLowerCase() + conf.page;
+
+            // on root?
+            if (!i) {
+                pushClass("root" + conf.section);
+            }
+        }
+    });
+
+    // basic screen info
+    api.screen = {
+        height: win.screen.height,
+        width : win.screen.width
+    };
+
+    // viewport resolutions: w-100, lt-480, lt-1024 ...
+    function screenSize() {
+        // remove earlier sizes
+        html.className = html.className.replace(/ (w-|eq-|gt-|gte-|lt-|lte-|portrait|no-portrait|landscape|no-landscape)\d+/g, "");
+
+        // Viewport width
+        var iw = win.innerWidth || html.clientWidth,
+            ow = win.outerWidth || win.screen.width;
+        
+        api.screen.innerWidth = iw;
+        api.screen.outerWidth = ow;
+        
+        // for debugging purposes, not really useful for anything else
+        pushClass("w-" + iw);
+
+        each(conf.screens, function (width) {
+            if (iw > width) {
+                if (conf.screensCss.gt)
+                    pushClass("gt-" + width);
+                
+                if (conf.screensCss.gte)
+                    pushClass("gte-" + width);
+            }
+
+            else if (iw < width) {
+                if (conf.screensCss.lt)
+                    pushClass("lt-" + width);
+                
+                if (conf.screensCss.lte)
+                    pushClass("lte-" + width);
+            }
+
+            else if (iw === width) {
+                if (conf.screensCss.lte)
+                    pushClass("lte-" + width);
+
+                if (conf.screensCss.eq)
+                    pushClass("e-q" + width);
+
+                if (conf.screensCss.gte)
+                    pushClass("gte-" + width);
+            }
+        });
+        
+        // Viewport height
+        var ih = win.innerHeight || html.clientHeight,
+            oh = win.outerHeight || win.screen.height;
+
+        api.screen.innerHeight = ih;
+        api.screen.outerHeight = oh;
+             
+        // no need for onChange event to detect this
+        api.feature("portrait" , (ih > iw));
         api.feature("landscape", (ih < iw));
     }
 
@@ -307,7 +610,7 @@
  * Version 0.99
  * http://headjs.com
  */
-; (function (win, undefined) {
+;(function(win, undefined) {
     "use strict";
 
     var doc = win.document,
@@ -325,15 +628,15 @@
         */
 
         /* CSS modernizer */
-         el = doc.createElement("i"),
-         style = el.style,
-         prefs = ' -o- -moz- -ms- -webkit- -khtml- '.split(' '),
+         el       = doc.createElement("i"),
+         style    = el.style,
+         prefs    = ' -o- -moz- -ms- -webkit- -khtml- '.split(' '),
          domPrefs = 'Webkit Moz O ms Khtml'.split(' '),
 
          headVar = win.head_conf && win.head_conf.head || "head",
-         api = win[headVar];
+         api     = win[headVar];
 
-    // Thanks Paul Irish!
+     // Thanks Paul Irish!
     function testProps(props) {
         for (var i in props) {
             if (style[props[i]] !== undefined) {
@@ -353,54 +656,54 @@
     }
 
     var tests = {
-        gradient: function () {
+        gradient: function() {
             var s1 = 'background-image:',
                 s2 = 'gradient(linear,left top,right bottom,from(#9f9),to(#fff));',
                 s3 = 'linear-gradient(left top,#eee,#fff);';
 
-            style.cssText = (s1 + prefs.join(s2 + s1) + prefs.join(s3 + s1)).slice(0, -s1.length);
+            style.cssText = (s1 + prefs.join(s2 + s1) + prefs.join(s3 + s1)).slice(0,-s1.length);
             return !!style.backgroundImage;
         },
 
-        rgba: function () {
+        rgba: function() {
             style.cssText = "background-color:rgba(0,0,0,0.5)";
             return !!style.backgroundColor;
         },
 
-        opacity: function () {
+        opacity: function() {
             return el.style.opacity === "";
         },
 
-        textshadow: function () {
+        textshadow: function() {
             return style.textShadow === '';
         },
 
-        multiplebgs: function () {
+        multiplebgs: function() {
             style.cssText = "background:url(//:),url(//:),red url(//:)";
             return new RegExp("(url\\s*\\(.*?){3}").test(style.background);
         },
 
-        boxshadow: function () {
+        boxshadow: function() {
             return testAll("boxShadow");
         },
 
-        borderimage: function () {
+        borderimage: function() {
             return testAll("borderImage");
         },
 
-        borderradius: function () {
+        borderradius: function() {
             return testAll("borderRadius");
         },
 
-        cssreflections: function () {
+        cssreflections: function() {
             return testAll("boxReflect");
         },
 
-        csstransforms: function () {
+        csstransforms: function() {
             return testAll("transform");
         },
 
-        csstransitions: function () {
+        csstransitions: function() {
             return testAll("transition");
         },
         touch: function () {
@@ -408,13 +711,13 @@
         },
         retina: function () {
             return (win.devicePixelRatio > 1);
-        },
+        },        
 
         /*
             font-face support. Uses browser sniffing but is synchronous.
             http://paulirish.com/2009/font-face-feature-detection/
         */
-        fontface: function () {
+        fontface: function() {
             var browser = api.browser.name, version = api.browser.version;
 
             switch (browser) {
@@ -456,6 +759,8 @@
     api.feature();
 
 })(window);
+
+///#source 1 1 /headjs/dist/head.load.js
 /*!
  * HeadJS     The only script in your <HEAD>    
  * Author     Tero Piirainen  (tipiirai)
@@ -467,6 +772,18 @@
  */
 ; (function (win, undefined) {
     "use strict";
+
+    //#region Asynchronous Scheduling
+
+    // Define the setImmediate method for our asynchronous scheduler (this is a copy from the "Promises, Promises..." library).
+    // Ideally, we'd use a native implementation of setImmediate (https://dvcs.w3.org/hg/webperf/raw-file/tip/specs/setImmediate/Overview.html).
+    // We prefer setImmediate if it's defined on the container (explicit), then the window (ambient), falling-back to a setTimeout wrapper.
+    // This allows other, bundled or ambiently-present implementations of setImmediate to be leveraged (e.g. https://github.com/NobleJS/setImmediate).
+    // The end result is that the callbacks here are executed as quickly (yet efficiently) as possible.
+    ///<var name="setImmediate" type="Function">Schedules a method for execution at the next possible moment.</var>
+    var setImmediate = win.setImmediate || function (c) { setTimeout(c, 0); };
+
+    //#endregion
 
     //#region The Deferred and Promise implementation
 
@@ -482,8 +799,8 @@
         Author:     Mike McMahon
         Created:    September 5, 2013
     
-        Version:    1.0
-        Updated:    September 5, 2013
+        Version:    1.1
+        Updated:    September 10, 2013
     
         Project homepage: http://promises.codeplex.com
     */
@@ -511,6 +828,18 @@
             var getType = {};
             return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
         }
+
+        //#endregion
+
+        //#region setImmediate
+
+        // Define the setImmediate method for our asynchronous scheduler.
+        // Ideally, we'd use a native implementation of setImmediate (https://dvcs.w3.org/hg/webperf/raw-file/tip/specs/setImmediate/Overview.html).
+        // We prefer setImmediate if it's defined on the container (explicit), then the window (ambient), falling-back to a setTimeout wrapper.
+        // This allows other, bundled or ambiently-present implementations of setImmediate to be leveraged (e.g. https://github.com/NobleJS/setImmediate).
+        // The end result is that the callbacks here are executed as quickly (yet efficiently) as possible.
+        ///<var name="setImmediate" type="Function">Schedules a method for execution at the next possible moment.</var>
+        var setImmediate = container.setImmediate || window.setImmediate || function (c) { setTimeout(c, 0); };
 
         //#endregion
 
@@ -622,7 +951,7 @@
             var successHandler = function (successData) {
 
                 // Queue the execution.
-                setTimeout(function () {
+                setImmediate(function () {
                     var continuationResult;
 
                     // Try to get the result to pass to the continuation from the handler.
@@ -647,7 +976,7 @@
                         // The failure handler threw an error, so we fail the continuation and pass it the exception as data.
                         continuation.reject(failureHandlerError);
                     }
-                }, 0);
+                });
             };
 
             // Take appropriate action based upon whether this operation has already been resolved.
@@ -665,7 +994,7 @@
             var failureHandler = function (failureData) {
 
                 // Queue the execution.
-                setTimeout(function () {
+                setImmediate(function () {
                     var continuationResult;
 
                     // Try to get the result to pass to the continuation from the handler.
@@ -690,7 +1019,7 @@
                         // The failure handler threw an error, so we reject the continuation and pass it the exception as data.
                         continuation.reject(failureHandlerError);
                     }
-                }, 0);
+                });
             };
 
             // Take appropriate action based upon whether this operation has already been resolved.
@@ -928,7 +1257,7 @@
                 }
             });
 
-            this.loadTest = extractedLoadTest;
+            this.loadTest = extractedLoadTest || resourceLoaded;
             this.sources = filteredSources;
 
             // Initialize the location and state.
@@ -944,6 +1273,12 @@
             this.cacheElements = [];
         }
 
+        // Define a resource-loaded test that always returns a loaded status.
+        // This provides a good default implementation.
+        function resourceLoaded() {
+            return true;
+        }
+
         // Define the states.
         Asset.States = {
             UNLOADED: 0,
@@ -953,15 +1288,6 @@
         };
 
         //#region Utilities
-
-        function removeCacheEntries(elements) {
-
-            // Iterate through each element, removing them from the DOM.
-            while (elements.length > 0) {
-                var ele = elements.shift();
-                ele.parentElement.removeChild(ele);
-            }
-        }
 
         function appendElementToHead(element) {
 
@@ -1027,6 +1353,10 @@
 
             // Represent the process as a Deferred.
             var assetDeferred = new Deferred();
+
+            // Queue-up the addition of the element to the DOM.
+            // Not only is this consistent with the normal use of deferred objects, but queuing the change helps to ensure the DOM isn't modified too terribly much all at once, causing browser confusion and missed events.
+            setImmediate(function () {
 
             var ele;
 
@@ -1097,11 +1427,11 @@
                     // release event listeners               
                     ele.onload = ele.onreadystatechange = ele.onerror = null;
 
-                    // The browser says that the assetis loaded, but if the browser was too old, it wouldn't report an error.
+                    // The browser says that the asset is loaded, but if the browser was too old, it wouldn't report an error.
                     // Therefore, if the browser doesn't support proper errors, run any load test for the asset.
                     // If it fails, run the error handler.
                     // Otherwise, assume everything went to plan.
-                    if (!!test && !test()) {
+                    if (!test()) {
 
                         // Fail the Deferred since the test failed.
                         error(event);
@@ -1120,16 +1450,18 @@
                 //}, 3000);
             }
 
-            // Now configure the element with a source and event handlers.
-            ele = createResourceElement(location, process, process, error);
+                // Now configure the element with a source and event handlers.
+                ele = createResourceElement(location, process, process, error);
 
-            // ASYNC: load in parallel and execute as soon as possible
-            //ele.async = true;
-            // DEFER: load in parallel but maintain execution order
-            //ele.defer = false;
+                // ASYNC: load in parallel and execute as soon as possible
+                //ele.async = true;
+                // DEFER: load in parallel but maintain execution order
+                //ele.defer = false;
 
-            // Add the element to the page.
-            appendElementToHead(ele);
+                // Add the element to the page.
+                appendElementToHead(ele);
+
+            });
 
             // Return the promise of the Deferred.
             return assetDeferred.promise();
@@ -1161,7 +1493,6 @@
                 // We succeeded, so set the final properties and resolve the Deferred of the instance.
                 self.state = Asset.States.LOADED;
                 self.location = self.sources[currentSourceIndex];
-                removeCacheEntries(self.cacheElements);
                 self.deferred.fulfill();
             };
 
@@ -1181,7 +1512,6 @@
                 else {
 
                     // There's nothing else to try, so reject the deferred.
-                    removeCacheEntries(self.cacheElements);
                     self.state = Asset.States.FAILED;
                     self.deferred.reject();
                 }
@@ -1196,34 +1526,54 @@
             return this;
         };
 
-        Asset.prototype.cache = function () {
+        Asset.prototype.cacheAsync = function () {
             /// <summary>
-            /// Attempts to cache the asset locally by loading all available sources into the browser cache.
+            /// Attempts to asynchronously cache the asset locally by loading all available sources into the browser cache.
             /// This is not guaranteed to complete or raise normal events, which is why no return value is provided.
+            /// Caching resources is a best-effort browser hack that shouldn't be used, but this may help older browsers, so it's included.
             /// </summary>
 
-            // If an element has already been created or we have no sources, do nothing.
-            if ((this.cacheElements.length > 0) || (this.state !== Asset.States.UNLOADED)) {
-                return;
-            }
+            // Queue-up the addition of these elements to the DOM asynchronously.
+            // We have no interest in the outcome.
+            var myself = this;
+            setImmediate(function () {
 
-            // Create an element, overriding its type to cause caching.
-            // This is a silly hack, but it works on lots of older browsers (I'm morally opposed to its existence, not its efficacy).
-            // The goal isn't to provide knowledge when a cached item has been loaded, but to try to pre-load it by using an invalid type, which we can switch to a valid type later.
-            // When we switch to the valid type, we should get normal events, but the content will have been cached.
-            // We perform this caching for all potential sources.
-            for (var i = 0; i < this.sources.length; i++) {
+                // If an element has already been created or we have no sources, do nothing.
+                if ((myself.cacheElements.length > 0) || (myself.state !== Asset.States.UNLOADED)) {
+                    return;
+                }
 
-                // Create a new element.
-                var e = createResourceElement(this.sources[i], null, null, null);
+                // Create an element, overriding its type to cause caching.
+                // This is a silly hack, but it works on lots of older browsers (I'm morally opposed to its existence, not its efficacy).
+                // The goal isn't to provide knowledge when a cached item has been loaded, but to try to pre-load it by using an invalid type, which we can switch to a valid type later.
+                // When we switch to the valid type, we should get normal events, but the content will have been cached.
+                // We perform this caching for all potential sources.
 
-                // Override its MIME type.
-                e.type = 'text/cache';
+                for (var i = 0; i < myself.sources.length; i++) {
 
-                // Add it to the DOM and our array.
-                appendElementToHead(e);
-                this.cacheElements.push(e);
-            }
+                    // Create a new element.
+                    var e = createResourceElement(myself.sources[i], null, null, null);
+
+                    // Override its MIME type.
+                    e.type = 'text/cache';
+
+                    // Add it to the DOM and our array.
+                    appendElementToHead(e);
+                    myself.cacheElements.push(e);
+                }
+
+                // Wire-up a continuation that cleans up cached elements from the DOM.
+                var cleanup = function (elements) {
+
+                    // Iterate through each element, removing them from the DOM.
+                    while (myself.cacheElements.length > 0) {
+                        var ele = myself.cacheElements.shift();
+                        ele.parentElement.removeChild(ele);
+                    }
+                }
+
+                myself.then(cleanup, cleanup);
+            });
         };
 
         // Return the Asset itself, which is also a Promise.
@@ -1400,7 +1750,7 @@
                 var item = getAsset(userItem);
 
                 // Initiate pre-loading of the asset, which is a best-effort feature.
-                item.cache();
+                item.cacheAsync();
 
                 // The dependencies for this item / asset are all prior scripts that have been queued.
                 // When the predecessors complete, we try to load the actual item.
@@ -1679,6 +2029,28 @@
         return is("Array", item);
     }
 
+    function arrayContains(arr, item) {
+
+        // If the browser supports indexOf, use that.
+        // Otherwise, use a loop (for IE < 9).
+        if (!!Array.indexOf) {
+            return arr.indexOf(item) > -1;
+        }
+        else
+        {
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i] === item) {
+
+                    // We found the item, so return true.
+                    return true;
+                }
+
+            }
+            // It wasn't found, so return false.
+            return false;
+        }
+    }
+
     //#endregion
 
     //#region Asset Utilities
@@ -1729,10 +2101,10 @@
         }
 
         // Check for a match by comparing sources.
-        each(assets, function (existingAsset) {
+        for (var existingAsset in assets) {
             each(asset.sources, function (source) {
                 existing = assets[existingAsset];
-                if (existing.sources.indexOf(source) > -1) {
+                if (arrayContains(existing.sources, source)) {
 
                     // We found an existing asset for the same resource, but the name is different.
                     // Add this new asset to the collection, but leverage the existing entry such that this asset resolves when the existing one does.
@@ -1752,7 +2124,7 @@
                     return asset;
                 }
             });
-        });
+        }
 
         // This is a new asset, so add it and return it.
         assets[asset.name] = asset;
@@ -1783,3 +2155,4 @@
     //#endregion
 
 })(window);
+

@@ -10,6 +10,18 @@
 ; (function (win, undefined) {
     "use strict";
 
+    //#region Asynchronous Scheduling
+
+    // Define the setImmediate method for our asynchronous scheduler (this is a copy from the "Promises, Promises..." library).
+    // Ideally, we'd use a native implementation of setImmediate (https://dvcs.w3.org/hg/webperf/raw-file/tip/specs/setImmediate/Overview.html).
+    // We prefer setImmediate if it's defined on the container (explicit), then the window (ambient), falling-back to a setTimeout wrapper.
+    // This allows other, bundled or ambiently-present implementations of setImmediate to be leveraged (e.g. https://github.com/NobleJS/setImmediate).
+    // The end result is that the callbacks here are executed as quickly (yet efficiently) as possible.
+    ///<var name="setImmediate" type="Function">Schedules a method for execution at the next possible moment.</var>
+    var setImmediate = win.setImmediate || function (c) { setTimeout(c, 0); };
+
+    //#endregion
+
     //#region The Deferred and Promise implementation
 
     // Define the Promise and Deferred instances within the local asynchrony namespace.
@@ -24,8 +36,8 @@
         Author:     Mike McMahon
         Created:    September 5, 2013
     
-        Version:    1.0
-        Updated:    September 5, 2013
+        Version:    1.1
+        Updated:    September 10, 2013
     
         Project homepage: http://promises.codeplex.com
     */
@@ -53,6 +65,18 @@
             var getType = {};
             return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
         }
+
+        //#endregion
+
+        //#region setImmediate
+
+        // Define the setImmediate method for our asynchronous scheduler.
+        // Ideally, we'd use a native implementation of setImmediate (https://dvcs.w3.org/hg/webperf/raw-file/tip/specs/setImmediate/Overview.html).
+        // We prefer setImmediate if it's defined on the container (explicit), then the window (ambient), falling-back to a setTimeout wrapper.
+        // This allows other, bundled or ambiently-present implementations of setImmediate to be leveraged (e.g. https://github.com/NobleJS/setImmediate).
+        // The end result is that the callbacks here are executed as quickly (yet efficiently) as possible.
+        ///<var name="setImmediate" type="Function">Schedules a method for execution at the next possible moment.</var>
+        var setImmediate = container.setImmediate || window.setImmediate || function (c) { setTimeout(c, 0); };
 
         //#endregion
 
@@ -164,7 +188,7 @@
             var successHandler = function (successData) {
 
                 // Queue the execution.
-                setTimeout(function () {
+                setImmediate(function () {
                     var continuationResult;
 
                     // Try to get the result to pass to the continuation from the handler.
@@ -189,7 +213,7 @@
                         // The failure handler threw an error, so we fail the continuation and pass it the exception as data.
                         continuation.reject(failureHandlerError);
                     }
-                }, 0);
+                });
             };
 
             // Take appropriate action based upon whether this operation has already been resolved.
@@ -207,7 +231,7 @@
             var failureHandler = function (failureData) {
 
                 // Queue the execution.
-                setTimeout(function () {
+                setImmediate(function () {
                     var continuationResult;
 
                     // Try to get the result to pass to the continuation from the handler.
@@ -232,7 +256,7 @@
                         // The failure handler threw an error, so we reject the continuation and pass it the exception as data.
                         continuation.reject(failureHandlerError);
                     }
-                }, 0);
+                });
             };
 
             // Take appropriate action based upon whether this operation has already been resolved.
@@ -470,7 +494,7 @@
                 }
             });
 
-            this.loadTest = extractedLoadTest;
+            this.loadTest = extractedLoadTest || resourceLoaded;
             this.sources = filteredSources;
 
             // Initialize the location and state.
@@ -481,6 +505,15 @@
             // We add the "then" method to allow the Asset to act like a Promise.
             this.deferred = new Deferred();
             this.then = this.deferred.then;
+
+            // Initialize the cache elements we may create.
+            this.cacheElements = [];
+        }
+
+        // Define a resource-loaded test that always returns a loaded status.
+        // This provides a good default implementation.
+        function resourceLoaded() {
+            return true;
         }
 
         // Define the states.
@@ -491,35 +524,80 @@
             FAILED: 3
         };
 
-        // Define the utility method that loads a single asset into the DOM.
-        function loadAssetAsync(location, test, cache) {
+        //#region Utilities
+
+        function appendElementToHead(element) {
+
+            // use insertBefore to keep IE from throwing Operation Aborted (thx Bryan Forbes!)
+            var head = doc.head || doc.getElementsByTagName('head')[0];
+            // but insert at end of head, because otherwise if it is a stylesheet, it will not ovverride values
+            head.insertBefore(element, head.lastChild);
+        }
+
+        function determineResourceMimeType(resource) {
+            /// <summary>
+            /// Determines the MIME type of a resource via its extension.
+            /// </summary>
+            /// <param name="resource" type="String">The URI of a resource.</param>
+            /// <returns type="String">The MIME type of the resource.</returns>
+
+            // If it is CSS, return that MIME type; otherwise, default to JavaScript.
+            if (/\.css[^\.]*$/.test(resource)) {
+                return 'text/css';
+            }
+            else {
+                return 'text/javascript';
+            }
+        }
+
+        function createResourceElement(location, onLoadHandler, onReadyStateChangeHandler, errorHandler) {
+
+            // Create an element appropriate to the location.
+            var ele = null,
+                type = determineResourceMimeType(location);
+            if (type === 'text/css') {
+                ele = doc.createElement('link');
+                ele.type = type;
+                ele.rel = 'stylesheet';
+                ele.onload = onLoadHandler;
+                ele.onreadystatechange = onReadyStateChangeHandler;
+                ele.onerror = errorHandler;
+                ele.href = location;
+            }
+            else {
+                ele = doc.createElement('script');
+                ele.type = type;
+                ele.onload = onLoadHandler;
+                ele.onreadystatechange = onReadyStateChangeHandler;
+                ele.onerror = errorHandler;
+                ele.src = location;
+            }
+
+            // If the element supports asynchronous operation, enable it explicitly (for older browsers).
+            if (ele.async !== undefined) {
+                ele.async = true;
+            }
+
+            // Return the element.
+            return ele;
+        }
+
+        function loadAssetAsync(location, test) {
             /// <summary>Loads an asset into the DOM asynchronously.</summary>
             /// <param name="asset" type="String">The location of the asset to load.</param>
             /// <param name="test" type="Function">An optional predicate function used to test whether the asset has been loaded on older browsers.</param>
-            /// <param name="cache" type="Boolean">Whether this asset should be loaded into the cache. The default is false.</param>
             /// <returns type="Promise">A Promise that represents the operation.</returns>
 
             // Represent the process as a Deferred.
             var assetDeferred = new Deferred();
 
+            // Queue-up the addition of the element to the DOM.
+            // Not only is this consistent with the normal use of deferred objects, but queuing the change helps to ensure the DOM isn't modified too terribly much all at once, causing browser confusion and missed events.
+            setImmediate(function () {
+
             var ele;
 
-            if (/\.css[^\.]*$/.test(location)) {
-                ele = doc.createElement('link');
-                ele.type = 'text/' + (cache ? 'cache' : 'css');
-                ele.rel = 'stylesheet';
-                ele.href = location;
-            }
-            else {
-                ele = doc.createElement('script');
-                ele.type = 'text/' + (cache ? 'cache' : 'javascript');
-                ele.src = location;
-            }
-
-            // Determine whether the browser supports reporting errors (< IE 9 don't).
-            var reportsErrors = !!ele.onerror;
-
-            // Define the methods we use to handle changes in the DOm element state, translating them into Deferred state changes.
+            // Define the methods we use to handle changes in the DOM element state, translating them into Deferred state changes.
             function error(event) {
                 event = event || win.event;
 
@@ -586,11 +664,11 @@
                     // release event listeners               
                     ele.onload = ele.onreadystatechange = ele.onerror = null;
 
-                    // The browser says that the assetis loaded, but if the browser was too old, it wouldn't report an error.
+                    // The browser says that the asset is loaded, but if the browser was too old, it wouldn't report an error.
                     // Therefore, if the browser doesn't support proper errors, run any load test for the asset.
                     // If it fails, run the error handler.
                     // Otherwise, assume everything went to plan.
-                    if (!reportsErrors && !!test && !cache && !test()) {
+                    if (!test()) {
 
                         // Fail the Deferred since the test failed.
                         error(event);
@@ -609,39 +687,30 @@
                 //}, 3000);
             }
 
-            // Wire-up the DOM element change handlers, knowing that the error event may not be present.
-            ele.onload = ele.onreadystatechange = process;
-            ele.onerror = error;
+                // Now configure the element with a source and event handlers.
+                ele = createResourceElement(location, process, process, error);
 
-            //ele.onload = ele.onreadystatechange = process;
-            //ele.onerror = error;
+                // ASYNC: load in parallel and execute as soon as possible
+                //ele.async = true;
+                // DEFER: load in parallel but maintain execution order
+                //ele.defer = false;
 
-            /* Good read, but doesn't give much hope !
-             * http://blog.getify.com/on-script-loaders/
-             * http://www.nczonline.net/blog/2010/12/21/thoughts-on-script-loaders/
-             * https://hacks.mozilla.org/2009/06/defer/
-             */
+                // Add the element to the page.
+                appendElementToHead(ele);
 
-            // ASYNC: load in parallel and execute as soon as possible
-            ele.async = false;
-            // DEFER: load in parallel but maintain execution order
-            ele.defer = false;
-
-            // use insertBefore to keep IE from throwing Operation Aborted (thx Bryan Forbes!)
-            var head = doc.head || doc.getElementsByTagName('head')[0];
-            // but insert at end of head, because otherwise if it is a stylesheet, it will not ovverride values
-            head.insertBefore(ele, head.lastChild);
+            });
 
             // Return the promise of the Deferred.
             return assetDeferred.promise();
         }
 
-        Asset.prototype.loadAsync = function (cache) {
+        //#endregion
+
+        Asset.prototype.loadAsync = function () {
             /// <summary>
             /// Loads an asset asynchronously.
             /// This initiates the single loading attempt that can be made on an asset.
             /// </summary>
-            /// <param name="cache" type="Boolean">Whether this asset should be loaded into the cache. The default is false. Note that cache loads will never fail as they cannot be tested.</param>
             /// <returns type="Promise">The Promise that represents the act of loading the asset.</returns>
 
             // If the asset is already loading, just return the promise (which is the asset).
@@ -653,13 +722,16 @@
             // Define our actions and track our index.
             var currentSourceIndex = -1,    // Start at -1 so that we can use the failure handler.
                 self = this,    // Keep a reference to this instance.
-                assetLoaded = function () {
-                    // We succeeded, so set the final properties resolve the Deferred of the instance.
-                    self.state = Asset.States.LOADED;
-                    self.location = self.sources[currentSourceIndex];
-                    self.deferred.fulfill();
-                },
+                assetLoaded,
                 assetFailed;
+
+            // Define handlers.
+            assetLoaded = function () {
+                // We succeeded, so set the final properties and resolve the Deferred of the instance.
+                self.state = Asset.States.LOADED;
+                self.location = self.sources[currentSourceIndex];
+                self.deferred.fulfill();
+            };
 
             // We define the failure handler recursively so that we can self terminate and start with a call to it.
             assetFailed = function () {
@@ -672,7 +744,7 @@
                 if (currentSourceIndex < self.sources.length) {
 
                     // Try the next source, wiring-up the continuation.
-                    loadAssetAsync(self.sources[currentSourceIndex], self.loadTest, cache).then(assetLoaded, assetFailed);
+                    loadAssetAsync(self.sources[currentSourceIndex], self.loadTest).then(assetLoaded, assetFailed);
                 }
                 else {
 
@@ -682,12 +754,63 @@
                 }
             };
 
+
             // Indicate that we've entered the loading state, then start loading with a call to the failed handler.
             self.state = Asset.States.LOADING;
             assetFailed();
 
             // Return this instance as the Promise.
             return this;
+        };
+
+        Asset.prototype.cacheAsync = function () {
+            /// <summary>
+            /// Attempts to asynchronously cache the asset locally by loading all available sources into the browser cache.
+            /// This is not guaranteed to complete or raise normal events, which is why no return value is provided.
+            /// Caching resources is a best-effort browser hack that shouldn't be used, but this may help older browsers, so it's included.
+            /// </summary>
+
+            // Queue-up the addition of these elements to the DOM asynchronously.
+            // We have no interest in the outcome.
+            var myself = this;
+            setImmediate(function () {
+
+                // If an element has already been created or we have no sources, do nothing.
+                if ((myself.cacheElements.length > 0) || (myself.state !== Asset.States.UNLOADED)) {
+                    return;
+                }
+
+                // Create an element, overriding its type to cause caching.
+                // This is a silly hack, but it works on lots of older browsers (I'm morally opposed to its existence, not its efficacy).
+                // The goal isn't to provide knowledge when a cached item has been loaded, but to try to pre-load it by using an invalid type, which we can switch to a valid type later.
+                // When we switch to the valid type, we should get normal events, but the content will have been cached.
+                // We perform this caching for all potential sources.
+
+                for (var i = 0; i < myself.sources.length; i++) {
+
+                    // Create a new element.
+                    var e = createResourceElement(myself.sources[i], null, null, null);
+
+                    // Override its MIME type.
+                    e.type = 'text/cache';
+
+                    // Add it to the DOM and our array.
+                    appendElementToHead(e);
+                    myself.cacheElements.push(e);
+                }
+
+                // Wire-up a continuation that cleans up cached elements from the DOM.
+                var cleanup = function (elements) {
+
+                    // Iterate through each element, removing them from the DOM.
+                    while (myself.cacheElements.length > 0) {
+                        var ele = myself.cacheElements.shift();
+                        ele.parentElement.removeChild(ele);
+                    }
+                }
+
+                myself.then(cleanup, cleanup);
+            });
         };
 
         // Return the Asset itself, which is also a Promise.
@@ -856,85 +979,6 @@
          * If caching is not configured correctly on the server, then items could load twice !
          *************************************************************************************/
 
-        function preLoadAsset(asset, dependencies) {
-            /// <summary>Loads an asset via the fallback cache-load mechanism.</summary>
-            /// <param name="asset" type="Asset"></param>
-            /// <param name="dependencies" type="Array" elementType="Promise"></param>
-            /// <returns type="Promise">The Promise that completes when the asset is loaded, or fails to load.</returns>
-
-            // If the asset has no sources, we can't do anything, so we return the asset itself (it's a Promise) to allow chaining.
-            if (asset.sources.length == 0) {
-                return asset;
-            }
-
-            // Define the method that we'll normally use, which loads a cache asset, then its associated non-cache (i.e. real) asset into the DOM.
-            function preLoadAssetPair(asset, source) {
-
-                // Create the asset pair using the provided source, copying the test over.
-                var cacheItem = new Asset(asset.name, [source]),
-                    actualItem = new Asset(asset.name, [source]);
-                actualItem.loadTest = asset.loadTest;
-
-                // Return the Promise that represents the cache item loading, followed by the actual item.
-                return cacheItem.loadAsync(true).then(function () {
-                    return actualItem.loadAsync();
-                });
-            }
-
-            // Create a Deferred to represent the process, which is rather complex because of the cache entries and tests.
-            var assetLoad = new Deferred();
-
-            // We break each iteration of the sources into two steps: load the cache item, then try loading the actual item.
-            // We have to do this for each source in the Asset in a structured way to ensure that dependencies are observed, though we can sneak a little ahead with the first cache entry.
-            var sources = asset.sources.slice(),
-                currentSourceIndex = 0,
-                cacheLoad = new Asset(asset.name, [sources[currentSourceIndex]]).loadAsync(true),
-                currentDependencies = dependencies.slice();
-
-            // Add the cache loading Promise to our list of current dependencies.
-            currentDependencies.push(cacheLoad);
-
-            // Wait until the dependencies have been resolved before we try to actually load the asset from the cache.
-            // This ensures we preserve the ordering before we start altering the DOM with executable code.
-            Promise.whenAll(currentDependencies).then(function () {
-
-                // The dependencies and initial cache item are loaded, so we can try to load the real item, which we can test for success.
-                var assetSourceLoad = new Asset(asset.name, [sources[currentSourceIndex]]),
-                    assetFailedHandler;
-                assetSourceLoad.loadTest = asset.loadTest;
-
-                // Define the asset failure handler, which iterates through subsequent sources.
-                assetFailedHandler = function () {
-
-                    // This asset failed, so we have to try other asset pairs.
-                    // All the dependencies are already loaded, so we just iterate through any remaining sources.
-                    // Start by incrementing the index counter, then continuing to load the asset pairs.
-                    currentSourceIndex++;
-
-                    if (currentSourceIndex < sources.length) {
-
-                        // Try the next source, wiring up handlers appropriately.
-                        preLoadAssetPair(asset, sources[currentSourceIndex]).then(assetLoad.fulfill, assetFailedHandler);
-                    }
-                    else {
-                        // There are no more sources, so we fail.
-                        assetLoad.reject();
-                    }
-                };
-
-                // Try to load the actual first item, handling success or failure appropriately.
-                assetSourceLoad.loadAsync().then(assetLoad.fulfill, assetFailedHandler);
-
-            }, function () {
-
-                // We couldn't resolve our dependencies, so we fail or the cache load (not really possible), so we fail overall.
-                assetLoad.reject();
-            });
-
-            // Return the Promise that represents this asset being loaded.
-            return assetLoad.promise();
-        }
-
         // Iterate through the arguments, pre-loading, then loading each one.
         each(items, function (userItem, i) {
             if (!isFunction(userItem)) {
@@ -942,11 +986,14 @@
                 // Get / parse the asset, which adds it to the global list.
                 var item = getAsset(userItem);
 
+                // Initiate pre-loading of the asset, which is a best-effort feature.
+                item.cacheAsync();
+
                 // The dependencies for this item / asset are all prior scripts that have been queued.
-                // When the pre-load completes (either way), we try to load the actual item.
+                // When the predecessors complete, we try to load the actual item.
                 // The test for the item will determine the final state since the preLoadAsset method will have actually loaded the asset.
-                var dependencies = loadingAssets.slice(),
-                    preLoad = preLoadAsset(item, dependencies).then(function () { item.loadAsync() }, function () { item.loadAsync() });
+                var dependencies = loadingAssets.slice();
+                Promise.whenAll(dependencies).then(function () { item.loadAsync(); });
 
                 // Add the actual (i.e. final) asset to the list.
                 loadingAssets.push(item);
@@ -1219,6 +1266,28 @@
         return is("Array", item);
     }
 
+    function arrayContains(arr, item) {
+
+        // If the browser supports indexOf, use that.
+        // Otherwise, use a loop (for IE < 9).
+        if (!!Array.indexOf) {
+            return arr.indexOf(item) > -1;
+        }
+        else
+        {
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i] === item) {
+
+                    // We found the item, so return true.
+                    return true;
+                }
+
+            }
+            // It wasn't found, so return false.
+            return false;
+        }
+    }
+
     //#endregion
 
     //#region Asset Utilities
@@ -1269,10 +1338,10 @@
         }
 
         // Check for a match by comparing sources.
-        each(assets, function (existingAsset) {
+        for (var existingAsset in assets) {
             each(asset.sources, function (source) {
                 existing = assets[existingAsset];
-                if (existing.sources.indexOf(source) > -1) {
+                if (arrayContains(existing.sources, source)) {
 
                     // We found an existing asset for the same resource, but the name is different.
                     // Add this new asset to the collection, but leverage the existing entry such that this asset resolves when the existing one does.
@@ -1292,7 +1361,7 @@
                     return asset;
                 }
             });
-        });
+        }
 
         // This is a new asset, so add it and return it.
         assets[asset.name] = asset;
