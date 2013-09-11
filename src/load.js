@@ -574,7 +574,7 @@
         var top = false;
 
         try {
-            top = win.frameElement == null && doc.documentElement;
+            top = win.frameElement === null && doc.documentElement;
         } catch (e) { }
 
         if (top && top.doScroll) {
