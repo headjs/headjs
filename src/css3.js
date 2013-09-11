@@ -77,7 +77,7 @@
 
         multiplebgs: function() {
             style.cssText = "background:url(//:),url(//:),red url(//:)";
-            return new RegExp("(url\\s*\\(.*?){3}").test(style.background);
+            return new RegExp("(url\s*\(.*?){3})").test(style.background);
         },
 
         boxshadow: function() {
