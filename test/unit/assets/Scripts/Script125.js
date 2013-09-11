@@ -1,0 +1,1 @@
+(function(window){ window.Script125 = 125;}(window))

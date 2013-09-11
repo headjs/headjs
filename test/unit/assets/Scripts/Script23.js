@@ -1,0 +1,1 @@
+(function(window){ window.Script23 = 23;}(window))

@@ -1,0 +1,1 @@
+(function(window){ window.Script16 = 16;}(window))

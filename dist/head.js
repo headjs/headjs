@@ -13,27 +13,27 @@
     // gt, gte, lt, lte, eq breakpoints would have been more simple to write as ['gt','gte','lt','lte','eq']
     // but then we would have had to loop over the collection on each resize() event,
     // a simple object with a direct access to true/false is therefore much more efficient
-    var doc   = win.document,
-        nav   = win.navigator,
-        loc   = win.location,
-        html  = doc.documentElement,
+    var doc = win.document,
+        nav = win.navigator,
+        loc = win.location,
+        html = doc.documentElement,
         klass = [],
-        conf  = {
-            screens   : [240, 320, 480, 640, 768, 800, 1024, 1280, 1440, 1680, 1920],            
+        conf = {
+            screens: [240, 320, 480, 640, 768, 800, 1024, 1280, 1440, 1680, 1920],
             screensCss: { "gt": true, "gte": false, "lt": true, "lte": false, "eq": false },
-            browsers  : [
-                          { ie     : { min: 6, max: 10 } }
+            browsers: [
+                          { ie: { min: 6, max: 10 } }
                        //,{ chrome : { min: 8, max: 26 } }
                        //,{ ff     : { min: 3, max: 21 } }
                        //,{ ios    : { min: 3, max:  6 } }
                        //,{ android: { min: 2, max:  4 } }
                        //,{ webkit : { min: 9, max: 12 } }
                        //,{ opera  : { min: 9, max: 12 } }
-                        ],
+            ],
             browserCss: { "gt": true, "gte": false, "lt": true, "lte": false, "eq": true },
-            section   : "-section",
-            page      : "-page",
-            head      : "head"
+            section: "-section",
+            page: "-page",
+            head: "head"
         };
 
     if (win.head_conf) {
@@ -94,11 +94,11 @@
     api.feature("js", true);
 
     // browser type & version
-    var ua     = nav.userAgent.toLowerCase(),
+    var ua = nav.userAgent.toLowerCase(),
         mobile = /mobile|android|kindle|silk|midp|(windows nt 6\.2.+arm|touch)/.test(ua);
 
     // useful for enabling/disabling feature (we can consider a desktop navigator to have more cpu/gpu power)        
-    api.feature("mobile" , mobile , true);
+    api.feature("mobile", mobile, true);
     api.feature("desktop", !mobile, true);
 
     // http://www.zytrax.com/tech/web/browser_ids.htm
@@ -111,8 +111,8 @@
 
 
     var browser = ua[1],
-        version = parseFloat(ua[2]);    
-    
+        version = parseFloat(ua[2]);
+
     switch (browser) {
         case 'msie':
             browser = 'ie';
@@ -136,13 +136,13 @@
 
     // Browser vendor and version
     api.browser = {
-        name   : browser,
+        name: browser,
         version: version
     };
     api.browser[browser] = true;
 
     for (var i = 0, l = conf.browsers.length; i < l; i++) {
-        for (var key in conf.browsers[i]) {            
+        for (var key in conf.browsers[i]) {
             if (browser === key) {
                 pushClass(key);
 
@@ -157,11 +157,11 @@
                         if (conf.browserCss.gte)
                             pushClass("gte-" + key + v);
                     }
-                    
+
                     else if (version < v) {
                         if (conf.browserCss.lt)
                             pushClass("lt-" + key + v);
-                        
+
                         if (conf.browserCss.lte)
                             pushClass("lte-" + key + v);
                     }
@@ -169,7 +169,7 @@
                     else if (version === v) {
                         if (conf.browserCss.lte)
                             pushClass("lte-" + key + v);
-                        
+
                         if (conf.browserCss.eq)
                             pushClass("eq-" + key + v);
 
@@ -183,7 +183,7 @@
             }
         }
     }
-    
+
     pushClass(browser);
     pushClass(browser + parseInt(version, 10));
 
@@ -221,7 +221,7 @@
     // basic screen info
     api.screen = {
         height: win.screen.height,
-        width : win.screen.width
+        width: win.screen.width
     };
 
     // viewport resolutions: w-100, lt-480, lt-1024 ...
@@ -232,10 +232,10 @@
         // Viewport width
         var iw = win.innerWidth || html.clientWidth,
             ow = win.outerWidth || win.screen.width;
-        
+
         api.screen.innerWidth = iw;
         api.screen.outerWidth = ow;
-        
+
         // for debugging purposes, not really useful for anything else
         pushClass("w-" + iw);
 
@@ -243,7 +243,7 @@
             if (iw > width) {
                 if (conf.screensCss.gt)
                     pushClass("gt-" + width);
-                
+
                 if (conf.screensCss.gte)
                     pushClass("gte-" + width);
             }
@@ -251,7 +251,7 @@
             else if (iw < width) {
                 if (conf.screensCss.lt)
                     pushClass("lt-" + width);
-                
+
                 if (conf.screensCss.lte)
                     pushClass("lte-" + width);
             }
@@ -267,16 +267,16 @@
                     pushClass("gte-" + width);
             }
         });
-        
+
         // Viewport height
         var ih = win.innerHeight || html.clientHeight,
             oh = win.outerHeight || win.screen.height;
 
         api.screen.innerHeight = ih;
         api.screen.outerHeight = oh;
-             
+
         // no need for onChange event to detect this
-        api.feature("portrait" , (ih > iw));
+        api.feature("portrait", (ih > iw));
         api.feature("landscape", (ih < iw));
     }
 
@@ -307,7 +307,7 @@
  * Version 0.99
  * http://headjs.com
  */
-;(function(win, undefined) {
+; (function (win, undefined) {
     "use strict";
 
     var doc = win.document,
@@ -325,15 +325,15 @@
         */
 
         /* CSS modernizer */
-         el       = doc.createElement("i"),
-         style    = el.style,
-         prefs    = ' -o- -moz- -ms- -webkit- -khtml- '.split(' '),
+         el = doc.createElement("i"),
+         style = el.style,
+         prefs = ' -o- -moz- -ms- -webkit- -khtml- '.split(' '),
          domPrefs = 'Webkit Moz O ms Khtml'.split(' '),
 
          headVar = win.head_conf && win.head_conf.head || "head",
-         api     = win[headVar];
+         api = win[headVar];
 
-     // Thanks Paul Irish!
+    // Thanks Paul Irish!
     function testProps(props) {
         for (var i in props) {
             if (style[props[i]] !== undefined) {
@@ -353,54 +353,54 @@
     }
 
     var tests = {
-        gradient: function() {
+        gradient: function () {
             var s1 = 'background-image:',
                 s2 = 'gradient(linear,left top,right bottom,from(#9f9),to(#fff));',
                 s3 = 'linear-gradient(left top,#eee,#fff);';
 
-            style.cssText = (s1 + prefs.join(s2 + s1) + prefs.join(s3 + s1)).slice(0,-s1.length);
+            style.cssText = (s1 + prefs.join(s2 + s1) + prefs.join(s3 + s1)).slice(0, -s1.length);
             return !!style.backgroundImage;
         },
 
-        rgba: function() {
+        rgba: function () {
             style.cssText = "background-color:rgba(0,0,0,0.5)";
             return !!style.backgroundColor;
         },
 
-        opacity: function() {
+        opacity: function () {
             return el.style.opacity === "";
         },
 
-        textshadow: function() {
+        textshadow: function () {
             return style.textShadow === '';
         },
 
-        multiplebgs: function() {
+        multiplebgs: function () {
             style.cssText = "background:url(//:),url(//:),red url(//:)";
             return new RegExp("(url\\s*\\(.*?){3}").test(style.background);
         },
 
-        boxshadow: function() {
+        boxshadow: function () {
             return testAll("boxShadow");
         },
 
-        borderimage: function() {
+        borderimage: function () {
             return testAll("borderImage");
         },
 
-        borderradius: function() {
+        borderradius: function () {
             return testAll("borderRadius");
         },
 
-        cssreflections: function() {
+        cssreflections: function () {
             return testAll("boxReflect");
         },
 
-        csstransforms: function() {
+        csstransforms: function () {
             return testAll("transform");
         },
 
-        csstransitions: function() {
+        csstransitions: function () {
             return testAll("transition");
         },
         touch: function () {
@@ -408,13 +408,13 @@
         },
         retina: function () {
             return (win.devicePixelRatio > 1);
-        },        
+        },
 
         /*
             font-face support. Uses browser sniffing but is synchronous.
             http://paulirish.com/2009/font-face-feature-detection/
         */
-        fontface: function() {
+        fontface: function () {
             var browser = api.browser.name, version = api.browser.version;
 
             switch (browser) {
@@ -939,6 +939,9 @@
             // We add the "then" method to allow the Asset to act like a Promise.
             this.deferred = new Deferred();
             this.then = this.deferred.then;
+
+            // Initialize the cache elements we may create.
+            this.cacheElements = [];
         }
 
         // Define the states.
@@ -949,12 +952,77 @@
             FAILED: 3
         };
 
-        // Define the utility method that loads a single asset into the DOM.
-        function loadAssetAsync(location, test, cache) {
+        //#region Utilities
+
+        function removeCacheEntries(elements) {
+
+            // Iterate through each element, removing them from the DOM.
+            while (elements.length > 0) {
+                var ele = elements.shift();
+                ele.parentElement.removeChild(ele);
+            }
+        }
+
+        function appendElementToHead(element) {
+
+            // use insertBefore to keep IE from throwing Operation Aborted (thx Bryan Forbes!)
+            var head = doc.head || doc.getElementsByTagName('head')[0];
+            // but insert at end of head, because otherwise if it is a stylesheet, it will not ovverride values
+            head.insertBefore(element, head.lastChild);
+        }
+
+        function determineResourceMimeType(resource) {
+            /// <summary>
+            /// Determines the MIME type of a resource via its extension.
+            /// </summary>
+            /// <param name="resource" type="String">The URI of a resource.</param>
+            /// <returns type="String">The MIME type of the resource.</returns>
+
+            // If it is CSS, return that MIME type; otherwise, default to JavaScript.
+            if (/\.css[^\.]*$/.test(resource)) {
+                return 'text/css';
+            }
+            else {
+                return 'text/javascript';
+            }
+        }
+
+        function createResourceElement(location, onLoadHandler, onReadyStateChangeHandler, errorHandler) {
+
+            // Create an element appropriate to the location.
+            var ele = null,
+                type = determineResourceMimeType(location);
+            if (type === 'text/css') {
+                ele = doc.createElement('link');
+                ele.type = type;
+                ele.rel = 'stylesheet';
+                ele.onload = onLoadHandler;
+                ele.onreadystatechange = onReadyStateChangeHandler;
+                ele.onerror = errorHandler;
+                ele.href = location;
+            }
+            else {
+                ele = doc.createElement('script');
+                ele.type = type;
+                ele.onload = onLoadHandler;
+                ele.onreadystatechange = onReadyStateChangeHandler;
+                ele.onerror = errorHandler;
+                ele.src = location;
+            }
+
+            // If the element supports asynchronous operation, enable it explicitly (for older browsers).
+            if (ele.async !== undefined) {
+                ele.async = true;
+            }
+
+            // Return the element.
+            return ele;
+        }
+
+        function loadAssetAsync(location, test) {
             /// <summary>Loads an asset into the DOM asynchronously.</summary>
             /// <param name="asset" type="String">The location of the asset to load.</param>
             /// <param name="test" type="Function">An optional predicate function used to test whether the asset has been loaded on older browsers.</param>
-            /// <param name="cache" type="Boolean">Whether this asset should be loaded into the cache. The default is false.</param>
             /// <returns type="Promise">A Promise that represents the operation.</returns>
 
             // Represent the process as a Deferred.
@@ -962,22 +1030,7 @@
 
             var ele;
 
-            if (/\.css[^\.]*$/.test(location)) {
-                ele = doc.createElement('link');
-                ele.type = 'text/' + (cache ? 'cache' : 'css');
-                ele.rel = 'stylesheet';
-                ele.href = location;
-            }
-            else {
-                ele = doc.createElement('script');
-                ele.type = 'text/' + (cache ? 'cache' : 'javascript');
-                ele.src = location;
-            }
-
-            // Determine whether the browser supports reporting errors (< IE 9 don't).
-            var reportsErrors = !!ele.onerror;
-
-            // Define the methods we use to handle changes in the DOm element state, translating them into Deferred state changes.
+            // Define the methods we use to handle changes in the DOM element state, translating them into Deferred state changes.
             function error(event) {
                 event = event || win.event;
 
@@ -1048,7 +1101,7 @@
                     // Therefore, if the browser doesn't support proper errors, run any load test for the asset.
                     // If it fails, run the error handler.
                     // Otherwise, assume everything went to plan.
-                    if (!reportsErrors && !!test && !cache && !test()) {
+                    if (!!test && !test()) {
 
                         // Fail the Deferred since the test failed.
                         error(event);
@@ -1067,39 +1120,28 @@
                 //}, 3000);
             }
 
-            // Wire-up the DOM element change handlers, knowing that the error event may not be present.
-            ele.onload = ele.onreadystatechange = process;
-            ele.onerror = error;
-
-            //ele.onload = ele.onreadystatechange = process;
-            //ele.onerror = error;
-
-            /* Good read, but doesn't give much hope !
-             * http://blog.getify.com/on-script-loaders/
-             * http://www.nczonline.net/blog/2010/12/21/thoughts-on-script-loaders/
-             * https://hacks.mozilla.org/2009/06/defer/
-             */
+            // Now configure the element with a source and event handlers.
+            ele = createResourceElement(location, process, process, error);
 
             // ASYNC: load in parallel and execute as soon as possible
-            ele.async = false;
+            //ele.async = true;
             // DEFER: load in parallel but maintain execution order
-            ele.defer = false;
+            //ele.defer = false;
 
-            // use insertBefore to keep IE from throwing Operation Aborted (thx Bryan Forbes!)
-            var head = doc.head || doc.getElementsByTagName('head')[0];
-            // but insert at end of head, because otherwise if it is a stylesheet, it will not ovverride values
-            head.insertBefore(ele, head.lastChild);
+            // Add the element to the page.
+            appendElementToHead(ele);
 
             // Return the promise of the Deferred.
             return assetDeferred.promise();
         }
 
-        Asset.prototype.loadAsync = function (cache) {
+        //#endregion
+
+        Asset.prototype.loadAsync = function () {
             /// <summary>
             /// Loads an asset asynchronously.
             /// This initiates the single loading attempt that can be made on an asset.
             /// </summary>
-            /// <param name="cache" type="Boolean">Whether this asset should be loaded into the cache. The default is false. Note that cache loads will never fail as they cannot be tested.</param>
             /// <returns type="Promise">The Promise that represents the act of loading the asset.</returns>
 
             // If the asset is already loading, just return the promise (which is the asset).
@@ -1111,13 +1153,17 @@
             // Define our actions and track our index.
             var currentSourceIndex = -1,    // Start at -1 so that we can use the failure handler.
                 self = this,    // Keep a reference to this instance.
-                assetLoaded = function () {
-                    // We succeeded, so set the final properties resolve the Deferred of the instance.
-                    self.state = Asset.States.LOADED;
-                    self.location = self.sources[currentSourceIndex];
-                    self.deferred.fulfill();
-                },
+                assetLoaded,
                 assetFailed;
+
+            // Define handlers.
+            assetLoaded = function () {
+                // We succeeded, so set the final properties and resolve the Deferred of the instance.
+                self.state = Asset.States.LOADED;
+                self.location = self.sources[currentSourceIndex];
+                removeCacheEntries(self.cacheElements);
+                self.deferred.fulfill();
+            };
 
             // We define the failure handler recursively so that we can self terminate and start with a call to it.
             assetFailed = function () {
@@ -1130,15 +1176,17 @@
                 if (currentSourceIndex < self.sources.length) {
 
                     // Try the next source, wiring-up the continuation.
-                    loadAssetAsync(self.sources[currentSourceIndex], self.loadTest, cache).then(assetLoaded, assetFailed);
+                    loadAssetAsync(self.sources[currentSourceIndex], self.loadTest).then(assetLoaded, assetFailed);
                 }
                 else {
 
                     // There's nothing else to try, so reject the deferred.
+                    removeCacheEntries(self.cacheElements);
                     self.state = Asset.States.FAILED;
                     self.deferred.reject();
                 }
             };
+
 
             // Indicate that we've entered the loading state, then start loading with a call to the failed handler.
             self.state = Asset.States.LOADING;
@@ -1146,6 +1194,36 @@
 
             // Return this instance as the Promise.
             return this;
+        };
+
+        Asset.prototype.cache = function () {
+            /// <summary>
+            /// Attempts to cache the asset locally by loading all available sources into the browser cache.
+            /// This is not guaranteed to complete or raise normal events, which is why no return value is provided.
+            /// </summary>
+
+            // If an element has already been created or we have no sources, do nothing.
+            if ((this.cacheElements.length > 0) || (this.state !== Asset.States.UNLOADED)) {
+                return;
+            }
+
+            // Create an element, overriding its type to cause caching.
+            // This is a silly hack, but it works on lots of older browsers (I'm morally opposed to its existence, not its efficacy).
+            // The goal isn't to provide knowledge when a cached item has been loaded, but to try to pre-load it by using an invalid type, which we can switch to a valid type later.
+            // When we switch to the valid type, we should get normal events, but the content will have been cached.
+            // We perform this caching for all potential sources.
+            for (var i = 0; i < this.sources.length; i++) {
+
+                // Create a new element.
+                var e = createResourceElement(this.sources[i], null, null, null);
+
+                // Override its MIME type.
+                e.type = 'text/cache';
+
+                // Add it to the DOM and our array.
+                appendElementToHead(e);
+                this.cacheElements.push(e);
+            }
         };
 
         // Return the Asset itself, which is also a Promise.
@@ -1314,85 +1392,6 @@
          * If caching is not configured correctly on the server, then items could load twice !
          *************************************************************************************/
 
-        function preLoadAsset(asset, dependencies) {
-            /// <summary>Loads an asset via the fallback cache-load mechanism.</summary>
-            /// <param name="asset" type="Asset"></param>
-            /// <param name="dependencies" type="Array" elementType="Promise"></param>
-            /// <returns type="Promise">The Promise that completes when the asset is loaded, or fails to load.</returns>
-
-            // If the asset has no sources, we can't do anything, so we return the asset itself (it's a Promise) to allow chaining.
-            if (asset.sources.length == 0) {
-                return asset;
-            }
-
-            // Define the method that we'll normally use, which loads a cache asset, then its associated non-cache (i.e. real) asset into the DOM.
-            function preLoadAssetPair(asset, source) {
-
-                // Create the asset pair using the provided source, copying the test over.
-                var cacheItem = new Asset(asset.name, [source]),
-                    actualItem = new Asset(asset.name, [source]);
-                actualItem.loadTest = asset.loadTest;
-
-                // Return the Promise that represents the cache item loading, followed by the actual item.
-                return cacheItem.loadAsync(true).then(function () {
-                    return actualItem.loadAsync();
-                });
-            }
-
-            // Create a Deferred to represent the process, which is rather complex because of the cache entries and tests.
-            var assetLoad = new Deferred();
-
-            // We break each iteration of the sources into two steps: load the cache item, then try loading the actual item.
-            // We have to do this for each source in the Asset in a structured way to ensure that dependencies are observed, though we can sneak a little ahead with the first cache entry.
-            var sources = asset.sources.slice(),
-                currentSourceIndex = 0,
-                cacheLoad = new Asset(asset.name, [sources[currentSourceIndex]]).loadAsync(true),
-                currentDependencies = dependencies.slice();
-
-            // Add the cache loading Promise to our list of current dependencies.
-            currentDependencies.push(cacheLoad);
-
-            // Wait until the dependencies have been resolved before we try to actually load the asset from the cache.
-            // This ensures we preserve the ordering before we start altering the DOM with executable code.
-            Promise.whenAll(currentDependencies).then(function () {
-
-                // The dependencies and initial cache item are loaded, so we can try to load the real item, which we can test for success.
-                var assetSourceLoad = new Asset(asset.name, [sources[currentSourceIndex]]),
-                    assetFailedHandler;
-                assetSourceLoad.loadTest = asset.loadTest;
-
-                // Define the asset failure handler, which iterates through subsequent sources.
-                assetFailedHandler = function () {
-
-                    // This asset failed, so we have to try other asset pairs.
-                    // All the dependencies are already loaded, so we just iterate through any remaining sources.
-                    // Start by incrementing the index counter, then continuing to load the asset pairs.
-                    currentSourceIndex++;
-
-                    if (currentSourceIndex < sources.length) {
-
-                        // Try the next source, wiring up handlers appropriately.
-                        preLoadAssetPair(asset, sources[currentSourceIndex]).then(assetLoad.fulfill, assetFailedHandler);
-                    }
-                    else {
-                        // There are no more sources, so we fail.
-                        assetLoad.reject();
-                    }
-                };
-
-                // Try to load the actual first item, handling success or failure appropriately.
-                assetSourceLoad.loadAsync().then(assetLoad.fulfill, assetFailedHandler);
-
-            }, function () {
-
-                // We couldn't resolve our dependencies, so we fail or the cache load (not really possible), so we fail overall.
-                assetLoad.reject();
-            });
-
-            // Return the Promise that represents this asset being loaded.
-            return assetLoad.promise();
-        }
-
         // Iterate through the arguments, pre-loading, then loading each one.
         each(items, function (userItem, i) {
             if (!isFunction(userItem)) {
@@ -1400,11 +1399,14 @@
                 // Get / parse the asset, which adds it to the global list.
                 var item = getAsset(userItem);
 
+                // Initiate pre-loading of the asset, which is a best-effort feature.
+                item.cache();
+
                 // The dependencies for this item / asset are all prior scripts that have been queued.
-                // When the pre-load completes (either way), we try to load the actual item.
+                // When the predecessors complete, we try to load the actual item.
                 // The test for the item will determine the final state since the preLoadAsset method will have actually loaded the asset.
-                var dependencies = loadingAssets.slice(),
-                    preLoad = preLoadAsset(item, dependencies).then(function () { item.loadAsync() }, function () { item.loadAsync() });
+                var dependencies = loadingAssets.slice();
+                Promise.whenAll(dependencies).then(function () { item.loadAsync(); });
 
                 // Add the actual (i.e. final) asset to the list.
                 loadingAssets.push(item);

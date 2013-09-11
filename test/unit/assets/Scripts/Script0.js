@@ -1,0 +1,1 @@
+(function(window){ window.Script0 = 0;}(window))

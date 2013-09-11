@@ -1,0 +1,1 @@
+(function(window){ window.Script52 = 52;}(window))

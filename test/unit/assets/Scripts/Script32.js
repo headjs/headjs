@@ -1,0 +1,1 @@
+(function(window){ window.Script32 = 32;}(window))

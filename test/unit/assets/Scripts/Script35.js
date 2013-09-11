@@ -1,0 +1,1 @@
+(function(window){ window.Script35 = 35;}(window))

@@ -1,0 +1,1 @@
+(function(window){ window.Script5 = 5;}(window))
