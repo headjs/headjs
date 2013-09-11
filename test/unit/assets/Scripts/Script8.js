@@ -1,0 +1,1 @@
+(function(window){ window.Script8 = 8;}(window))

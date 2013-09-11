@@ -1,0 +1,1 @@
+(function(window){ window.Script197 = 197;}(window))

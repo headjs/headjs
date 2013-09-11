@@ -1,0 +1,1 @@
+(function(window){ window.Script17 = 17;}(window))

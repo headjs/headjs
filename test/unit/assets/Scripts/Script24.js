@@ -1,0 +1,1 @@
+(function(window){ window.Script24 = 24;}(window))

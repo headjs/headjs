@@ -1,0 +1,1 @@
+(function(window){ window.Script6 = 6;}(window))

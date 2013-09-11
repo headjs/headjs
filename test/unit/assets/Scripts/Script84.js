@@ -1,0 +1,1 @@
+(function(window){ window.Script84 = 84;}(window))

@@ -1,0 +1,1 @@
+(function(window){ window.Script64 = 64;}(window))

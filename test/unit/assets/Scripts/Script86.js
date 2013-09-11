@@ -1,0 +1,1 @@
+(function(window){ window.Script86 = 86;}(window))

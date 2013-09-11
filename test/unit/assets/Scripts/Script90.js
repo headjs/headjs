@@ -1,0 +1,1 @@
+(function(window){ window.Script90 = 90;}(window))

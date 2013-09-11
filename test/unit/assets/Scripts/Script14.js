@@ -1,0 +1,1 @@
+(function(window){ window.Script14 = 14;}(window))
