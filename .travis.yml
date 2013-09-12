@@ -2,6 +2,26 @@ language: node_js
 node_js:
   - "0.11"
 before_script:
+  # Run tests completely in the cloud using Travis CI and Sauce Labs
+  # https://saucelabs.com/opensource/travis
+  - curl https://gist.github.com/santiycr/5139565/raw/sauce_connect_setup.sh | bash
+  - npm install -g testem
   - npm install -g grunt-cli
-  - npm install grunt grunt-contrib-qunit
-script: grunt test -v -d
+script:
+  - grunt test -v -d
+  # Script to create a tunnel in a develop environment
+  # java -jar node_modules/saucelauncher/Sauce-Connect.jar $SAUCE_USERNAME $SAUCE_ACCESS_KEY --tunnel-identifier $TRAVIS_JOB_NUMBER
+  - testem ci --port 8080
+
+# Run tests using Travis CI and Sauce Labs
+# https://saucelabs.com/opensource/travis
+#
+# Secure environment variables
+# http://about.travis-ci.org/docs/user/build-configuration/#Secure-environment-variables
+#
+# Extra links
+# https://github.com/axemclion/grunt-saucelabs
+env:
+  global:
+    - secure: "O0khNA0ONr+GNmdp0ipzdkSvi6UBGRhb1km4KOBoGRMNRa9X8sPWJQ1G5Mrx\nsCKLq7yq5ufMGv2Os8CF4isU7F4P4dFsjFiNAloz3HdrpfPdfWdxBFCn/+9H\nTb2sL/cT3snKEcvcm4QYGdDxY/3KisjhD1VGa0mxhp/jr98SCTs="
+    - secure: "EDGtMUuQz5xJB0h9ts3Tu98p/3Q1UD84f3m+szx+PBOadSkRSyU+O/OGsHVh\nFB8Vc72Av8DuRs5IOXKVYaiMDbMDHtbS23pnYUCXDo7vAwZC9JuIj3coz+wQ\nkYyCkPOBh3LtaPaDDg1WxU41xpyx1XYxxWHsjs0hJHUC0Wz6xoI="

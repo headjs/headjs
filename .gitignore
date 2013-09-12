@@ -14,3 +14,4 @@ test/unit/0.96*/
 test/unit/0.97a*/
 test/debug.html
 node_modules/
+sauce_connect.log*
