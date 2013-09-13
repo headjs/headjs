@@ -36,13 +36,13 @@
         Author:     Mike McMahon
         Created:    September 5, 2013
     
-        Version:    1.1
-        Updated:    September 10, 2013
+        Version:    1.2
+        Updated:    September 13, 2013
     
         Project homepage: http://promises.codeplex.com
     */
 
-    /* License and copyright information (Ms-PL): http://promises.codeplex.com */
+    /*! License and copyright information (Ms-PL): http://promises.codeplex.com */
     (function (container, undefined) {
         /// <summary>
         ///     Initializes the types and functionality of the library within a container.
@@ -372,7 +372,12 @@
         }());
 
         /// <field name="never" type="Promise">A Promise that will never be completed.</field>
-        Promise.never = new Promise(function () { });
+        Promise.never = new Promise(function () {
+
+            // We ignore any parameters since they'll never be executed and we don't need memory consumption to grow unnecessarily.
+            // To ensure we return a proper PRomise, we return this Promise.never instance.
+            return Promise.never;
+        });
 
         Promise.fulfilled = (function () {
             /// <summary>Creates a single instance of a fulfilled (i.e. successfully-resolved) Promise.</summary>

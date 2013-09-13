@@ -610,166 +610,6 @@
  * Version 0.99
  * http://headjs.com
  */
-;(function(win, undefined) {
-    "use strict";
-
-    var doc = win.document,
-        /*
-            To add a new test:
-
-            head.feature("video", function() {
-                var tag = document.createElement('video');
-                return !!tag.canPlayType;
-            });
-
-            Good place to grab more tests
-
-            https://github.com/Modernizr/Modernizr/blob/master/modernizr.js
-        */
-
-        /* CSS modernizer */
-         el       = doc.createElement("i"),
-         style    = el.style,
-         prefs    = ' -o- -moz- -ms- -webkit- -khtml- '.split(' '),
-         domPrefs = 'Webkit Moz O ms Khtml'.split(' '),
-
-         headVar = win.head_conf && win.head_conf.head || "head",
-         api     = win[headVar];
-
-     // Thanks Paul Irish!
-    function testProps(props) {
-        for (var i in props) {
-            if (style[props[i]] !== undefined) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
-    function testAll(prop) {
-        var camel = prop.charAt(0).toUpperCase() + prop.substr(1),
-            props = (prop + ' ' + domPrefs.join(camel + ' ') + camel).split(' ');
-
-        return !!testProps(props);
-    }
-
-    var tests = {
-        gradient: function() {
-            var s1 = 'background-image:',
-                s2 = 'gradient(linear,left top,right bottom,from(#9f9),to(#fff));',
-                s3 = 'linear-gradient(left top,#eee,#fff);';
-
-            style.cssText = (s1 + prefs.join(s2 + s1) + prefs.join(s3 + s1)).slice(0,-s1.length);
-            return !!style.backgroundImage;
-        },
-
-        rgba: function() {
-            style.cssText = "background-color:rgba(0,0,0,0.5)";
-            return !!style.backgroundColor;
-        },
-
-        opacity: function() {
-            return el.style.opacity === "";
-        },
-
-        textshadow: function() {
-            return style.textShadow === '';
-        },
-
-        multiplebgs: function() {
-            style.cssText = "background:url(//:),url(//:),red url(//:)";
-            return new RegExp("(url\\s*\\(.*?){3}").test(style.background);
-        },
-
-        boxshadow: function() {
-            return testAll("boxShadow");
-        },
-
-        borderimage: function() {
-            return testAll("borderImage");
-        },
-
-        borderradius: function() {
-            return testAll("borderRadius");
-        },
-
-        cssreflections: function() {
-            return testAll("boxReflect");
-        },
-
-        csstransforms: function() {
-            return testAll("transform");
-        },
-
-        csstransitions: function() {
-            return testAll("transition");
-        },
-        touch: function () {
-            return 'ontouchstart' in win;
-        },
-        retina: function () {
-            return (win.devicePixelRatio > 1);
-        },        
-
-        /*
-            font-face support. Uses browser sniffing but is synchronous.
-            http://paulirish.com/2009/font-face-feature-detection/
-        */
-        fontface: function() {
-            var browser = api.browser.name, version = api.browser.version;
-
-            switch (browser) {
-                case "ie":
-                    return version >= 9;
-
-                case "chrome":
-                    return version >= 13;
-
-                case "ff":
-                    return version >= 6;
-
-                case "ios":
-                    return version >= 5;
-
-                case "android":
-                    return false;
-
-                case "webkit":
-                    return version >= 5.1;
-
-                case "opera":
-                    return version >= 10;
-
-                default:
-                    return false;
-            }
-        }
-    };
-
-    // queue features
-    for (var key in tests) {
-        if (tests[key]) {
-            api.feature(key, tests[key].call(), true);
-        }
-    }
-
-    // enable features at once
-    api.feature();
-
-})(window);
-
-///#source 1 1 /headjs/dist/head.load.js
-/*!
- * HeadJS     The only script in your <HEAD>    
- * Author     Tero Piirainen  (tipiirai)
- * Maintainer Robert Hoffmann (itechnology)
- * License    MIT / http://bit.ly/mit-license
- *
- * Version 0.99
- * http://headjs.com
- */
 ; (function (win, undefined) {
     "use strict";
 
@@ -799,8 +639,8 @@
         Author:     Mike McMahon
         Created:    September 5, 2013
     
-        Version:    1.1
-        Updated:    September 10, 2013
+        Version:    1.2
+        Updated:    September 13, 2013
     
         Project homepage: http://promises.codeplex.com
     */
@@ -1135,7 +975,12 @@
         }());
 
         /// <field name="never" type="Promise">A Promise that will never be completed.</field>
-        Promise.never = new Promise(function () { });
+        Promise.never = new Promise(function () {
+
+            // We ignore any parameters since they'll never be executed and we don't need memory consumption to grow unnecessarily.
+            // To ensure we return a proper PRomise, we return this Promise.never instance.
+            return Promise.never;
+        });
 
         Promise.fulfilled = (function () {
             /// <summary>Creates a single instance of a fulfilled (i.e. successfully-resolved) Promise.</summary>
@@ -1358,97 +1203,97 @@
             // Not only is this consistent with the normal use of deferred objects, but queuing the change helps to ensure the DOM isn't modified too terribly much all at once, causing browser confusion and missed events.
             setImmediate(function () {
 
-            var ele;
+                var ele;
 
-            // Define the methods we use to handle changes in the DOM element state, translating them into Deferred state changes.
-            function error(event) {
-                event = event || win.event;
+                // Define the methods we use to handle changes in the DOM element state, translating them into Deferred state changes.
+                function error(event) {
+                    event = event || win.event;
 
-                // release event listeners
-                ele.onload = ele.onreadystatechange = ele.onerror = null;
-
-                // Remove the element from the DOM since it failed.
-                // This is optional, but it keeps the DOM tidy.
-                ele.parentElement.removeChild(ele);
-
-                // Reject the Deferred, passing the event.
-                assetDeferred.reject(event);
-            }
-
-            function process(event) {
-                event = event || win.event;
-
-                // IE 7/8 (2 events on 1st load)
-                // 1) event.type = readystatechange, s.readyState = loading
-                // 2) event.type = readystatechange, s.readyState = loaded
-
-                // IE 7/8 (1 event on reload)
-                // 1) event.type = readystatechange, s.readyState = complete 
-
-                // event.type === 'readystatechange' && /loaded|complete/.test(s.readyState)
-
-                // IE 9 (3 events on 1st load)
-                // 1) event.type = readystatechange, s.readyState = loading
-                // 2) event.type = readystatechange, s.readyState = loaded
-                // 3) event.type = load            , s.readyState = loaded
-
-                // IE 9 (2 events on reload)
-                // 1) event.type = readystatechange, s.readyState = complete 
-                // 2) event.type = load            , s.readyState = complete 
-
-                // event.type === 'load'             && /loaded|complete/.test(s.readyState)
-                // event.type === 'readystatechange' && /loaded|complete/.test(s.readyState)
-
-                // IE 10 (3 events on 1st load)
-                // 1) event.type = readystatechange, s.readyState = loading
-                // 2) event.type = load            , s.readyState = complete
-                // 3) event.type = readystatechange, s.readyState = loaded
-
-                // IE 10 (3 events on reload)
-                // 1) event.type = readystatechange, s.readyState = loaded
-                // 2) event.type = load            , s.readyState = complete
-                // 3) event.type = readystatechange, s.readyState = complete 
-
-                // event.type === 'load'             && /loaded|complete/.test(s.readyState)
-                // event.type === 'readystatechange' && /complete/.test(s.readyState)
-
-                // Other Browsers (1 event on 1st load)
-                // 1) event.type = load, s.readyState = undefined
-
-                // Other Browsers (1 event on reload)
-                // 1) event.type = load, s.readyState = undefined            
-
-                // event.type == 'load' && s.readyState = undefined
-
-
-                // !doc.documentMode is for IE6/7, IE8+ have documentMode
-                if (event.type === 'load' || (/loaded|complete/.test(ele.readyState) && (!doc.documentMode || doc.documentMode < 9))) {
-
-                    // release event listeners               
+                    // release event listeners
                     ele.onload = ele.onreadystatechange = ele.onerror = null;
 
-                    // The browser says that the asset is loaded, but if the browser was too old, it wouldn't report an error.
-                    // Therefore, if the browser doesn't support proper errors, run any load test for the asset.
-                    // If it fails, run the error handler.
-                    // Otherwise, assume everything went to plan.
-                    if (!test()) {
+                    // Remove the element from the DOM since it failed.
+                    // This is optional, but it keeps the DOM tidy.
+                    ele.parentElement.removeChild(ele);
 
-                        // Fail the Deferred since the test failed.
-                        error(event);
-                    }
-                    else {
-
-                        // Resolve the Deferred.
-                        assetDeferred.fulfill();
-                    }
+                    // Reject the Deferred, passing the event.
+                    assetDeferred.reject(event);
                 }
 
-                // emulates error on browsers that don't create an exception
-                // INFO: timeout not clearing ..why ?
-                //asset.timeout = win.setTimeout(function () {
-                //    error({ type: "timeout" });
-                //}, 3000);
-            }
+                function process(event) {
+                    event = event || win.event;
+
+                    // IE 7/8 (2 events on 1st load)
+                    // 1) event.type = readystatechange, s.readyState = loading
+                    // 2) event.type = readystatechange, s.readyState = loaded
+
+                    // IE 7/8 (1 event on reload)
+                    // 1) event.type = readystatechange, s.readyState = complete 
+
+                    // event.type === 'readystatechange' && /loaded|complete/.test(s.readyState)
+
+                    // IE 9 (3 events on 1st load)
+                    // 1) event.type = readystatechange, s.readyState = loading
+                    // 2) event.type = readystatechange, s.readyState = loaded
+                    // 3) event.type = load            , s.readyState = loaded
+
+                    // IE 9 (2 events on reload)
+                    // 1) event.type = readystatechange, s.readyState = complete 
+                    // 2) event.type = load            , s.readyState = complete 
+
+                    // event.type === 'load'             && /loaded|complete/.test(s.readyState)
+                    // event.type === 'readystatechange' && /loaded|complete/.test(s.readyState)
+
+                    // IE 10 (3 events on 1st load)
+                    // 1) event.type = readystatechange, s.readyState = loading
+                    // 2) event.type = load            , s.readyState = complete
+                    // 3) event.type = readystatechange, s.readyState = loaded
+
+                    // IE 10 (3 events on reload)
+                    // 1) event.type = readystatechange, s.readyState = loaded
+                    // 2) event.type = load            , s.readyState = complete
+                    // 3) event.type = readystatechange, s.readyState = complete 
+
+                    // event.type === 'load'             && /loaded|complete/.test(s.readyState)
+                    // event.type === 'readystatechange' && /complete/.test(s.readyState)
+
+                    // Other Browsers (1 event on 1st load)
+                    // 1) event.type = load, s.readyState = undefined
+
+                    // Other Browsers (1 event on reload)
+                    // 1) event.type = load, s.readyState = undefined            
+
+                    // event.type == 'load' && s.readyState = undefined
+
+
+                    // !doc.documentMode is for IE6/7, IE8+ have documentMode
+                    if (event.type === 'load' || (/loaded|complete/.test(ele.readyState) && (!doc.documentMode || doc.documentMode < 9))) {
+
+                        // release event listeners               
+                        ele.onload = ele.onreadystatechange = ele.onerror = null;
+
+                        // The browser says that the asset is loaded, but if the browser was too old, it wouldn't report an error.
+                        // Therefore, if the browser doesn't support proper errors, run any load test for the asset.
+                        // If it fails, run the error handler.
+                        // Otherwise, assume everything went to plan.
+                        if (!test()) {
+
+                            // Fail the Deferred since the test failed.
+                            error(event);
+                        }
+                        else {
+
+                            // Resolve the Deferred.
+                            assetDeferred.fulfill();
+                        }
+                    }
+
+                    // emulates error on browsers that don't create an exception
+                    // INFO: timeout not clearing ..why ?
+                    //asset.timeout = win.setTimeout(function () {
+                    //    error({ type: "timeout" });
+                    //}, 3000);
+                }
 
                 // Now configure the element with a source and event handlers.
                 ele = createResourceElement(location, process, process, error);
@@ -2036,8 +1881,7 @@
         if (!!Array.indexOf) {
             return arr.indexOf(item) > -1;
         }
-        else
-        {
+        else {
             for (var i = 0; i < arr.length; i++) {
                 if (arr[i] === item) {
 
@@ -2155,4 +1999,3 @@
     //#endregion
 
 })(window);
-
