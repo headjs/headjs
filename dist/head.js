@@ -1,4 +1,5 @@
-﻿/*!
+﻿///#source 1 1 ../src/core.js
+/*!
  * HeadJS     The only script in your <HEAD>    
  * Author     Tero Piirainen  (tipiirai)
  * Maintainer Robert Hoffmann (itechnology)
@@ -22,9 +23,9 @@
             screens   : [240, 320, 480, 640, 768, 800, 1024, 1280, 1440, 1680, 1920],            
             screensCss: { "gt": true, "gte": false, "lt": true, "lte": false, "eq": false },
             browsers  : [
-                          { ie     : { min: 6, max: 10 } }
-                       //,{ chrome : { min: 8, max: 26 } }
-                       //,{ ff     : { min: 3, max: 21 } }
+                          { ie     : { min: 6, max: 11 } }
+                       //,{ chrome : { min: 8, max: 29 } }
+                       //,{ ff     : { min: 3, max: 24 } }
                        //,{ ios    : { min: 3, max:  6 } }
                        //,{ android: { min: 2, max:  4 } }
                        //,{ webkit : { min: 9, max: 12 } }
@@ -286,7 +287,7 @@
     var resizeId = 0;
     function onResize() {
         win.clearTimeout(resizeId);
-        resizeId = win.setTimeout(screenSize, 100);
+        resizeId = win.setTimeout(screenSize, 50);
     }
 
     // Manually attach, as to not overwrite existing handler
@@ -298,6 +299,7 @@
     }
 })(window);
 
+///#source 1 1 ../src/css3.js
 /*!
  * HeadJS     The only script in your <HEAD>    
  * Author     Tero Piirainen  (tipiirai)
@@ -376,8 +378,13 @@
         },
 
         multiplebgs: function() {
-            style.cssText = "background:url(//:),url(//:),red url(//:)";
-            return new RegExp("(url\\s*\\(.*?){3}").test(style.background);
+            style.cssText = 'background:url(https://),url(https://),red url(https://)';
+
+            // If the UA supports multiple backgrounds, there should be three occurrences
+            // of the string "url(" in the return value for elemStyle.background
+            var result = (style.background || "").match(/url/g);
+
+            return Object.prototype.toString.call(result) === '[object Array]' && result.length === 3;
         },
 
         boxshadow: function() {
@@ -456,6 +463,7 @@
     api.feature();
 
 })(window);
+///#source 1 1 ../src/load.js
 /*!
  * HeadJS     The only script in your <HEAD>    
  * Author     Tero Piirainen  (tipiirai)
@@ -792,7 +800,6 @@
         return true;
     }
 
-
     function onPreload(asset) {
         asset.state = PRELOADED;
 
@@ -1032,7 +1039,7 @@
         var top = false;
 
         try {
-            top = win.frameElement == null && doc.documentElement;
+            top = !win.frameElement && doc.documentElement;
         } catch (e) { }
 
         if (top && top.doScroll) {

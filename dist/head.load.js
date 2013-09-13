@@ -1,4 +1,5 @@
-﻿/*!
+﻿///#source 1 1 ../src/load.js
+/*!
  * HeadJS     The only script in your <HEAD>    
  * Author     Tero Piirainen  (tipiirai)
  * Maintainer Robert Hoffmann (itechnology)
@@ -334,7 +335,6 @@
         return true;
     }
 
-
     function onPreload(asset) {
         asset.state = PRELOADED;
 
@@ -574,7 +574,7 @@
         var top = false;
 
         try {
-            top = win.frameElement == null && doc.documentElement;
+            top = !win.frameElement && doc.documentElement;
         } catch (e) { }
 
         if (top && top.doScroll) {

@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * HeadJS     The only script in your <HEAD>    
  * Author     Tero Piirainen  (tipiirai)
  * Maintainer Robert Hoffmann (itechnology)
@@ -22,9 +22,9 @@
             screens   : [240, 320, 480, 640, 768, 800, 1024, 1280, 1440, 1680, 1920],            
             screensCss: { "gt": true, "gte": false, "lt": true, "lte": false, "eq": false },
             browsers  : [
-                          { ie     : { min: 6, max: 10 } }
-                       //,{ chrome : { min: 8, max: 26 } }
-                       //,{ ff     : { min: 3, max: 21 } }
+                          { ie     : { min: 6, max: 11 } }
+                       //,{ chrome : { min: 8, max: 29 } }
+                       //,{ ff     : { min: 3, max: 24 } }
                        //,{ ios    : { min: 3, max:  6 } }
                        //,{ android: { min: 2, max:  4 } }
                        //,{ webkit : { min: 9, max: 12 } }
@@ -286,7 +286,7 @@
     var resizeId = 0;
     function onResize() {
         win.clearTimeout(resizeId);
-        resizeId = win.setTimeout(screenSize, 100);
+        resizeId = win.setTimeout(screenSize, 50);
     }
 
     // Manually attach, as to not overwrite existing handler

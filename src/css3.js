@@ -76,8 +76,13 @@
         },
 
         multiplebgs: function() {
-            style.cssText = "background:url(//:),url(//:),red url(//:)";
-            return new RegExp("(url\\s*\\(.*?){3}").test(style.background);
+            style.cssText = 'background:url(https://),url(https://),red url(https://)';
+
+            // If the UA supports multiple backgrounds, there should be three occurrences
+            // of the string "url(" in the return value for elemStyle.background
+            var result = (style.background || "").match(/url/g);
+
+            return Object.prototype.toString.call(result) === '[object Array]' && result.length === 3;
         },
 
         boxshadow: function() {
