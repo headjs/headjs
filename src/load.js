@@ -28,6 +28,30 @@
         PRELOADED  = 2,
         LOADING    = 3,
         LOADED     = 4;
+/**
+     * Private methods and members for queue file with priority
+     */
+    var method_queue = new Array();
+    var order = 0;
+    function sort_queue(a, b) {
+	if (a.priority < b.priority)
+	    return -1;
+	else if (a.priority == b.priority) {
+	    return a.origin < b.origin ? -1 : (a.origin > b.origin ? 1 : 0);
+	} else
+	    return 1;
+    }
+    function execute_queue() {
+	method_queue.sort(sort_queue);
+	for ( var i in method_queue) {
+	    method_queue[i].method.call(document, jQuery);
+	}
+	method_queue = new Array();
+	order = 0;
+    }
+    /**
+     * End queue file with priority
+     */
 
     // Method 1: simply load and let browser take care of ordering
     if (isAsync) {
@@ -156,7 +180,7 @@
         return api;
     };
 
-    api.ready = function (key, callback) {
+    api.ready = function (key, callback, priority) {
         ///<summary>
         /// INFO: use cases:
         ///    head.ready(callBack)
@@ -179,9 +203,12 @@
 
         // shift arguments
         if (isFunction(key)) {
+            priority = callback;
             callback = key;
             key      = "ALL";
         }
+		if (typeof (priority) == "undefined")
+	    	priority = 0;
 
         // make sure arguments are sane
         if (typeof key !== 'string' || !isFunction(callback)) {
@@ -197,13 +224,12 @@
             return api;
         }
 
-        var arr = handlers[key];
-        if (!arr) {
-            arr = handlers[key] = [callback];
-        }
-        else {
-            arr.push(callback);
-        }
+        method_queue.push({
+			method : callback,
+			priority : priority,
+			key : key,
+			origin : order++
+	    });
 
         return api;
     };
@@ -216,6 +242,7 @@
             each(handlers.ALL, function (callback) {
                 one(callback);
             });
+			 execute_queue();
         }
 
         if (api.feature) {
