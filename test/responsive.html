@@ -32,9 +32,8 @@
 
         // Detect
         function resize() {
-            result = "".concat("innerWidth: ", window.innerWidth, ", innerHeight: ", window.innerHeight, " / outerWidth:", window.outerWidth, ", outerHeight: ", window.outerHeight);
-            result = "".concat(result, "<br/>", "clientWidth: ", document.documentElement.clientWidth, ", clientHeight: ", document.documentElement.clientHeight, " / screen.width:", window.screen.width, ", screen.height: ", window.screen.height);
-           
+            result = "".concat("innerWidth: ", window.innerWidth, ", outerWidth: ", window.outerWidth);
+
             document.getElementById("result").innerHTML = result;
 
             clearTimeout(timer);
