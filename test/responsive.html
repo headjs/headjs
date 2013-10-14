@@ -27,23 +27,13 @@
     </div>
 
     <script>
-        var win    = window;
-        var html   = document.documentElement;
         var timer  = 0;
         var result = "";
 
         // Detect
         function resize() {
-            // Viewport height
-            var ih = win.innerHeight || html.clientHeight,
-                oh = win.outerHeight || win.screen.height;
-
-            // Viewport width
-            var iw = win.innerWidth || html.clientWidth,
-                ow = win.outerWidth || win.screen.width;
-
-            result = "".concat("innerWidth: ", win.innerWidth, ", innerHeight: ", win.innerHeight, " / outerWidth:", win.outerWidth, ", outerHeight: ", win.outerHeight);
-            result = "".concat(result, "<br/>", "clientWidth: ", html.clientWidth, ", clientHeight: ", html.clientHeight, " / screen.width:", win.screen.width, ", screen.height: ", win.screen.height);
+            result = "".concat("innerWidth: ", window.innerWidth, ", innerHeight: ", window.innerHeight, " / outerWidth:", window.outerWidth, ", outerHeight: ", window.outerHeight);
+            result = "".concat(result, "<br/>", "clientWidth: ", document.documentElement.clientWidth, ", clientHeight: ", document.documentElement.clientHeight, " / screen.width:", window.screen.width, ", screen.height: ", window.screen.height);
            
             document.getElementById("result").innerHTML = result;
 
@@ -61,16 +51,16 @@
         var resizeId = 0;
 
         function onResize() {
-            win.clearTimeout(resizeId);
-            resizeId = win.setTimeout(resize, 50);
+            window.clearTimeout(resizeId);
+            resizeId = window.setTimeout(resize, 50);
         }
 
         // Manually attach, as to not overwrite existing handler
-        if (win.addEventListener) {
-            win.addEventListener("resize", onResize, false);
+        if (window.addEventListener) {
+            window.addEventListener("resize", onResize, false);
 
         } else {
-            win.attachEvent("onresize", onResize);
+            window.attachEvent("onresize", onResize);
         }
     </script>
 </body>
