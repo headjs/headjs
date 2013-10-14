@@ -27,9 +27,10 @@
     </div>
 
     <script>
-        var win = window;
-        var html = document.documentElement;
-        var timer = 0;
+        var win    = window;
+        var html   = document.documentElement;
+        var timer  = 0;
+        var result = "";
 
         // Detect
         function resize() {
@@ -41,7 +42,10 @@
             var iw = win.innerWidth || html.clientWidth,
                 ow = win.outerWidth || win.screen.width;
 
-            document.getElementById("result").innerHTML = "iw: ".concat(iw, ", ih: ", ih, " / ow:", ow, ", oh: ", oh);
+            result = "".concat("innerWidth: ", win.innerWidth, ", innerHeight: ", win.innerHeight, " / outerWidth:", win.outerWidth, ", outerHeight: ", win.outerHeight);
+            result = "".concat(result, "<br/>", "clientWidth: ", html.clientWidth, ", clientHeight: ", html.clientHeight, " / screen.width:", win.screen.width, ", screen.height: ", win.screen.height);
+           
+            document.getElementById("result").innerHTML = result;
 
             clearTimeout(timer);
             timer = setTimeout(function () {
