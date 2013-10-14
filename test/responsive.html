@@ -2,29 +2,14 @@
 <html class="no-js">
 <head>
     <meta charset="utf-8"/>
-    <title>Responsive Tests</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Responsive Tests</title>   
     <script src="//cdnjs.cloudflare.com/ajax/libs/headjs/0.99/head.min.js"></script> 
 </head>
 <body>
-    <div id="wrap">
-        <div id="nav" class="clear">
-            <a href="script.html">SCRIPT SRC <em>in head</em></a>
-            <a href="script-bottom.html">SCRIPT SRC <em>on bottom</em></a>
-            <a href="headjs.html">SCRIPT <em>via HeadjJS</em></a>
-            <br />
-        </div>
-        <div id="content">
-            <h1>Responsive Detections</h1>
-            <p>
-                <div id="result"></div>
-            </p>
-        </div>
-        <div id="footer">
-            <a href="../index.html#theory">&laquo; headjs.com</a>
-            &nbsp; | &nbsp; <a href="https://github.com/headjs/headjs/issues">found a bug?</a>
-        </div>
-    </div>
+    <h1>Responsive Detections</h1>
+    
+    <div id="result"></div>
+   
 
     <script>
         var timer  = 0;
@@ -32,16 +17,17 @@
 
         // Detect
         function resize() {
-            result = "".concat("innerWidth: ", window.innerWidth, ", outerWidth: ", window.outerWidth);
-
+            result = "".concat("innerWidth: ", window.innerWidth, ", outerWidth: ", window.outerWidth, "<br />");
+            result = "".concat(result, "clientWidth: ", document.documentElement.clientWidth, ", screen.width: ", window.screen.width);
+           
             document.getElementById("result").innerHTML = result;
 
-            clearTimeout(timer);
-            timer = setTimeout(function () {
-                var detected = document.createElement("div");
-                detected.innerHTML = document.documentElement.className;
-                document.getElementById("result").appendChild(detected);
-            }, 1000);
+            //clearTimeout(timer);
+            //timer = setTimeout(function () {
+            //    var detected = document.createElement("div");
+            //    detected.innerHTML = document.documentElement.className;
+            //    document.getElementById("result").appendChild(detected);
+            //}, 1000);
         }
 
         resize();
