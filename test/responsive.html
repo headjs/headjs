@@ -1,0 +1,61 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8"/>
+    <title>Responsive Tests</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/headjs/0.99/head.min.js"></script> 
+</head>
+<body>
+    <div id="wrap">
+        <div id="nav" class="clear">
+            <a href="script.html">SCRIPT SRC <em>in head</em></a>
+            <a href="script-bottom.html">SCRIPT SRC <em>on bottom</em></a>
+            <a href="headjs.html">SCRIPT <em>via HeadjJS</em></a>
+            <br />
+        </div>
+        <div id="content">
+            <h1>Responsive Detections</h1>
+            <p>
+                <div id="result"></div>
+            </p>
+        </div>
+        <div id="footer">
+            <a href="../index.html#theory">&laquo; headjs.com</a>
+            &nbsp; | &nbsp; <a href="https://github.com/headjs/headjs/issues">found a bug?</a>
+        </div>
+    </div>
+
+    <script>
+        var win  = window;
+        var html = document.documentElement;
+        var timer = 0;
+
+        function onResize() {
+            // Viewport height
+            var ih = win.innerHeight || html.clientHeight,
+                oh = win.outerHeight || win.screen.height;
+
+            // Viewport width
+            var iw = win.innerWidth || html.clientWidth,
+                ow = win.outerWidth || win.screen.width;
+
+            document.getElementById("result").innerHTML = "ih:".concat(ih, ", oh:", oh, ", iw:", iw, ", ow:", ow);
+
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                var detected       = document.createElement("div");
+                detected.innerHTML = html.className;
+                document.getElementById("result").appendChild(detected);
+            }, 1000);
+        }
+
+        if (win.addEventListener) {
+            win.addEventListener("resize", onResize, false);
+
+        } else {
+            win.attachEvent("onresize", onResize);
+        }
+    </script>
+</body>
+</html>
