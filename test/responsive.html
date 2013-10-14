@@ -40,7 +40,7 @@
             clearTimeout(timer);
             timer = setTimeout(function () {
                 var detected = document.createElement("div");
-                detected.innerHTML = html.className;
+                detected.innerHTML = document.documentElement.className;
                 document.getElementById("result").appendChild(detected);
             }, 1000);
         }
@@ -51,8 +51,8 @@
         var resizeId = 0;
 
         function onResize() {
-            window.clearTimeout(resizeId);
-            resizeId = window.setTimeout(resize, 50);
+            clearTimeout(resizeId);
+            resizeId = setTimeout(resize, 50);
         }
 
         // Manually attach, as to not overwrite existing handler
