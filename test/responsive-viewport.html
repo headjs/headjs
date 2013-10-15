@@ -33,6 +33,14 @@
 
             if (value !== false) {
                 ele.innerHTML = title + ": " + value;
+
+                if (value === "false") {
+                    value = 0;
+                }
+                else if (value === "true") {
+                    value = 1;
+                }
+
                 browserScopeAdd(title, value);
             } else {
                 ele.innerHTML = title;
