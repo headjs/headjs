@@ -7,9 +7,17 @@
 </head>
 <body>
     <h2>Responsive Detections (try orientations on IOS7 device)</h2>    
-    <h3><a href="responsive-viewport.html">With ViewPort Tag</a> :: <a href="http://www.browserscope.org/browse?category=usertest_agt1YS1wcm9maWxlcnIRCxIEVGVzdBiAgICArdSYCgw" target="results">Results</a></h3>
+    <h3><a href="responsive-viewport.html">With ViewPort Tag</a></h3>
         
     <div id="result"></div>
+        
+    <ul>
+        <li>1) Prefered: Inner browser surface/viewport. Exludes toolbars/scrollbars</li>
+        <li>2) Fallback: Like 1, but not supported everywhere</li>
+        <li>3) Prefered: Current browser size, also takes into account a resized browser window</li>
+        <li>4) Fallback: Measures the entire screen resolution</li>
+        <li><a href="http://www.browserscope.org/browse?category=usertest_agt1YS1wcm9maWxlcnIRCxIEVGVzdBiAgICArdSYCgw" target="results">BrowserScope Results</a></li>
+    </ul> 
    
     <script>
         // Throttle navigators from triggering too many resize events
@@ -55,30 +63,30 @@
             parent.removeChild(result);
 
             var newResult = document.createElement("div");
-            newResult.id  = "result";
+            newResult.id = "result";
 
-            newResult.appendChild(addResult("Used for INNER measurements", false));
-            
+            newResult.appendChild(addResult("1) INNER measurements", false));
+
             newResult.appendChild(addResult("innerWidth" , window.innerWidth));
-            newResult.appendChild(addResult("clientWidth", document.documentElement.clientWidth));
-            
+            newResult.appendChild(addResult("innerHeight", window.innerHeight));
+
             newResult.appendChild(addResult("<br/>", false));
-            newResult.appendChild(addResult("Used for OUTER measurements", false));
-            
-            newResult.appendChild(addResult("outerWidth"  , window.outerWidth));
-            newResult.appendChild(addResult("screen.width", window.screen.width));
-            
-            newResult.appendChild(addResult("<br/>", false));
-            newResult.appendChild(addResult("Used for INNER measurements", false));
-            
-            newResult.appendChild(addResult("innerHeight" , window.innerHeight));
+            newResult.appendChild(addResult("2) INNER measurements", false));
+
             newResult.appendChild(addResult("clientHeight", document.documentElement.clientHeight));
-            
+            newResult.appendChild(addResult("clientWidth" , document.documentElement.clientWidth));
+
             newResult.appendChild(addResult("<br/>", false));
-            newResult.appendChild(addResult("Used for OUTER measurements", false));
-            
-            newResult.appendChild(addResult("outerHeight"  , window.outerHeight));
+            newResult.appendChild(addResult("3) OUTER measurements", false));
+
+            newResult.appendChild(addResult("outerWidth" , window.outerWidth));
+            newResult.appendChild(addResult("outerHeight", window.outerHeight));
+
+            newResult.appendChild(addResult("<br/>", false));
+            newResult.appendChild(addResult("** OUTER measurements", false));
+
             newResult.appendChild(addResult("screen.height", window.screen.height));
+            newResult.appendChild(addResult("screen.width" , window.screen.width));
 
             parent.appendChild(newResult);
             browserScopeLog();
