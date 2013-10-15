@@ -12,8 +12,44 @@
     <div id="result"></div>
    
     <script>
+        // Throttle navigators from triggering too many resize events
+        var resizeId = 0;
+        function onResize() {
+            clearTimeout(resizeId);
+            resizeId = setTimeout(resize, 50);
+        }
+
+        function addResult(title, value) {
+            var ele = document.createElement("div");
+
+            if (value !== false) {
+                ele.innerHTML = title + ": " + value;
+                browserScopeAdd(title, value);
+            } else {
+                ele.innerHTML = title;
+            }
+
+            return ele;
+        }
+
+        // Log results to BrowserScope        
+        function browserScopeClear() {
+            window._bTestResults = {};
+        }
+
+        function browserScopeAdd(title, value) {
+            window._bTestResults        = window._bTestResults || {};
+            window._bTestResults[title] = value;
+        }
+
+        function browserScopeLog() {
+            head.load("http://www.browserscope.org/user/beacon/" + "agt1YS1wcm9maWxlcnIRCxIEVGVzdBiAgICArdSYCgw");
+        }
+
         // Detect
         function resize() {
+            browserScopeClear();
+
             var result = document.getElementById("result");
             var parent = result.parentNode;
             parent.removeChild(result);
@@ -21,44 +57,34 @@
             var newResult = document.createElement("div");
             newResult.id  = "result";
 
-            newResult.appendChild(getResult("Usually used for INNER measurements"));
-            newResult.appendChild(getResult("innerWidth: " + window.innerWidth));
-            newResult.appendChild(getResult("clientWidth:  " + document.documentElement.clientWidth));
-            newResult.appendChild(getResult("<br/>"));
+            newResult.appendChild(addResult("Used for INNER measurements", false));
             
-            newResult.appendChild(getResult("Usually used for OUTER measurements"));
-            newResult.appendChild(getResult("outerWidth: " + window.outerWidth));            
-            newResult.appendChild(getResult("screen.width:  " + window.screen.width));
-            newResult.appendChild(getResult("<br/>"));
+            newResult.appendChild(addResult("innerWidth" , window.innerWidth));
+            newResult.appendChild(addResult("clientWidth", document.documentElement.clientWidth));
             
-            newResult.appendChild(getResult("Usually used for INNER measurements"));
-            newResult.appendChild(getResult("innerHeight: " + window.innerHeight));
-            newResult.appendChild(getResult("clientHeight: " + document.documentElement.clientHeight));            
-            newResult.appendChild(getResult("<br/>"));
+            newResult.appendChild(addResult("<br/>", false));
+            newResult.appendChild(addResult("Used for OUTER measurements", false));
             
-            newResult.appendChild(getResult("Usually used for OUTER measurements"));
-            newResult.appendChild(getResult("outerHeight: " + window.outerHeight));            
-            newResult.appendChild(getResult("screen.height: " + window.screen.height));
+            newResult.appendChild(addResult("outerWidth"  , window.outerWidth));
+            newResult.appendChild(addResult("screen.width", window.screen.width));
             
-            parent.appendChild(newResult);
-        }
-        
-        function getResult(msg) {
-            var ele = document.createElement("div");
-            ele.innerHTML = msg;
+            newResult.appendChild(addResult("<br/>", false));
+            newResult.appendChild(addResult("Used for INNER measurements", false));
+            
+            newResult.appendChild(addResult("innerHeight" , window.innerHeight));
+            newResult.appendChild(addResult("clientHeight", document.documentElement.clientHeight));
+            
+            newResult.appendChild(addResult("<br/>", false));
+            newResult.appendChild(addResult("Used for OUTER measurements", false));
+            
+            newResult.appendChild(addResult("outerHeight"  , window.outerHeight));
+            newResult.appendChild(addResult("screen.height", window.screen.height));
 
-            return ele;
+            parent.appendChild(newResult);
+            browserScopeLog();
         }
 
         resize();
-
-        // Throttle navigators from triggering too many resize events
-        var resizeId = 0;
-
-        function onResize() {
-            clearTimeout(resizeId);
-            resizeId = setTimeout(resize, 50);
-        }
 
         // Manually attach, as to not overwrite existing handler
         if (window.addEventListener) {
