@@ -88,20 +88,20 @@
             newResult.appendChild(addResult("<br/>", false));
             newResult.appendChild(addResult("2) INNER measurements", false));
             
-            newResult.appendChild(addResult("clientHeight", document.documentElement.clientHeight));
             newResult.appendChild(addResult("clientWidth" , document.documentElement.clientWidth));
+            newResult.appendChild(addResult("clientHeight", document.documentElement.clientHeight));            
                        
             newResult.appendChild(addResult("<br/>", false));
             newResult.appendChild(addResult("3) OUTER measurements", false));
 
-            newResult.appendChild(addResult("outerWidth", window.outerWidth));
+            newResult.appendChild(addResult("outerWidth" , window.outerWidth));
             newResult.appendChild(addResult("outerHeight", window.outerHeight));
                                     
             newResult.appendChild(addResult("<br/>", false));
             newResult.appendChild(addResult("4) OUTER measurements", false));
-            
-            newResult.appendChild(addResult("screen.height", window.screen.height));
-            newResult.appendChild(addResult("screen.width", window.screen.width));
+           
+            newResult.appendChild(addResult("screen.width" , window.screen.width));
+            newResult.appendChild(addResult("screen.height", window.screen.height));           
             
             parent.appendChild(newResult);
             browserScopeLog();
