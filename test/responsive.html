@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js">
+<html>
 <head>
     <meta charset="utf-8"/>
     <title>Responsive Tests</title>   
@@ -77,29 +77,36 @@
 
             var newResult = document.createElement("div");
             newResult.id = "result";
+            
+            newResult.appendChild(addResult("Landscape (width > height)", (window.innerWidth > window.innerHeight).toString()));
 
+            newResult.appendChild(addResult("<br/>", false));
             newResult.appendChild(addResult("1) INNER measurements", false));
 
             newResult.appendChild(addResult("innerWidth" , window.innerWidth));
             newResult.appendChild(addResult("innerHeight", window.innerHeight));
+            newResult.appendChild(addResult("landscape (iwh)", (window.innerWidth > window.innerHeight).toString()));
 
             newResult.appendChild(addResult("<br/>", false));
             newResult.appendChild(addResult("2) INNER measurements", false));
 
             newResult.appendChild(addResult("clientWidth" , document.documentElement.clientWidth));
-            newResult.appendChild(addResult("clientHeight", document.documentElement.clientHeight));            
+            newResult.appendChild(addResult("clientHeight", document.documentElement.clientHeight));
+            newResult.appendChild(addResult("landscape (cwh)", (document.documentElement.clientWidth > document.documentElement.clientHeight).toString()));
 
             newResult.appendChild(addResult("<br/>", false));
             newResult.appendChild(addResult("3) OUTER measurements", false));
 
             newResult.appendChild(addResult("outerWidth" , window.outerWidth));
             newResult.appendChild(addResult("outerHeight", window.outerHeight));
+            newResult.appendChild(addResult("landscape (owh)", (window.outerWidth > window.outerHeight).toString()));
 
             newResult.appendChild(addResult("<br/>", false));
             newResult.appendChild(addResult("4) OUTER measurements", false));
 
             newResult.appendChild(addResult("screen.width" , window.screen.width));
-            newResult.appendChild(addResult("screen.height", window.screen.height));            
+            newResult.appendChild(addResult("screen.height", window.screen.height));
+            newResult.appendChild(addResult("landscape (swh)", (window.screen.width > window.screen.height).toString()));
 
             parent.appendChild(newResult);
             browserScopeLog();
