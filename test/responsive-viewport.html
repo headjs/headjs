@@ -4,7 +4,6 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <title>Responsive Tests</title>   
-    <script src="//cdnjs.cloudflare.com/ajax/libs/headjs/0.99/head.min.js"></script> 
 </head>
 <body>
     <h2>Responsive Detections (try orientations on IOS7 device)</h2>    
@@ -53,7 +52,21 @@
         }
 
         function browserScopeLog() {
-            head.load("http://www.browserscope.org/user/beacon/" + "agt1YS1wcm9maWxlcnIRCxIEVGVzdBiAgICAmfejCgw");
+            var result = document.getElementById("browserscope");
+            if (result) {
+                result.parentNode.removeChild(result);
+            }
+
+            var apiKey = 'agt1YS1wcm9maWxlcnIRCxIEVGVzdBiAgICAmfejCgw';
+            var script = document.createElement('script');
+
+            script.id = "browserscope";
+            script.src = 'http://www.browserscope.org/user/beacon/' + apiKey;
+
+            // use insertBefore to keep IE from throwing Operation Aborted (thx Bryan Forbes!)
+            var head = document.head || document.getElementsByTagName('head')[0];
+            // but insert at end of head, because otherwise if it is a stylesheet, it will not override values
+            head.insertBefore(script, head.lastChild);
         }
 
         // Detect
