@@ -1,0 +1,65 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8"/>
+    <title>Responsive Tests</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="load.js"></script> 
+</head>
+<body>
+    <div id="wrap">
+        <h2>Load Tests</h2>
+        <div id="content">
+            <button onclick="load_1()">Load jQuery</button>
+            <button onclick="load_2()">Load jQuery/jQueryUI</button>
+            <button onclick="load_3()">Load jQueryUI/jQuery</button>
+
+            <div id="result"></div>
+        </div>
+        <div id="footer">
+            <a href="../index.html#theory">&laquo; headjs.com</a>
+            &nbsp; | &nbsp; <a href="https://github.com/headjs/headjs/issues">found a bug?</a>
+        </div>
+    </div>
+
+    <script>
+        function load_1() {
+            addMessage('jQuery loading...');
+            head.js('http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js',
+                    function () {
+                        addMessage('jQuery callback called');
+                    });
+        }
+
+        function load_2() {
+            addMessage('jQuery/jQueryUI loading...');
+            // if inverted callback fails, since it considers jquery.min already executed a callback
+            // ..so must be related with asset name/callback association
+            head.js('http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js',
+                    function () {
+                        addMessage('jQuery/jQueryUI callback called');
+                    }
+             );
+        }
+
+        function load_3() {
+            addMessage('jQueryUI/jQuery loading...');
+            // if inverted callback fails, since it considers jquery.min already executed a callback
+            // ..so must be related with asset name/callback association
+            head.js('http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js', 'http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js',
+                    function () {
+                        addMessage('jQueryUI/jQuery callback called');
+                    }
+             );
+        }
+
+        function addMessage(msg) {
+            var ele = document.createElement("div");
+            ele.innerHTML = msg;
+
+            document.getElementById("result").appendChild(ele);
+        }
+
+    </script>
+</body>
+</html>
