@@ -14,6 +14,11 @@
             <button onclick="load_2()">Load jQuery/jQueryUI</button>
             <button onclick="load_3()">Load jQueryUI/jQuery</button>
 
+
+            <p>
+                Date Picker: <input id="datepicker" />
+            </p>
+
             <div id="result"></div>
         </div>
         <div id="footer">
@@ -35,9 +40,12 @@
             addMessage('jQuery/jQueryUI loading...');
             // if inverted callback fails, since it considers jquery.min already executed a callback
             // ..so must be related with asset name/callback association
-            head.js('http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js',
+            head.js(['http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js'],
                     function () {
                         addMessage('jQuery/jQueryUI callback called');
+
+                        try { $('#datepicker').datepicker(); }
+                        catch (ex) { addMessage('Case 2 exception loading jquery UI component: ' + ex.toString()); }
                     }
              );
         }
@@ -46,7 +54,7 @@
             addMessage('jQueryUI/jQuery loading...');
             // if inverted callback fails, since it considers jquery.min already executed a callback
             // ..so must be related with asset name/callback association
-            head.js('http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js', 'http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js',
+            head.js(['http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js', 'http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'],
                     function () {
                         addMessage('jQueryUI/jQuery callback called');
                     }

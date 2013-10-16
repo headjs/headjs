@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * HeadJS     The only script in your <HEAD>
  * Author     Tero Piirainen  (tipiirai)
  * Maintainer Robert Hoffmann (itechnology)
@@ -181,12 +181,10 @@
 
         for (var name in items) {
             if (items.hasOwnProperty(name) && items[name].state !== LOADED) {
-                console.log("allLoaded", items, false);
                 return false;
             }
         }
 
-        console.log("allLoaded", items, true);
         return true;
     }
 
@@ -214,7 +212,9 @@
         /// <summary>preload with text/cache hack
         ///
         /// head.load("http://domain.com/file.js","http://domain.com/file.js", callBack)
+        /// head.load(["http://domain.com/file.js","http://domain.com/file.js"], callBack)
         /// head.load({ label1: "http://domain.com/file.js" }, { label2: "http://domain.com/file.js" }, callBack)
+        /// head.load([{ label1: "http://domain.com/file.js" }, { label2: "http://domain.com/file.js" }], callBack)
         /// </summary>
 
         var args = arguments,
@@ -262,7 +262,9 @@
         /// simply load and let browser take care of ordering
         ///
         ///    head.load("http://domain.com/file.js","http://domain.com/file.js", callBack)
+        /// head.load(["http://domain.com/file.js","http://domain.com/file.js"], callBack)
         ///    head.load({ label1: "http://domain.com/file.js" }, { label2: "http://domain.com/file.js" }, callBack)
+        /// head.load([{ label1: "http://domain.com/file.js" }, { label2: "http://domain.com/file.js" }], callBack)
         ///</summary>
         var args      = arguments,
              callback = args[args.length - 1],
@@ -272,28 +274,34 @@
             callback = null;
         }
 
+        if (isArray(args[0])) {
+            args[0].push(callback);
+            api.load.apply(null, args[0]);
+
+            return api;
+        }
+
+        // JRH 262#issuecomment-26288601
+        // First populate the items array.
+        // When allLoaded is called, all items will be populated.
+        // Issue when lazy loaded, the callback can execute early.
         each(args, function (item, i) {
             if (item !== callback) {
-                item             = getAsset(item);
+                item = getAsset(item);
                 items[item.name] = item;
-                
-                // so why the fuck do we check args.length here again ?
-                // make a frikkin whitespace removal plugin..............
-                //load(item, callback && i === args.length - 2 ? function () {
-                //    if (allLoaded(items)) {
-                //        one(callback);
-                //    }
-                //} : null);
-                
+            }
+        });
+
+        each(args, function (item, i) {
+            if (item !== callback) {
+                item = getAsset(item);
+              
                 load(item, function () {
-                    console.log("call from each.args load");
                     if (allLoaded(items)) {
                         one(callback);
                     }
                 });
             }
-
-            console.log("is callback");
         });
 
         return api;
@@ -335,7 +343,6 @@
 
             // dom is ready & no assets are queued for loading
             // INFO: shouldn't we be doing the same test above ?
-            console.log("call from loadAsset");
             if (isDomReady && allLoaded()) {
                 each(handlers.ALL, function (fn) {
                     one(fn);
@@ -444,7 +451,7 @@
          * https://hacks.mozilla.org/2009/06/defer/
          */
 
-        // ASYNC: load in parellel and execute as soon as possible
+        // ASYNC: load in parallel and execute as soon as possible
         ele.async = false;
         // DEFER: load in parallel but maintain execution order
         ele.defer = false;
@@ -477,6 +484,7 @@
         ///    head.ready(document , callBack)
         ///    head.ready("file.js", callBack);
         ///    head.ready("label"  , callBack);
+        ///    head.ready(["label1", "label2"], callback);
         ///</summary>
 
         // DOM ready check: head.ready(document, function() { });
@@ -497,6 +505,20 @@
             key      = "ALL";
         }
 
+        // queue all items from key and return. The callback will be executed if all items from key are already loaded.
+        if (isArray(key)) {
+            var items = {};
+
+            each(key, function (item) {
+                items[item] = assets[item];
+                api.ready(item, function() {
+                    allLoaded(items) && one(callback);
+                });
+            });
+
+            return api;
+        }
+
         // make sure arguments are sane
         if (typeof key !== "string" || !isFunction(callback)) {
             return api;
@@ -506,7 +528,6 @@
         var asset = assets[key];
 
         // item already loaded --> execute and return
-        console.log("call from ready");
         if (asset && asset.state === LOADED || key === "ALL" && allLoaded() && isDomReady) {
             one(callback);
             return api;
@@ -624,7 +645,6 @@
     //#region INIT
     // perform this when DOM is ready
     api.ready(doc, function () {
-        console.log("call from api.ready");
         if (allLoaded()) {
             each(handlers.ALL, function (callback) {
                 one(callback);
