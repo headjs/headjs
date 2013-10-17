@@ -5,13 +5,13 @@ module('Load');
 // So now for a big ass helper so we can load some libs more than once ..anyways !
 var libs = (function(window, undefined) {
     var counter = {};
-    
+
     function count(item) {
         if (counter[item] === undefined) {
-          counter[item] = 0;  
+          counter[item] = 0;
         }
-        
-        return counter[item]++;  
+
+        return counter[item]++;
     }
 
     function mootools() {
@@ -47,12 +47,12 @@ var libs = (function(window, undefined) {
         // depends on jQuery
         window.Sly = undefined;
         return 'http://darsa.in/sly/js/sly.min.js?' + count("sly");
-    }    
+    }
     function underscore() {
         window._ = undefined;
         return 'http://underscorejs.org/underscore-min.js?' + count("underscore");
-    }    
-    
+    }
+
     // Exports
     return {
         mootools  : mootools,
@@ -69,17 +69,17 @@ var libs = (function(window, undefined) {
 
 asyncTest("load(jsFilePath, jsFilePath, callback)", function() {
     expect(2);
-    
+
     head.load(
         libs.mootools(),
         libs.jquery(),
-        
-        function() {                        
+
+        function() {
             $j = jQuery.noConflict();
-                        
+
             ok(!!$j("#qunit-header").addClass, "Loaded: jQuery");
             ok(!!$$("#qunit-header").addClass, "Loaded: Mootools");
-            
+
             start();
         }
     );
@@ -87,30 +87,30 @@ asyncTest("load(jsFilePath, jsFilePath, callback)", function() {
 
 asyncTest("ready(jsFileName).load(jsFilePath)", function () {
     expect(1);
-    
-    head.ready("jquery.min.js", function() {        
+
+    head.ready("jquery.min.js", function() {
         ok(!!jQuery, "Ready: jquery.min.js");
-        
+
         start();
     })
-    
-    .load(libs.jquery());    
+
+    .load(libs.jquery());
 });
 
 asyncTest("load([ jsFilePath, jsFilePath ], callback).ready(jsFileName, callback)", function (assert) {
     expect(4);
-       
+
      head.load([libs.jshint(), libs.knockout()],
         function() {
             start();
         }
-    )  
-    
-    .ready("jshint.js", function () {   
+    )
+
+    .ready("jshint.js", function () {
         ok(!!JSHINT, "Ready: jshint.js");
         assert.step(1, "Step 1: jshint");
     })
-    
+
     .ready("knockout-2.2.1.js", function () {
         ok(!!ko, "Ready: knockout-2.2.1.js");
         assert.step(2, "Step 2: knockout");
@@ -120,7 +120,7 @@ asyncTest("load([ jsFilePath, jsFilePath ], callback).ready(jsFileName, callback
 
 asyncTest("load({ label: jsFilePath }, { label: jsFilePath }, callback).ready(label, callback)", function (assert) {
     expect(6);
-       
+
      head.load(
         { jshint  : libs.jshint() },
         { jquery  : libs.jquery() },
@@ -128,18 +128,18 @@ asyncTest("load({ label: jsFilePath }, { label: jsFilePath }, callback).ready(la
         function() {
             start();
         }
-    )  
-    
-    .ready("jshint", function () {   
+    )
+
+    .ready("jshint", function () {
         ok(!!JSHINT, "Ready: jshint");
         assert.step(1, "Step 1: jshint");
     })
-    
+
     .ready("jquery", function () {
         ok(!!jQuery, "Ready: jquery");
         assert.step(2, "Step 2: jquery");
     })
-    
+
     .ready("knockout", function () {
         ok(!!ko, "Ready: knockout");
         assert.step(3, "Step 3: knockout");
@@ -160,7 +160,7 @@ asyncTest("load({ label: jsFilePath: options: { async: true } }, { label: jsFile
             options: {
                 async: true
             }
-        },        
+        },
         { jquery     : libs.jquery() },
         { underscore : libs.underscore(),
             options  : {
@@ -188,8 +188,8 @@ asyncTest("load({ label: jsFilePath: options: { async: true } }, { label: jsFile
         ok(!!Spinner  , "Ready: spin");
         ok(!!_        , "Ready: underscore");
         ok(!!Notificon, "Ready: notificon");
-        
-        ok(!!Spinner && !!_  && !!Notificon, "Ready: ['spin', 'underscore', 'notificon']");        
+
+        ok(!!Spinner && !!_  && !!Notificon, "Ready: ['spin', 'underscore', 'notificon']");
     })
 
     // These are the synchronous steps
@@ -248,7 +248,7 @@ asyncTest("load({ label: jsFilePath, options: { callback: callback } })", functi
                     assert.step(3, "Step 3: jquery");
                 }
             }
-        },        
+        },
         {
             // depends on jQuery
             sly    : libs.sly(),
@@ -279,7 +279,7 @@ asyncTest("head_conf", function() {
     head_conf = { head: "headJS" };
     head.load( {head: "../../dist/head.js"}, function() {
         ok(!!headJS, "Callback: headJS");
-        
+
         // reset
         head_conf = undefined;
 
