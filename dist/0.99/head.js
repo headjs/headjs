@@ -1124,7 +1124,8 @@
     //#region INIT
     // perform this when DOM is ready
     api.ready(doc, function () {
-        if (allLoaded()) {
+        // Fix: https://github.com/headjs/headjs/issues/203
+        if (isHeadReady && allLoaded()) {
             each(handlers.ALL, function (callback) {
                 one(callback);
             });
