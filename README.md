@@ -28,6 +28,10 @@ This project was never announced. `git push` and it was all viral.
 
 ##Updates
 
+###1.0.1 (2013-11-05)
+	 - Fix: Old IE's can trigger ready too soon
+	   - https://github.com/headjs/headjs/issues/203
+
 ###1.0.0 (2013-11-04)
 
 	 - New: Detect Windows 8 Mobile (Surface RT/Pro), IE11, Kindle, and other Android devices

@@ -54,7 +54,7 @@ var libs = (function(window, undefined) {
     }
     function headjs() {
         window.head = undefined;
-        return "http://cdnjs.cloudflare.com/ajax/libs/headjs/1.0.0/head.min.js?" + count("head");
+        return "http://cdnjs.cloudflare.com/ajax/libs/headjs/1.0.1/head.min.js?" + count("head");
     }
 
     // Exports

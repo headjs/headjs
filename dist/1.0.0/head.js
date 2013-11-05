@@ -472,7 +472,7 @@
 
 }(window));
 ///#source 1 1 /src/1.0.0/load.js
-/*! head.load - v1.0.0 */
+/*! head.load - v1.0.1 */
 /*
  * HeadJS     The only script in your <HEAD>
  * Author     Tero Piirainen  (tipiirai)

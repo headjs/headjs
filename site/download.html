@@ -5,7 +5,7 @@ scripts: ['/site/assets/libs/jquery/jquery.min.js']
 ---
 
 <div class="intro">    
-    HeadJS v{{ site.head.release }} :: Built with Visual Studio 2013, R#, Web Essentials, & Git Extensions on Windows 8.1 Pro / IIS 8.5
+    HeadJS v{{ site.head.minor }} :: Built with Visual Studio 2013, R#, Web Essentials, & Git Extensions on Windows 8.1 Pro / IIS 8.5
 </div>    
 
 <p>
@@ -20,16 +20,16 @@ scripts: ['/site/assets/libs/jquery/jquery.min.js']
 </small>
 
 <div class="group">
-    <a href="//cdnjs.cloudflare.com/ajax/libs/headjs/1.0.0/head.core.min.js" target="_blank" onclick="trackPageView('download/head.core.min.js')">head.core.min.js</a>
+    <a href="//cdnjs.cloudflare.com/ajax/libs/headjs/{{ site.head.minor }}/head.core.min.js" target="_blank" onclick="trackPageView('download/head.core.min.js')">head.core.min.js</a>
     (<strong>production</strong>)
 </div>
 <p>
     <div>
-        <a href="//cdnjs.cloudflare.com/ajax/libs/headjs/1.0.0/head.core.js" target="_blank" onclick="trackPageView('download/head.core.js')">head.core.js</a>
+        <a href="//cdnjs.cloudflare.com/ajax/libs/headjs/{{ site.head.minor }}/head.core.js" target="_blank" onclick="trackPageView('download/head.core.js')">head.core.js</a>
         (debug)
     </div>
     <div>
-        <a href="//cdnjs.cloudflare.com/ajax/libs/headjs/1.0.0/head.core.min.js.map" target="_blank" onclick="trackPageView('download/head.core.min.js.map')">head.core.min.js.map</a>
+        <a href="//cdnjs.cloudflare.com/ajax/libs/headjs/{{ site.head.minor }}/head.core.min.js.map" target="_blank" onclick="trackPageView('download/head.core.min.js.map')">head.core.min.js.map</a>
         (<a href="http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/" target="_blank">source map</a>)
     </div>
 </p>
@@ -41,16 +41,16 @@ scripts: ['/site/assets/libs/jquery/jquery.min.js']
 </small>
 
 <div class="group">
-    <a href="//cdnjs.cloudflare.com/ajax/libs/headjs/1.0.0/head.load.min.js" target="_blank" onclick="trackPageView('download/head.load.min.js')">head.load.min.js</a>
+    <a href="//cdnjs.cloudflare.com/ajax/libs/headjs/{{ site.head.minor }}/head.load.min.js" target="_blank" onclick="trackPageView('download/head.load.min.js')">head.load.min.js</a>
     (<strong>production</strong>)
 </div>
 <p>
     <div>
-        <a href="//cdnjs.cloudflare.com/ajax/libs/headjs/1.0.0/head.load.js" target="_blank" onclick="trackPageView('download/head.load.js')">head.load.js</a>
+        <a href="//cdnjs.cloudflare.com/ajax/libs/headjs/{{ site.head.minor }}/head.load.js" target="_blank" onclick="trackPageView('download/head.load.js')">head.load.js</a>
         (debug)
     </div>
     <div>
-        <a href="//cdnjs.cloudflare.com/ajax/libs/headjs/1.0.0/head.load.min.js.map" target="_blank" onclick="trackPageView('download/head.load.min.js.map')">head.load.min.js.map</a>
+        <a href="//cdnjs.cloudflare.com/ajax/libs/headjs/{{ site.head.minor }}/head.load.min.js.map" target="_blank" onclick="trackPageView('download/head.load.min.js.map')">head.load.min.js.map</a>
         (<a href="http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/" target="_blank">source map</a>)
     </div>
 </p>
@@ -62,16 +62,16 @@ scripts: ['/site/assets/libs/jquery/jquery.min.js']
 </small>
 
 <div class="group">
-    <a href="//cdnjs.cloudflare.com/ajax/libs/headjs/1.0.0/head.min.js" target="_blank" onclick="trackPageView('download/head.min.js')">head.min.js</a>
+    <a href="//cdnjs.cloudflare.com/ajax/libs/headjs/{{ site.head.minor }}/head.min.js" target="_blank" onclick="trackPageView('download/head.min.js')">head.min.js</a>
     (<strong>production</strong>)
 </div>
 <p>
     <div>
-        <a href="//cdnjs.cloudflare.com/ajax/libs/headjs/1.0.0/head.js" target="_blank" onclick="trackPageView('download/head.js')">head.js</a>
+        <a href="//cdnjs.cloudflare.com/ajax/libs/headjs/{{ site.head.minor }}/head.js" target="_blank" onclick="trackPageView('download/head.js')">head.js</a>
         (debug)
     </div>
     <div>
-        <a href="//cdnjs.cloudflare.com/ajax/libs/headjs/1.0.0/head.min.js.map" target="_blank" onclick="trackPageView('download/head.min.js.map')">head.min.js.map</a>
+        <a href="//cdnjs.cloudflare.com/ajax/libs/headjs/{{ site.head.minor }}/head.min.js.map" target="_blank" onclick="trackPageView('download/head.min.js.map')">head.min.js.map</a>
         (<a href="http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/" target="_blank">source map</a>)
     </div>
 </p>
@@ -100,14 +100,14 @@ scripts: ['/site/assets/libs/jquery/jquery.min.js']
         <h3>Github Repository</h3>
         <a href="https://github.com/headjs/headjs" target="_blank" class="social sprite github-color"></a>
         <ul class="text-l">
-            <li><a href="https://github.com/headjs/headjs/blob/master/src/1.0.0/changelog.txt" target="_blank">Release notes</a></li>
+            <li><a href="https://github.com/headjs/headjs/blob/master/src/{{ site.head.major }}/changelog.txt" target="_blank">Release notes</a></li>
             <li><a href="https://github.com/headjs/headjs/issues" target="_blank">Issues</a></li>
         </ul>            
     </div>
 
     <div class="text-c">
         <h3>Full Source</h3>
-        <a href="https://github.com/headjs/headjs/archive/v1.0.0.zip" target="_blank" class="social sprite zip"></a>
+        <a href="https://github.com/headjs/headjs/archive/v{{ site.head.minor }}.zip" target="_blank" class="social sprite zip"></a>
     </div> 
 
     <div class="text-c">
