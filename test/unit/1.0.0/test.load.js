@@ -105,7 +105,9 @@ asyncTest("load([ jsFilePath, jsFilePath ], callback).ready(jsFileName, callback
     expect(4);
 
     head
-        .load([libs.jshint(), libs.knockout()])
+        .load([libs.jshint(), libs.knockout()], function () {
+            // we could run a CallBack() here
+        })
 
         .ready("jshint.js", function () {
             ok(!!JSHINT, "Ready: jshint.js");
@@ -117,6 +119,7 @@ asyncTest("load([ jsFilePath, jsFilePath ], callback).ready(jsFileName, callback
             assert.step(2, "Step 2: knockout");
         })
         .ready(function () {
+            // If start() is moved to above CallBack(), Travis-CI fails ...why ? Locally it works..
             start();
         });
 });
@@ -129,7 +132,10 @@ asyncTest("load({ label: jsFilePath }, { label: jsFilePath }, callback).ready(la
         .load(
             { jshint  : libs.jshint() },
             { jquery  : libs.jquery() },
-            { knockout: libs.knockout() }
+            { knockout: libs.knockout() },
+            function () {
+                // we could run a CallBack() here
+            }
         )
 
         .ready("jshint", function () {
@@ -148,19 +154,19 @@ asyncTest("load({ label: jsFilePath }, { label: jsFilePath }, callback).ready(la
         
         })
         .ready(function () {
+            // If start() is moved to above CallBack(), Travis-CI fails ...why ? Locally it works..
             start();
         });
 });
 
 // INFO: Must be last test since it is loading HeadJS while running tests, which in turn already relies on HeadJS
 // If run as last test in suite it should be ok, since it shouldn't be a problem if we overwrite HeadJS stuff at the end
-/*
 asyncTest("head_conf", function() {
     expect(1);
 
     head_conf = { head: "headJS" };
     head.load( { head: libs.head() }, function() {
-        ok(!!headJS, "Callback: headJS");
+        ok(!!headJS, "callback: headJS");
 
         // reset
         head_conf = undefined;
@@ -168,4 +174,3 @@ asyncTest("head_conf", function() {
         start();
     });
 });
-*/
