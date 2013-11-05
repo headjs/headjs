@@ -278,6 +278,7 @@ asyncTest("load({ label: jsFilePath, options: { callback: callback } })", functi
 */
 // INFO: Must be last test since it is loading HeadJS while running tests, which in turn already relies on HeadJS
 // If run as last test in suite it should be ok, since it shouldn't be a problem if we overwrite HeadJS stuff at the end
+/*
 asyncTest("head_conf", function() {
     expect(1);
 
@@ -291,3 +292,4 @@ asyncTest("head_conf", function() {
         start();
     });
 });
+*/
