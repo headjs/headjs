@@ -1,4 +1,4 @@
-![Head JS](http://headjs.com/site/assets/img/logo-big.png)
+[![Head JS](http://headjs.com/site/assets/img/logo-big.png)](http://headjs.com)
 
 This project was never announced. `git push` and it was all viral.
 
