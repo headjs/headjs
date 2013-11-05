@@ -1,0 +1,13 @@
+0.97a (2012-10-20)
+- Updated QUnit &amp; got unit tests running again
+- Swictched to "use strict"
+- Fixed up some variable usage
+- Added browser detections other than just for ie-lt
+- updated browser regexes (firefox, safari, opera, ios, android, webkit)
+- detect if browser is: desktop, mobile, touch enabled
+- detect portrait/landscape mode
+- html5 shim now only triggers on ie-lt9
+- added a throttle to onResize, since some browsers fire tons of events/sec
+- added corrected height/width measurements, but only exposed via new object: head.screen
+  - contains height/width, innerHeight/innerWidth, outerHeight/outerWidth
+- force all css router names to lowercase just in case ppl try typing in names with wierd casings
