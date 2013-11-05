@@ -1,7 +1,7 @@
 /**
  * Test Feature Detection
  */
-module('Features');
+module("Features");
  
 var classes = " " + document.documentElement.className;
 
@@ -12,5 +12,5 @@ function hasClass(css) {
 test("hasClass(className)", function () {
     expect(1);
     
-    ok(hasClass('boxshadow') || hasClass('no-boxshadow'), 'box-shadow');
+    ok(hasClass("boxshadow") || hasClass("no-boxshadow"), "box-shadow");
 });

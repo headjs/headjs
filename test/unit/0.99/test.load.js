@@ -1,4 +1,4 @@
-module('Load');
+module("Load");
 
 // INFO: Never link to raw.github.com since that returns text/plain instead of application-x/javascript headers ..which breaks IE
 // INFO: Do not link 2 same libraries twice, or it will already be in cache
@@ -16,44 +16,45 @@ var libs = (function(window, undefined) {
 
     function mootools() {
         window.$$ = undefined;
-        return 'http://ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools-yui-compressed.js?' + count("mootools");
+        return "http://ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools-yui-compressed.js?" + count("mootools");
     }
     function jquery() {
         window.$      = undefined;
         window.jQuery = undefined;
-        return 'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js?' + count("jquery");
+        return "http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js?" + count("jquery");
     }
     function jshint() {
         window.JSHINT = undefined;
-        return 'http://ajax.aspnetcdn.com/ajax/jshint/r07/jshint.js?' + count("jshint");
+        return "http://ajax.aspnetcdn.com/ajax/jshint/r07/jshint.js?" + count("jshint");
     }
     function knockout() {
         window.ko = undefined;
-        return 'http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js?' + count("knockout");
+        return "http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js?" + count("knockout");
     }
     function spin() {
         window.Spinner = undefined;
-        return 'http://fgnass.github.io/spin.js/dist/spin.min.js?' + count("spin");
+        return "http://fgnass.github.io/spin.js/dist/spin.min.js?" + count("spin");
     }
     function stapes() {
         window.Stapes = undefined;
-        return 'http://hay.github.io/stapes/stapes.min.js?' + count("stapes");
+        return "http://hay.github.io/stapes/stapes.min.js?" + count("stapes");
     }
     function notificon() {
         window.Notificon = undefined;
-        return 'http://makeable.github.io/Notificon/notificon.js?' + count("notificon");
+        return "http://makeable.github.io/Notificon/notificon.js?" + count("notificon");
     }
     function sly() {
         // depends on jQuery
         window.Sly = undefined;
-        return 'http://darsa.in/sly/js/sly.min.js?' + count("sly");
+        return "http://darsa.in/sly/js/sly.min.js?" + count("sly");
     }    
     function underscore() {
         window._ = undefined;
-        return 'http://underscorejs.org/underscore-min.js?' + count("underscore");
+        return "http://underscorejs.org/underscore-min.js?" + count("underscore");
     }   
     function headjs() {
-        return 'http://cdnjs.cloudflare.com/ajax/libs/headjs/0.99/head.min.js?' + count("head");
+        window.head = undefined;
+        return "http://cdnjs.cloudflare.com/ajax/libs/headjs/0.99/head.min.js?" + count("head");
     }      
     
     // Exports
@@ -127,21 +128,5 @@ asyncTest("load({ label: jsFilePath }, { label: jsFilePath }, callback).ready(la
     .ready("knockout", function () {
         ok(!!ko, "Ready: knockout");
         assert.step(3, "Step 3: knockout");
-    });
-});
-
-// INFO: Must be last test since it is loading HeadJS while running tests, which in turn already relies on HeadJS
-// If run as last test in suite it should be ok, since it shouldn't be a problem if we overwrite HeadJS stuff at the end
-asyncTest("head_conf", function() {
-    expect(1);
-
-    head_conf = { head: "headJS" };
-    head.load( { head: libs.head() }, function() {
-        ok(!!headJS, "Callback: headJS");
-        
-        // reset
-        head_conf = undefined;
-
-        start();
     });
 });

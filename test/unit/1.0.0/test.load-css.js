@@ -1,4 +1,4 @@
-module('Load');
+module("Load");
 
 function getStyle(ele, styleProp) {
     var y = "";
