@@ -1,12 +1,11 @@
 ﻿///#source 1 1 /src/1.0.0/core.js
-/*!
+/*! head.core - v1.0.0 */
+/*
  * HeadJS     The only script in your <HEAD>
  * Author     Tero Piirainen  (tipiirai)
  * Maintainer Robert Hoffmann (itechnology)
  * License    MIT / http://bit.ly/mit-license
- *
- * Version 1.00
- * http://headjs.com
+ * WebSite    http://headjs.com
  */
 (function(win, undefined) {
     "use strict";
@@ -308,14 +307,13 @@
     }
 }(window));
 ///#source 1 1 /src/1.0.0/css3.js
-/*!
+/*! head.css3 - v1.0.0 */
+/*
  * HeadJS     The only script in your <HEAD>
  * Author     Tero Piirainen  (tipiirai)
  * Maintainer Robert Hoffmann (itechnology)
  * License    MIT / http://bit.ly/mit-license
- *
- * Version 0.99
- * http://headjs.com
+ * WebSite    http://headjs.com
  */
 (function (win, undefined) {
     "use strict";
@@ -474,14 +472,13 @@
 
 }(window));
 ///#source 1 1 /src/1.0.0/load.js
-/*!
+/*! head.load - v1.0.0 */
+/*
  * HeadJS     The only script in your <HEAD>
  * Author     Tero Piirainen  (tipiirai)
  * Maintainer Robert Hoffmann (itechnology)
  * License    MIT / http://bit.ly/mit-license
- *
- * Version 1.00
- * http://headjs.com
+ * WebSite    http://headjs.com
  */
 (function (win, undefined) {
     "use strict";

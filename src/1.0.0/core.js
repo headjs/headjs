@@ -1,11 +1,10 @@
-/*!
+/*! head.core - v1.0.0 */
+/*
  * HeadJS     The only script in your <HEAD>
  * Author     Tero Piirainen  (tipiirai)
  * Maintainer Robert Hoffmann (itechnology)
  * License    MIT / http://bit.ly/mit-license
- *
- * Version 1.00
- * http://headjs.com
+ * WebSite    http://headjs.com
  */
 (function(win, undefined) {
     "use strict";
