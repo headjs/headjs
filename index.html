@@ -133,7 +133,7 @@ head.load("jQuery.js", function() {
 head.load("bootstrap.css");
 {% endhighlight %}
         <h4>How about something crazy like</h4>
-        <p>On DocumentReady, if the user is using IE8, you need to load 2 scripts, fire a callback, and then apply a stylesheet ? Yeah right..</p>
+        <p>On DocumentReady, if the user is using IE8, you need to load 2 scripts, otherwise a different script, then fire a callback, and then apply a stylesheet ? Yeah right..</p>
         <p>Easy.</p>
 
 {% highlight js %}
@@ -144,7 +144,7 @@ head.ready(function() {
     head.test(
         (head.browser.ie && head.browser.version === 8),
         ["file1.js", "file2.js"],
-        null,
+        ["other.js"],
         function() {
             // run callback
 
