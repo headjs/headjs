@@ -105,9 +105,10 @@ asyncTest("load([ jsFilePath, jsFilePath ], callback).ready(jsFileName, callback
     expect(4);
 
     head
-        .load([libs.jshint(), libs.knockout()], function () {
-            // we could run a CallBack() here
-        })
+        //.load([libs.jshint(), libs.knockout()], function () {
+        //    // this breaks travis, not local ?
+        //})
+        .load([libs.jshint(), libs.knockout()])
 
         .ready("jshint.js", function () {
             ok(!!JSHINT, "Ready: jshint.js");
@@ -129,13 +130,18 @@ asyncTest("load({ label: jsFilePath }, { label: jsFilePath }, callback).ready(la
     expect(6);
 
     head
+        //.load(
+        //    { jshint  : libs.jshint() },
+        //    { jquery  : libs.jquery() },
+        //    { knockout: libs.knockout() },
+        //    function () {
+        //        // this breaks travis, not local ?
+        //    }
+        //)
         .load(
-            { jshint  : libs.jshint() },
-            { jquery  : libs.jquery() },
-            { knockout: libs.knockout() },
-            function () {
-                // we could run a CallBack() here
-            }
+            { jshint: libs.jshint() },
+            { jquery: libs.jquery() },
+            { knockout: libs.knockout() }
         )
 
         .ready("jshint", function () {
