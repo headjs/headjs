@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>HeadJS</id>
+        <version>0.99</version>
+        <title>HeadJS</title>
+        <authors>Tero Piirainen,Robert Hoffmann</authors>
+        <owners>itechnology</owners>
+        <licenseUrl>http://bit.ly/mit-license</licenseUrl>
+        <projectUrl>http://headjs.com</projectUrl>
+        <iconUrl>http://headjs.com/favicon.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>At under 5K minified &amp; gzipped
+
+HeadJS provides you with:
+
+* Asset Loader
+Load scripts and stylesheets when you need them.
+head.load("file1.js" , "file2.js" , function() { done(); })
+head.load("file1.css", "file2.css", function() { done(); })
+
+* JavaScript Organizer
+Defer execution to the bottom of page.
+head.ready(function() { imReady(); })
+
+* Responsive Design
+Detect and react to resolutions with simple css classes or js tests that work without media query support.
+.landscape,  .lt-800, .gt-1680, if (head.mobile) { }
+
+* Browser Detection
+Detect browsers &amp; their version, and apply css or js logic to them.
+.gt-ie6, .lt-ie10, if (head.browser.ios) { }
+
+* Feature Detection
+Detect browser features like cssreflections, touch-enabled
+.no-touch if (!head.touch) { }
+
+* CSS Moderniser
+Detect css support like box-shadow, border-radius
+.no-borderradius, if (!head.borderradius) { }
+
+* CSS Router
+Detect which page and section someone is on and target it with specific css.
+.index-page, .register-page, .root-section, .user-section, 
+
+* HTML5 Shim
+Need to support the new HTML5 tags in older browsers ? No problem !
+
+* And more
+..well, a little bit :-)</description>
+        <summary>Load scripts and stylesheets on demand. Achieve responsive design with CSS that targets different screen resolutions, paths, states and browsers. Detect various browsers and their features. Target HTML5 and CSS3 safely.</summary>
+        <releaseNotes />
+        <copyright>Tero Piirainen</copyright>
+        <language>en-US</language>
+        <tags>javascript, html, html5, css, css3, loader, responsive design, media queries, feature detection, dependency loading, mobile, tablet</tags>
+    </metadata>
+    <files>
+        <file src="head.js" target="Content\Scripts\head.js" />
+        <file src="head.min.js" target="Content\Scripts\head.min.js" />
+    </files>
+</package>

@@ -1,7 +1,0 @@
-﻿// Test for browser hashChange support
-{
-    "name"  : "hashChange",
-    "result": function () {
-		return "onhashchange" in window;	
-	}
-}

@@ -1,12 +1,13 @@
 ---
 layout: main
-scripts: ["/site/assets/libs/jquery/jquery-1.10.0-beta1.min.js", "https://cdn.moot.it/latest/moot.min.js", "/site/assets/js/comments.js"]
+title: Migrating to Jekyll
+excerpt: Now testing Jekyll for static stite generation, including blog & comments
+scripts: ["/site/assets/libs/jquery/jquery.min.js", "https://cdn.moot.it/latest/moot.min.js", "/site/assets/js/comments.min.js"]
 ---
 
-<div class="group" style="border-bottom: 1px dotted black">
-    <h2 class="float-l">Migrating to Jekyll</h2>
-    <small class="float-r">May 20, 2013</small>
-</div>
+#{{ page.title }} ({{ page.date | date_to_string }})
+
+<hr />
 
 If you are reading this, then you found the new site :)
 
@@ -25,13 +26,7 @@ But feel free to look around, some nice features are comming up.
   * check it out, it's pretty cool (beta)
 
 
-
-
-<div style="border-top: 1px dotted black; padding: 10px;">                        
-    <div style="width:100%;">                        
-        <div onclick="blog.loadComments(this, 'posts/2013/may', 'Leave a comment')" style="cursor: pointer;">
-            <h2>Show Comments</h2>
-        </div>
-    </div>
+<div onclick="blog.loadComments(this, 'posts/2013/may', 'Leave a comment')" style="cursor: pointer;">
+    <h2>Show Comments</h2>
 </div>
-<div id="moot"></div>
+<div id="moot">&nbsp;</div>

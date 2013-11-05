@@ -1,0 +1,47 @@
+<h1 id="router">CSS Router</h1>
+<div class="intro">    
+    Know which page & section the user is currently on and react accordingly            
+</div>
+<div class="code-example" data-title="CSS Router">
+    <p>Ever need to highlight or change certain features depending on where the user is ? HeadJS will detect the current page, and what section (subfolder/path) the user is on, and generate CSS classes that you can then easily target.</p>
+
+    <ul>
+        <li>
+            page (..problem with decimals ? should we drop, concenate ?)
+            <ul><li>Will generate a CSS id for the current page: #v1-page</li></ul>
+        </li>
+        <li>
+            section
+            <ul><li>Will generate multiple CSS classes for the current path: .site-section, .api-section</li></ul>
+        </li>
+    </ul>
+
+{% highlight css %}
+/* user is on any page that ends with /index.* or on the root path / or */
+#index-page .main-menu {
+    background-color: gray;
+}
+
+/* user is on a path containing /api/ */
+.api-section .top-menu {
+    display: none;
+}
+
+/* mix & match */
+
+/* for example the user is on /api/test.html */
+#test-page.api-section .top-menu {
+    display: block;
+}
+{% endhighlight %}
+
+    <p>If the user is on page &laquo; /home/api/test.html &raquo; HeadJS will generate the following CSS classes for you: #test-page, .home-section, .api-section</p>
+
+    <p>You can choose how these variables are named in the <a href="#configuration">configuration</a> section.</p>
+
+    <div style="width:100%;">                        
+        <div onclick="blog.loadComments(this, 'api/1.0.0/router', 'Leave a comment')" style="cursor: pointer;">
+            <h2>Show Comments</h2>
+        </div>
+    </div>
+</div>   

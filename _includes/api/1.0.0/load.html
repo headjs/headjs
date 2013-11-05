@@ -1,0 +1,99 @@
+<h1 id="load">Resource Loading</h1>
+
+<div class="intro">    
+    Speed up your site. Manage your library's dependencies. Load javascript and stylesheets in parallel but execute them in the correct order.              
+</div>
+<div class="code-example" data-title="head.load()">
+
+    <p>Resource loading has many different options to cater to various needs</p>     
+      
+{% highlight js %}
+// queue scripts and fire a callback when loading is finished
+head.load("file1.js", "file2.js", function() {
+    // do something
+});
+
+// same as above, but pass files in as an Array
+head.load(["file1.js", "file2.js"], function() {
+    // do something
+});
+                                                         
+// you can also give scripts a name (label)
+head.load({ label1: "file1.js" }, { label2: "file2.js" }, function() {
+    // do something
+});
+
+// same as above, but pass files in as an Array
+head.load([{ label1: "file1.js" }, { label2: "file2.js" }], function() {
+    // do something
+});                   
+
+// Labels are usually used in conjuntion with: head.ready()
+head.ready("label1", function() {
+    // do something
+});
+
+// Actually if no label is supplied, internally the filename is used for the label
+head.ready("file1.js", function() {
+    // do something
+});
+{% endhighlight %}
+
+    <p>All the above examples also work with CSS files. However since some browsers are broken when it comes to triggering ready on CSS, you should probably never mix JS and CSS loading, and also probably not use callbacks on CSS files</p>
+
+{% highlight js %}
+// to mitigate problems with browsers that do not support callbacks with CSS, you should probably use CSS loading as a fire & forget way
+
+// queue scripts and fire a callback when loading is finished
+head.load("file1.css", "file2.css");
+
+// same as above, but pass files in as an Array
+head.load(["file1.css", "file2.css"]);
+{% endhighlight %}
+
+    <h2>Conditional Loading</h2>
+    <p>You can also run tests to load file A if a test succeeds, or fallback to file B. This is great for loading Polyfils, or loading dependencies when certain conditions are met.</p>
+
+
+{% highlight js %}
+// signature
+head.test(condition, success, failure, callback);
+
+/*
+    condition: something that evaluates to true/false
+    success  : a file, an array of files, a labeled object, an array of labeled objects
+    failure  : a file, an array of files, a labeled object, an array of labeled objects
+    callback : a function to call when evaluation & loading is done
+*/
+
+
+// simplified version 1
+head.test(condition, "success.js", "failure.js" , callback);
+
+// simplified version 2
+head.test(condition, ["success1.js", "success1.js"], "failure.js" , callback);   
+
+// object version
+head.test({
+    test    : bool,
+    success : ["file1.js", "file2.js"],
+    failure : ["poly1.js", "poly2.js"],
+    callback: function() {
+        // do stuff     
+    }
+);
+
+// Example
+head.test(head.mobile, "normal.js", "fallback.js", function() {
+    // do stuff
+});
+{% endhighlight %}
+
+    
+    
+    <div style="width:100%;">                        
+        <div onclick="blog.loadComments(this, 'api/1.0.0/load', 'Leave a comment')" style="cursor: pointer;">
+            <h2>Show Comments</h2>
+        </div>
+    </div>
+</div>   

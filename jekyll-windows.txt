@@ -1,0 +1,25 @@
+When i tried the ruby 200 version i got an error with yajl since jekyll seems to reference the 1.x version but when i build it looks for the 2.x version
+
+with ruby 1.9.3 i also get errors because i have utf-8 encodings, so i had to do this
+
+to run Jekyll on windows
+1) install ruby 1.9.3
+2) install ruby devkit
+3) install python 2.7.5
+4) add python to path
+5) gem install jekyll
+6) gem uninstall pygments.rb --version "=0.5.2"
+7) gem install pygments.rb --version "=0.5.0"
+8) chcp 65001
+9) jekyll serve --watch
+
+6/7/8 are because i have utf-8 encodings
+6 is the actual culprit for the utf-8 problems
+3 is because 7 depends on it
+
+I'm using Visual Studio too, so i set myself up a quick run command via the "external tools"
+
+	Title            : Jekyll (build && run)
+	Command          : cmd.exe
+	Arguments        : /K chcp 65001 | jekyll serve --watch
+	Initial directory: $(SolutionDir)

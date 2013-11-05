@@ -1,0 +1,327 @@
+<h1 id="feature">Feature Detections</h1>
+<div class="intro">    
+    Feature detections help you apply CSS and JS logic depending on what a user supports or not. It also allows you to create custom detection to better manage your site.         
+</div>
+<div class="code-example" data-title="head.feature()">
+    <p>Imagine you have a menu or element that's only visible to members</p>
+
+{% highlight js %}
+// add the feature
+head.feature("member", true);
+
+// use the feature via CSS
+.member .member-menu {
+    display: block;
+}
+.no-member .member-menu {
+    display: none;
+}
+
+// use the feature via JS
+if (head.member) {
+    // do something
+}
+{% endhighlight %}
+
+    <p>You can toggle a feature from one state to another, it's state will be refleted to CSS and JS automatically</p>
+
+    <h3>In addition to being able to add your custom detection, a bunch of detections are already built in, and they are all accessible via CSS and JS</h3>
+
+    <ul>
+        <li>
+            Is the user on a mobile device
+            <ul>
+                <li>
+                    CSS
+                    <ul>
+                        <li>.no-mobile</li>
+                        <li>.mobile</li>
+                    </ul>
+                </li>
+                    JS
+                    <ul>
+                        <li>head.mobile (bool)</li>
+                    </ul>
+                </li>                
+            </ul>
+        </li>
+        <li>
+            Is the user on a desktop device
+            <ul>
+                <li>
+                    CSS
+                    <ul>
+                        <li>.no-desktop</li>
+                        <li>.desktop</li>
+                    </ul>
+                </li>
+                    JS
+                    <ul>
+                        <li>head.desktop (bool)</li>
+                    </ul>
+                </li>                
+            </ul>
+        </li>
+            <li>
+            Does the usere support touch input
+            <ul>
+                <li>
+                    CSS
+                    <ul>
+                        <li>.no-touch</li>
+                        <li>.touch</li>
+                    </ul>
+                </li>
+                    JS
+                    <ul>
+                        <li>head.touch (bool)</li>
+                    </ul>
+                </li>                
+            </ul>
+        </li>
+            <li>
+            Is the users device in portrait mode
+            <ul>
+                <li>
+                    CSS
+                    <ul>
+                        <li>.no-portrait</li>
+                        <li>.portrait</li>
+                    </ul>
+                </li>
+                    JS
+                    <ul>
+                        <li>head.portrait (bool)</li>
+                    </ul>
+                </li>                
+            </ul>
+        </li>
+            <li>
+            Is the users device in landscape mode
+            <ul>
+                <li>
+                    CSS
+                    <ul>
+                        <li>.no-landscape</li>
+                        <li>.landscape</li>
+                    </ul>
+                </li>
+                    JS
+                    <ul>
+                        <li>head.landscape (bool)</li>
+                    </ul>
+                </li>                
+            </ul>
+        </li>
+            <li>
+            Is the users device a retina display
+            <ul>
+                <li>
+                    CSS
+                    <ul>
+                        <li>.no-retina</li>
+                        <li>.retina</li>
+                    </ul>
+                </li>
+                    JS
+                    <ul>
+                        <li>head.retina (bool)</li>
+                    </ul>
+                </li>                
+            </ul>
+        </li>
+            <li>
+            Does the user support <a href="http://www.css3files.com/transition/" target="_blank">CSS Transitions</a>
+            <ul>
+                <li>
+                    CSS
+                    <ul>
+                        <li>.no-transitions</li>
+                        <li>.transitions</li>
+                    </ul>
+                </li>
+                    JS
+                    <ul>
+                        <li>head.transitions (bool)</li>
+                    </ul>
+                </li>                
+            </ul>
+        </li>
+            <li>
+            Does the user support <a href="http://www.css3files.com/transform/" target="_blank">CSS3 Transforms</a>
+            <ul>
+                <li>
+                    CSS
+                    <ul>
+                        <li>.no-transforms</li>
+                        <li>.transforms</li>
+                    </ul>
+                </li>
+                    JS
+                    <ul>
+                        <li>head.transforms (bool)</li>
+                    </ul>
+                </li>                
+            </ul>
+        </li>
+            <li>
+            Does the user support <a href="http://www.css3files.com/gradient/" target="_blank">CSS3 Gradients</a>
+            <ul>
+                <li>
+                    CSS
+                    <ul>
+                        <li>.no-gradients</li>
+                        <li>.gradients</li>
+                    </ul>
+                </li>
+                    JS
+                    <ul>
+                        <li>head.gradients (bool)</li>
+                    </ul>
+                </li>                
+            </ul>
+        </li>
+            <li>
+            Does the user support <a href="http://www.css3files.com/color/#opacity" target="_blank">CSS3 Opacity</a>
+            <ul>
+                <li>
+                    CSS
+                    <ul>
+                        <li>.no-opacity</li>
+                        <li>.opacity</li>
+                    </ul>
+                </li>
+                    JS
+                    <ul>
+                        <li>head.opacity (bool)</li>
+                    </ul>
+                </li>                
+            </ul>
+        </li>
+            <li>
+            Does the user support <a href="http://www.css3files.com/background/" target="_blank">Multiple Backgrounds</a>
+            <ul>
+                <li>
+                    CSS
+                    <ul>
+                        <li>.no-multiplebgs</li>
+                        <li>.multiplebgs</li>
+                    </ul>
+                </li>
+                    JS
+                    <ul>
+                        <li>head.multiplebgs (bool)</li>
+                    </ul>
+                </li>                
+            </ul>
+        </li>
+            <li>
+            Does the user support <a href="http://www.css3files.com/shadow/" target="_blank">CSS3 Box-Shadow</a>
+            <ul>
+                <li>
+                    CSS
+                    <ul>
+                        <li>.no-boxshadow</li>
+                        <li>.boxshadow</li>
+                    </ul>
+                </li>
+                    JS
+                    <ul>
+                        <li>head.boxshadow (bool)</li>
+                    </ul>
+                </li>                
+            </ul>
+        </li>
+            <li>
+            Does the user support <a href="http://www.css3files.com/border/#borderimage" target="_blank">CSS3 Border-Image</a>
+            <ul>
+                <li>
+                    CSS
+                    <ul>
+                        <li>.no-borderimage</li>
+                        <li>.borderimage</li>
+                    </ul>
+                </li>
+                    JS
+                    <ul>
+                        <li>head.borderimage (bool)</li>
+                    </ul>
+                </li>                
+            </ul>
+        </li>
+            <li>
+            Does the user support <a href="http://www.css3files.com/border/#borderradius" target="_blank">CSS3 Border-Radius</a>
+            <ul>
+                <li>
+                    CSS
+                    <ul>
+                        <li>.no-borderradius</li>
+                        <li>.borderradius</li>
+                    </ul>
+                </li>
+                    JS
+                    <ul>
+                        <li>head.borderradius (bool)</li>
+                    </ul>
+                </li>                
+            </ul>
+        </li>
+            <li>
+            Does the user support <a href="https://www.webkit.org/blog/182/css-reflections/" target="_blank">CSS Reflections</a>
+            <ul>
+                <li>
+                    CSS
+                    <ul>
+                        <li>.no-cssreflections</li>
+                        <li>.cssreflections</li>
+                    </ul>
+                </li>
+                    JS
+                    <ul>
+                        <li>head.cssreflections (bool)</li>
+                    </ul>
+                </li>                
+            </ul>
+        </li>
+            <li>
+            Does the user support <a href="http://www.css3files.com/font/" target="_blank">CSS3 @Font-Face</a>
+            <ul>
+                <li>
+                    CSS
+                    <ul>
+                        <li>.no-fontface</li>
+                        <li>.fontface</li>
+                    </ul>
+                </li>
+                    JS
+                    <ul>
+                        <li>head.fontface (bool)</li>
+                    </ul>
+                </li>                
+            </ul>
+        </li>
+            <li>
+            Does the user support <a href="http://www.css3files.com/color/#rgba" target="_blank">CSS3 RGBA</a>
+            <ul>
+                <li>
+                    CSS
+                    <ul>
+                        <li>.no-rgba</li>
+                        <li>.rgba</li>
+                    </ul>
+                </li>
+                    JS
+                    <ul>
+                        <li>head.rgba (bool)</li>
+                    </ul>
+                </li>                
+            </ul>
+        </li>
+    </ul>
+
+    <div style="width:100%;">                        
+        <div onclick="blog.loadComments(this, 'api/1.0.0/features', 'Leave a comment')" style="cursor: pointer;">
+            <h2>Show Comments</h2>
+        </div>
+    </div>
+</div>   

@@ -16,7 +16,7 @@
         <meta property="og:title"       content="HeadJS, The only script in your &lt;HEAD&gt;"/>
 	    <meta property="og:type"        content="website" />
 	    <meta property="og:url"         content="http://headjs.com" />
-	    <meta property="og:image"       content="http://headjs.com/site/assets/img/logos/head-empty2.png" />
+	    <meta property="og:image"       content="http://headjs.com/site/assets/img/logos/logo.png" />
 	    <meta property="og:site_name"   content="Head JS" />
         <meta property="og:description" content="Load scripts and stylesheets on demand. Achieve responsive design with CSS that targets different screen resolutions, paths, states and browsers. Detect various browsers and their features. Target HTML5 and CSS3 safely." />
         <meta property="og:locale"      content="en_US"/>
@@ -25,65 +25,59 @@
         <meta name="twitter:card"        content="summary" />
         <meta name="twitter:title"       content="HeadJS, The only script in your &lt;HEAD&gt;"/>
         <meta name="twitter:description" content="Load scripts and stylesheets on demand. Achieve responsive design with CSS that targets different screen resolutions, paths, states and browsers. Detect various browsers and their features. Target HTML5 and CSS3 safely." />
-        <meta name="twitter:image"       content="http://headjs.com/site/assets/img/logos/head-empty2.png" />
+        <meta name="twitter:image"       content="http://headjs.com/site/assets/img/logos/logo.png" />
         <meta name="twitter:url"         content="http://headjs.com" />          
 
-        <link rel="icon" type="image/gif" href="/site/assets/img/favicon.png" />
+        <link rel="icon" type="image/gif" href="/favicon.png" />
                      
         <link rel="stylesheet" type="text/css" href="/site/assets/css/normalize.min.css" />
         <link rel="stylesheet" type="text/css" href="/site/assets/css/syntax.min.css" />
         <link rel="stylesheet" type="text/css" href="/site/assets/css/common.min.css" />
                
-        <script src="/site/assets/libs/headjs/2.00/head.min.js"></script>        
+        <script src="/dist/1.0.0/head.min.js"></script>
     </head>
     <body itemscope="itemscope" itemtype="http://schema.org/Product">
+        <span itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer"><meta itemprop="price" content="0.00"/></span>
         <!-- ..maybe maybe not -->
         <span itemprop="aggregateRating" itemscope="itemscope" itemtype="http://schema.org/AggregateRating"><meta itemprop="ratingValue" content="4.8" /></span>        
-        
-        
-        <div class="absolute left vanish-1366" style="height: 300px;left: 10px;overflow-x: hidden;overflow-y: auto;top: 55px;width: 190px;white-space:nowrap">
-            <h3>Latest Updates</h3>            
-            {% for post in site.posts %}
-            * <small><strong>{{ post.date | date_to_string }}</strong></small><br/>
-            &nbsp;&nbsp;&nbsp;<a href="{{ post.url }}">{{ post.title }}</a>
-            {% endfor %}   
-        </div>    
+                
+        <div class="absolute left hide-1280" style="left: 10px; top: 75px;">
+            <a href="/"><img src="/site/assets/img/logos/logo.png" height="124" width="124" /></a>   
+                              
+            <div style="height: 300px; overflow-x: hidden; overflow-y: auto;  width: 200px; white-space:nowrap">
+                <h3>Latest News</h3>
+                {% for post in site.posts  %}              
+                <p>
+                    <em>{{ post.date | date_to_string }}</em><br />
+                    * <a href="{{ post.url }}">{{ post.title }}</a>
+                </p>
+                {% endfor %}              
+            </div>
+        </div>   
+                                           
+        <img src="/site/assets/img/social/html5-css3-gray.png" height="100" width="164" class="absolute hide-1440" style="top: 75px; right: 45px" />
 
-        <img src="/site/assets/img/social/HTML5+CSS3.png" height="100" width="164" class="absolute vanish-1366" style="top: 75px; right: 45px" />
-
-        <a href="http://github.com/headjs/headjs" onclick="trackPageView('github.com')" class="github" target="_blank">
+        <a href="http://github.com/headjs/headjs" onclick="trackPageView('github.com')" class="github-fork" target="_blank">
             <img alt="Fork me on GitHub" src="/site/assets/img/forkme.png"  width="149" height="149" />
         </a>
         
         {% include sections/menu.html %}        
         
-        <div class="container group tagline" style="background-color: white">                                               
-            <div class="group">
-                <table style="width: 100%">
-                    <tr>
-                        <td class="vanish-480" style="width: 124px;">
-                           <a href="/"><img src="/site/assets/img/logos/head-empty2.png" height="124" width="124" /></a>
-                        </td>
-                        <td style="text-align: right;">
-                            <div style=";display: inline-block; text-align: left; border-radius: 5px 5px 5px 5px;color: white;background-color: #767676;background: linear-gradient(to bottom, #767676  0%, #000000 100%) repeat scroll 0 0 transparent;padding: 10px">
-                                <div class="float-l"> 
-                                    <h1 itemprop="name" style="font-size: 3em; margin: 0 45px 0 0">HeadJS </h1>
-                                    <strong>v{{ site.head.release }}</strong>                                 
-                                </div>
-                                <div class="float-l">                
-                                    <h2>The only script in your &lt;HEAD&gt;</h2>
-                                    <h3>A tiny script, to simplify, speed up, and modernize your site !</h3>
-                                </div>         
-                            </div>                            
-                        </td>
-                    </tr>
-                </table>                                                  
-            </div>
-        </div>  
-                                
+        <div class="container tagline hide-640" style="background-color: white">                                               
+            <div class="group" style="text-align: left; border-radius: 5px 5px 5px 5px; color: white; background-color: #767676; background: linear-gradient(to bottom, #767676  0%, #000000 100%) repeat scroll 0 0 transparent; padding: 10px">
+                <div class="float-l"> 
+                    <h1 itemprop="name" style="font-size: 3em; margin: 0 45px 0 0">HeadJS </h1>
+                    <strong>v{{ site.head.release }}</strong>                                 
+                </div>
+                <div class="float-l">                
+                    <h2>The only script in your &lt;HEAD&gt;</h2>
+                    <h3>A tiny script, to simplify, speed up, and modernize your site !</h3>
+                </div>         
+            </div>                                                    
+        </div>
+                                 
         <div class="container main">
-            <div style="padding: 10px;">
-                <hr/>    
+            <div style="padding: 10px; min-height: 700px;">  
 
                 {{ content }}          
                         
@@ -96,8 +90,6 @@
         <!-- Contact Bar -->        
         {% include sections/footer.html %}
         
-
-
         {% include scripts/analytics.html %}                
         <script src="//platform.linkedin.com/in.js" async></script>
         <script src="//platform.twitter.com/widgets.js" async></script>

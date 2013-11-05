@@ -1,7 +1,0 @@
-﻿// Test for browser history support
-{
-    "name"  : "history",
-    "result": function () {
-		return ("history" in window) && window.history.pushState);
-	}
-}

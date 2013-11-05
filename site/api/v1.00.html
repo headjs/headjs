@@ -1,0 +1,121 @@
+---
+layout: main
+title: Welcome to API documentation
+scripts: ["/site/assets/libs/jquery/jquery.min.js", "https://cdn.moot.it/latest/moot.min.js", "/site/assets/js/comments.min.js"]
+---
+
+<h2>API documentation v1.0.0</h2>
+<div class="intro">    
+    Tidy up and accelerate your workflow             
+</div>
+<ul>
+    <li><a href="#setup">Setup</a></li>
+    <li>
+        <a href="#configuration">Configuration</a>
+        <ul>
+            <li>head_conf</li>
+            <ul>
+                <li>Screen breakpoints (eq, lt, gt, lte, gte)</li>
+                <li>Browser breakpoints (eq, lt, gt, lte, gte)</li>
+                <li>HTML5 Shim</li>
+                <li>CSS Router: Page prefix</li>
+                <li>CSS Router: Section prefix</li>
+            </ul>
+        </ul>
+    </li>
+    <li>
+        <a href="#responsive">Responsive Design</a>
+        <ul>
+            <li><a href="#browser">Browser Information</a></li>
+            <ul>  
+                <li>head.browser.name</li>
+                <li>head.browser.version</li>                             
+                <li>head.browser.ie</li>
+                <li>head.browser.ff</li>
+                <li>head.browser.chrome</li>
+                <li>head.browser.ios</li>
+                <li>head.browser.android</li>
+                <li>head.browser.webkit</li>
+                <li>head.browser.opera</li>
+            </ul>
+        </ul>              
+        <ul>
+            <li><a href="#screen">Screen Information</a></li>
+            <ul>
+                <li>head.screen.height</li>
+                <li>head.screen.width</li>
+                <li>head.screen.innerHeight</li>
+                <li>head.screen.innerWidth</li>
+                <li>head.screen.outerHeight</li>
+                <li>head.screen.outerWidth</li>
+            </ul>
+        </ul>        
+        <ul>
+            <li><a href="#features">Feature Detections</a></li>            
+            <ul>
+                <li>head.feature(name, bool)</li>
+                <ul><li>head.mobile</li></ul>
+                <ul><li>head.desktop</li></ul>
+                <ul><li>head.touch</li></ul>
+                <ul><li>head.portrait</li></ul>
+                <ul><li>head.landscape</li></ul>
+                <ul><li>head.retina</li></ul>
+                <ul><li>head.transitions</li></ul>
+                <ul><li>head.transforms</li></ul>
+                <ul><li>head.gradients</li></ul>
+                <ul><li>head.opacity</li></ul>
+                <ul><li>head.multiplebgs</li></ul>
+                <ul><li>head.boxshadow</li></ul>
+                <ul><li>head.borderimage</li></ul>
+                <ul><li>head.borderradius</li></ul>
+                <ul><li>head.cssreflections</li></ul>
+                <ul><li>head.fontface</li></ul>
+                <ul><li>head.rgba</li></ul>
+            </ul>
+        </ul>
+        <ul>
+            <li><a href="#html5">HTML5 Shim</a></li>
+        </ul>
+        <ul>
+            <li><a href="#router">CSS Router</a></li>
+            <ul>
+                <li>page</li>
+                <li>section</li>
+            </ul>
+        </ul>
+        <ul>
+            <li><a href="#ready">Document Ready</a></li>
+            <ul><li>head.ready(document|label|filename|callback)</li></ul>
+        </ul>
+    </li>
+    <li>
+        <a href="#load">Resource Loading</a>
+        <ul><li>head.load(js|css, callback)</li></ul>
+        <ul><li>head.test(condition, success, failure, callback)</li></ul>
+    </li>
+</ul>
+
+
+{% include api/1.0.0/setup.html %}
+{% include api/1.0.0/configuration.html %}
+
+<h1 id="responsive">Responsive Design</h1>
+<hr id="browser"/>
+{% include api/1.0.0/browser.html %}
+{% include api/1.0.0/screen.html %}
+{% include api/1.0.0/features.html %}
+{% include api/1.0.0/html5.html %}
+{% include api/1.0.0/router.html %}
+{% include api/1.0.0/ready.html %}
+{% include api/1.0.0/load.html %}
+
+<br /><br />
+<div class="intro">    
+    <strong>Make it the only script in your HEAD.</strong>
+    &laquo; A concise solution to universal problems &raquo;
+</div>  
+
+{% include sections/download.html %}
+
+<div id="moot"></div>
+<div id="examples"></div>

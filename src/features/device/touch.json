@@ -1,7 +1,0 @@
-﻿// Test for device touch support
-{
-    "name"  : "touch",
-    "result": function () {
-		return "ontouchstart" in window;	
-	}
-}

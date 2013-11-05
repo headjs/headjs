@@ -1,1 +1,36 @@
-﻿
+---
+baseUrl: http://headjs.com
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>{{ page.baseUrl }}</loc>
+  </url>
+  <url>
+    <loc>{{ page.baseUrl }}/site/blog.html</loc>
+  </url>
+  <url>
+    <loc>{{ page.baseUrl }}/site/documentation.html</loc>
+  </url>
+  <url>
+    <loc>{{ page.baseUrl }}/site/download.html</loc>
+  </url>
+  <url>
+    <loc>{{ page.baseUrl }}/site/resources.html</loc>
+  </url>
+  <url>
+    <loc>{{ page.baseUrl }}/site/unit.html</loc>
+  </url>
+  <url>
+    <loc>{{ page.baseUrl }}/site/api/v1.00.html</loc>
+  </url>
+  <!-- http://davidensinger.com/2013/03/generating-a-sitemap-in-jekyll-without-a-plugin/ -->
+  {% for post in site.posts %}
+  <url>
+    <loc>{{ page.baseUrl }}{{ post.url }}</loc>
+  </url>
+  {% endfor %}
+  {% for page in site.pages %}
+
+  {% endfor %}  
+</urlset>

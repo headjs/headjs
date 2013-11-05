@@ -1,106 +1,170 @@
-﻿/* Custom code
- *************/
-.group:before, .group:after {
-    content: ""!important;
-    display: table!important;
+﻿/* css shortcuts
+ ****************/
+.group:before,
+.group:after {
+  content: "" !important;
+  display: table!important;
 }
 .group:after {
-    clear: both!important;
+  clear: both!important;
 }
 .group {
-    zoom: 1!important;
-    overflow: visible;
+  zoom: 1!important;
+  overflow: visible;
 }
 .float-l {
-    float: left;
+  float: left;
 }
 .float-r {
-    float: right;
+  float: right;
 }
 .clear-l {
-    clear: left;
+  clear: left;
 }
 .clear-r {
-    clear: right;
+  clear: right;
 }
 .clear-b {
-    clear: both;
+  clear: both;
 }
 .relative {
-    position: relative;
+  position: relative;
 }
 .absolute {
-    position: absolute;
+  position: absolute;
 }
-.relative.top, .absolute.top {
-    top: 0;
+.relative.top,
+.absolute.top {
+  top: 0;
 }
-.relative.bottom, .absolute.bottom {
-    bottom: 0;
+.relative.bottom,
+.absolute.bottom {
+  bottom: 0;
 }
-.relative.right, .absolute.right {
-    right: 0;
+.relative.right,
+.absolute.right {
+  right: 0;
 }
-.relative.left, .absolute.left {
-    left: 0;
+.relative.left,
+.absolute.left {
+  left: 0;
 }
 .fixed {
-    position: fixed;
+  position: fixed;
 }
-.center {
-    text-align: center;
+.text-c {
+  text-align: center;
 }
-.ta-center {
-    text-align: center;
+.text-l {
+  text-align: left;
 }
-.ta-left {
-    text-align: left;
+.text-r {
+  text-align: right;
 }
-.ta-right {
-    text-align: right;
+.inline-block {
+  display: inline;
+  display: inline-block;
 }
+/* Trick for centering objects
+ * http://css-tricks.com/equidistant-objects-with-css/
+ ******************************************************/
+.equidistant-download {
+  text-align: justify;
+}
+.equidistant-download div {
+  width: 200px;
+  height: 220px;
+  display: inline-block;
+  vertical-align: top;
+}
+.equidistant-download:after {
+  content: '';
+  width: 100%;
+  /* Ensures there are at least 2 lines of text, so justification works */
 
-/* Some code from bootstrap */
+  display: inline-block;
+}
+.equidistant-social {
+  text-align: justify;
+}
+.equidistant-social div {
+  width: 180px;
+  height: 150px;
+  display: inline-block;
+  vertical-align: top;
+}
+.equidistant-social:after {
+  content: '';
+  width: 100%;
+  /* Ensures there are at least 2 lines of text, so justification works */
+
+  display: inline-block;
+}
+/* quick hide elements
+ **********************/
+.lt-1440 .hide-1440 {
+  display: none;
+}
+.lt-1280 .hide-1280 {
+  display: none;
+}
+.lt-1024 .hide-1024 {
+  display: none;
+}
+.lt-800 .hide-800 {
+  display: none;
+}
+.lt-768 .hide-768 {
+  display: none;
+}
+.lt-640 .hide-640 {
+  display: none;
+}
+.lt-480 .hide-480 {
+  display: none;
+}
+/* some code from bootstrap
+****************************/
 .code-example {
-    position: relative;
-    margin: 15px 0;
-    padding: 39px 19px 14px;
-    *padding-top: 19px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
+  position: relative;
+  margin: 15px 0;
+  padding: 39px 19px 14px;
+  *padding-top: 19px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
 }
-/* Echo out a label for the example */
+/* Echo out a label for the example
+***********************************/
 .code-example:after {
-    content: attr(data-title);
-    position: absolute;
-    top: -1px;
-    left: -1px;
-    padding: 3px 7px;
-    font-size: 12px;
-    font-weight: bold;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    color: #9da0a4;
-    -webkit-border-radius: 4px 0 4px 0;
-    -moz-border-radius: 4px 0 4px 0;
-    border-radius: 4px 0 4px 0;
+  content: attr(data-title);
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  padding: 3px 7px;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  color: #9da0a4;
+  -webkit-border-radius: 4px 0 4px 0;
+  -moz-border-radius: 4px 0 4px 0;
+  border-radius: 4px 0 4px 0;
 }
-
 pre {
-    white-space: pre-wrap;
+  white-space: pre-wrap;
 }
 ol.linenums {
-    margin: 0 0 0 -10px;
+  margin: 0 0 0 -10px;
 }
-
 .lt-ie8 ol.linenums {
-    margin: 0 0 0 25px;
+  margin: 0 0 0 25px;
 }
-
-
+.code-example dt {
+  font-weight: bold;
+}
 /* Buttons
   *********/
 .button,
@@ -137,195 +201,252 @@ ol.linenums {
   font-size: 11px;
   padding: 5px 10px;
 }
-
 /* Common
  *********/
 html {
-    /* Keeps pages from flickering when going from page with scrollbar to page without */
-    overflow-y: scroll;
-}
+  /* Keeps pages from flickering when going from page with scrollbar to page without */
 
+  overflow-y: scroll;
+}
 body {
-    background: linear-gradient(to bottom, #FFFFFF 0%, #F1F1F1 100%) repeat scroll 0 0 #F9F9F9;
-    background-color: #F9F9F9;
-    /*font-size: 14px;*/
-    font: 13px/1.42857 'Courier New', 'Lucida Console', monospace, Verdana;
-    /*font: 14px/1.42857 Helvetica, Arial, "Lucida Grande", sans-serif;*/
-    text-rendering: optimizeLegibility;
-    margin: 0;
-    padding: 0;
+  background: linear-gradient(to bottom, #ffffff 0%, #f1f1f1 100%) repeat scroll 0 0 #f9f9f9;
+  background-color: #F9F9F9;
+  /*font-size: 14px;*/
+
+  font: 13px/1.42857 'Courier New', 'Lucida Console', monospace, Verdana;
+  /*font: 14px/1.42857 Helvetica, Arial, "Lucida Grande", sans-serif;*/
+
+  text-rendering: optimizeLegibility;
+  margin: 0;
+  padding: 0;
 }
 img {
-    border: 0;
+  border: 0;
 }
 img.logo {
-    width: 100%;
-    border-radius: 5px;
+  width: 100%;
+  border-radius: 5px;
 }
-.github {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 2;
+.github-fork {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
 }
-a:link, a:visited {
-    color: inherit;
+a:link,
+a:visited {
+  color: inherit;
 }
-a:active, a:hover, a:focus {
-    color: #777777;
+a:active,
+a:hover,
+a:focus {
+  color: #777777;
 }
-
 /* Main Menu
   **********/
-li.active {
-    font-size: 15px;
-    font-weight: bold;
+.menu .selected {
+  color: #07AA06;
+  text-decoration: underline;
 }
-.w-lt1366 .vanish-1366 {
-    display: none;
+.menu a {
+  text-decoration: none;
 }
-.w-lt480 .vanish-480 {
-    display: none;
+.menu a:hover {
+  color: #07AA06;
+  text-decoration: underline;
 }
-
+#index-page .menu .home {
+  color: #07AA06;
+  text-decoration: underline;
+}
+#blog-page .menu .blog {
+  color: #07AA06;
+  text-decoration: underline;
+}
+#documentation-page .menu .api,
+.api-section .menu .api {
+  color: #07AA06;
+  text-decoration: underline;
+}
+#unit-page .menu .unit {
+  color: #07AA06;
+  text-decoration: underline;
+}
+#download-page .menu .download {
+  color: #07AA06;
+  text-decoration: underline;
+}
+#resources-page .menu .resources {
+  color: #07AA06;
+  text-decoration: underline;
+}
 ul.menu {
-    padding: 0;
+  padding: 0;
 }
-.lt-480 ul.menu {
-    text-align: left;
+.lt-640 ul.menu {
+  text-align: left;
 }
 .menu li {
-    float: left;
-    list-style-type: none;
-    padding: 0 20px 0 0;
+  float: left;
+  list-style-type: none;
+  padding: 0 20px 0 0;
 }
-.lt-480 .menu li {
-    padding: 0 0 10px 0;
-    display: block;
-    color: white;
-    line-height: 1;
-    padding: 5px;
-    width: 100%;
-    font-weight: bold;
+.lt-640 .menu li {
+  padding: 0 0 10px 0;
+  display: block;
+  color: white;
+  line-height: 1;
+  padding: 5px;
+  width: 100%;
+  font-weight: bold;
 }
-
 /* Site Content
  **************/
 .container {
-    position: relative;
-    width: auto;                
-    max-width: 940px;
-    margin: 0 auto;
+  position: relative;
+  width: auto;
+  max-width: 940px;
+  margin: 0 auto;
 }
 .lt-ie7 .container {
-    width: 940px;
+  width: 940px;
 }
 .container.main {
-    background-color: #FFFFFF;
+  background-color: #FFFFFF;
 }
 .lt-ie8 .container.main {
-    width: 905px;
+  width: 905px;
 }
-
 .intro {
-    background-color: black;
-    border-radius: 10px 10px 10px 10px;
-    box-shadow: 3px 3px 5px #CCCCCC;
-    color: #03FF00;
-    font-family: 'Lucida Console';
-    padding: 10px;
+  background-color: #252525;
+  border-radius: 10px;
+  box-shadow: 3px 3px 5px #CCCCCC;
+  color: #07AA06;
+  font-family: 'Lucida Console';
+  padding: 10px;
 }
-
 .featured img {
-    -webkit-border-radius: 3px;
-            border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
 }
-
+.featured a {
+  padding: 0 5px 0 0;
+}
 /* Up button */
 a.up {
-    background-color: #CCCCCC;
-    border-radius: 30px 30px 0 0;
-    bottom: 0;
-    margin: 0 0 0 -80px;
-    padding: 5px 5px 0;
-    position: fixed;
-    text-decoration: none;
+  background-color: #CCCCCC;
+  border-radius: 30px 30px 0 0;
+  bottom: 0;
+  margin: 0 0 0 -80px;
+  padding: 5px 5px 0;
+  position: fixed;
+  text-decoration: none;
 }
 hr {
-    border: 1px solid #AA0000;
-    color: #AA0000;
+  border: 1px solid #AA0000;
+  color: #AA0000;
 }
-h1, h2, h3 {
-    color: #777777;
-    /*font-variant: small-caps;*/
-}
+h1,
+h2,
+h3 {
+  color: #777777;
+  /*font-variant: small-caps;*/
 
+}
 small {
-    font-size: 12px;
+  font-size: 12px;
 }
-
 fieldset label {
-    display: block;
+  display: block;
 }
-
 fieldset li:hover {
-    background-color: #ccc;
+  background-color: #ccc;
 }
-        
 fieldset li {
-    list-style-type: none;
-} 
-
+  list-style-type: none;
+}
 fieldset ol {
-    padding: 0;
+  padding: 0;
 }
-
 .breakpoint {
-    background-color: white;
-    border: 1px outset black;
-    border-radius: 10px 10px 10px 10px;
-    color: black;
-    display: inline-block;
-    font-family: Georgia;
-    margin: 2px 0;
-    padding: 0 4px 2px 0;
-} 
-.breakpoint a {
-    color: black;
-    padding: 0 5px 0 0;  
-}  
-.breakpoint span {
-    padding: 0 0 0 5px;
-}    
-.breakpoint:hover {
-    background-color: #ccc;
-}  
-
-
-#download {
-    font-size: 2em;
+  background-color: white;
+  border: 1px outset black;
+  border-radius: 10px 10px 10px 10px;
+  color: black;
+  display: inline-block;
+  font-family: Georgia;
+  margin: 2px 0;
+  padding: 0 4px 2px 0;
 }
-#download:target {
-    transform: translate(15%, 0);
-    transition: transform, 4s ease 500ms; 
+.breakpoint a {
+  color: black;
+  padding: 0 5px 0 0;
+}
+.breakpoint span {
+  padding: 0 0 0 5px;
+}
+.breakpoint:hover {
+  background-color: #ccc;
 }
 .tagline * {
-    color: white;
-    font-variant: normal;
+  color: white;
+  font-variant: normal;
 }
-
 .tagline h1 {
-    font-family: cursive;
-    font-size: 45px;
+  font-family: cursive;
+  font-size: 45px;
 }
 .tagline h2,
 .tagline h3 {
-    font-size: 1.15em;
+  font-size: 1.15em;
 }
-
-
-
 /*MOOT*/
 #moot {
-    max-width: none;
+  max-width: none;
+}
+/* Sprites */
+.sprite.social {
+  background-image: url(/site/assets/img/social/sprite-social.png);
+  width: 100px;
+  height: 100px;
+  display: block;
+  margin: 0 auto;
+}
+.sprite.social.github {
+  background-position: 0 0;
+}
+.sprite.social.github:hover,
+.sprite.social.github:active,
+.sprite.social.github-color {
+  background-position: 0 -105px;
+}
+.sprite.social.stackoverflow {
+  background-position: 0 -421px;
+}
+.sprite.social.stackoverflow:hover,
+.sprite.social.stackoverflow:active {
+  background-position: 0 -526px;
+}
+.sprite.social.twitter {
+  background-position: 0 -631px;
+}
+.sprite.social.twitter:hover,
+.sprite.social.twitter:active {
+  background-position: 0 -736px;
+}
+.sprite.social.uservoice {
+  background-position: 0 -841px;
+}
+.sprite.social.uservoice:hover,
+.sprite.social.uservoice:active {
+  background-position: 0 -946px;
+}
+.sprite.social.nuget {
+  background-position: 0 -210px;
+}
+.sprite.social.qunit {
+  background-position: 0 -315px;
+}
+.sprite.social.zip {
+  background-position: 0 -1051px;
 }

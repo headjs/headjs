@@ -1,0 +1,145 @@
+<link rel="stylesheet" href="/site/assets/libs/builder/builder.min.css" />
+
+<script>
+    function addBreakPoint(ele) {
+        // create seperate function to prepopulate
+        // allow adding of multiple values: 4,5,6,7
+        var value = parseInt(prompt("Enter breakpoint value"));
+        if (value) {
+            var bps = $(ele)
+                        .parent()
+                        .find(".bps");
+
+            bps.append("<span>" + (bps.find(".bp").length ? ', ' : '') + "<span class='bp'>" + value + "</span></span>");
+        }
+    }
+</script>
+
+<h2>Roll-Your-Own</h2>   
+<fieldset>
+    <legend><strong>Core Libraries</strong></legend>
+    <ol id="core">
+        <li>
+            <label>
+                <input type="checkbox"/>
+                Asset Loader
+                <small style="float:right">head.load.js</small>
+            </label>
+        </li>                    
+        <li>
+            <label>
+                <input type="checkbox"/>
+                Responsive Design
+                <small style="float:right">head.responsive.js</small>
+            </label>
+        </li>                                     
+    </ol>
+</fieldset>
+            
+           
+<h2>Responsive Configuration</h2>
+<pre id="head-conf">
+// <span class="undeline">Underlined</span> elements are interactive via "click"
+var head_conf = 
+    <span class="screens">screens</span>   : <span>[<span class="bps">240,480</span> <a href="javascript:void(0)" class="button add" onclick="addBreakPoint(this)">Add</a>],</span>
+    <span class="screensCss">screensCss</span>: { "gt": <span class="gt toggle">true</span>, "gte": <span class="gte toggle">true</span>, "lt": <span class="lt toggle">true</span>, "lte": <span class="lte toggle">true</span>, "eq": <span class="eq toggle">true</span> },
+    <span class="browsers">browsers</span>  : [
+                 <span> { <span class="bid">ie</span>     : [<span class="bps">6,7,8,9,10</span> <a href="javascript:void(0)" class="button add" onclick="addBreakPoint(this)">Add</a>] }</span>
+                 <span>,{ <span class="bid">chrome</span> : [<span class="bps"><span>8</span>,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24</span> <a href="javascript:void(0)" class="button add" onclick="addBreakPoint(this)">Add</a>] }</span>
+                 <span>,{ <span class="bid">ff</span>     : [<span class="bps">3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19</span> <a href="javascript:void(0)" class="button add" onclick="addBreakPoint(this)">Add</a>] }</span>
+                 <span>,{ <span class="bid">ios</span>    : [<span class="bps">3,4,5,6</span> <a href="javascript:void(0)" class="button add" onclick="addBreakPoint(this)">Add</a>] }</span>
+                 <span>,{ <span class="bid">android:</span> [<span class="bps">2,3,4</span> <a href="javascript:void(0)" class="button add" onclick="addBreakPoint(this)">Add</a>] }</span>
+                 <span>,{ <span class="bid">webkit</span> : [<span class="bps">9</span> <a href="javascript:void(0)" class="button add" onclick="addBreakPoint(this)">Add</a>] }</span>
+                 <span>,{ <span class="bid">opera</span>  : [<span class="bps"></span> <a href="javascript:void(0)" class="button add" onclick="addBreakPoint(this)">Add</a>] }</span>
+                ],
+    <span class="browserCss">browserCss: { "gt": <span class="gt toggle">true</span>, "gte": <span class="gte toggle">true</span>, "lt": <span class="lt toggle">true</span>, "lte": <span class="lte toggle">true</span>, "eq": <span class="eq toggle">true</span> },</span>
+    html5     : <span class="html5 toggle">true</span>,
+    page      : <input class="page"    value="-page"    type="text" size="10"/>,
+    section   : <input class="section" value="-section" type="text" size="10"/>,            
+    hash      : <input class="hash"    value="-target"  type="text" size="10"/>,
+    head      : <input class="head"    value="head"     type="text" size="10"/>
+};
+</pre>
+                               
+<h2>Feature Detections</h2>
+<fieldset>
+    <legend>Browser Features</legend>
+    <ol id="browser"></ol>
+</fieldset>          
+<fieldset>
+    <legend>Device Features</legend>
+    <ol id="device"></ol>
+</fieldset>
+        
+<fieldset>
+    <legend>CSS Features</legend>
+    <ol id="css"></ol>
+</fieldset>
+
+<fieldset>
+    <legend>Output</legend>
+    <div class="intro">
+        This builder is 100% client-side JavaScript driven. You may need to use FF or Chrome for it to work.
+    </div>
+    <p>
+        <textarea id="out" rows="7" style="width: 99.5%;"></textarea>
+    </p>
+    
+    <ol>
+        <li>
+            <label for="minify"><input type="checkbox" id="minify" /> Minify</label>
+        </li>
+        <li>
+            <label for="pack"><input type="checkbox" id="pack" /> Pack</label> <strong><em><span id="size"></span></em></strong>
+        </li>
+    </ol>
+   
+    <a href="javascript:void(0)" class="button rounded" onclick="generate()">Generate</a>
+    <a href="javascript:void(0)" class="button rounded" onclick="getDownload()">Download</a>   
+</fieldset>
+
+    
+<script src="/site/assets/libs/builder/builder.min.js"></script>
+<script>
+    GetFeatures();
+            
+    ////$.ajax({
+    ////    url: "http://www.i-technology.net/feeds/posts/default/-/headjs?alt=json",
+    ////    type: 'get',
+    ////    dataType: "jsonp",
+    ////    success: function (data) {
+    ////        //console.log(data);
+    ////        $("body").append($(data.feed.entry[0].content.$t).text());
+    ////    }
+    ////});
+            
+    // Toogle browser id
+    $(".bid").on("click", function () {
+        $(this).parent().toggleClass("line-through");
+    });
+
+    // Toogle bool value
+    $(".toggle").on("click", function () {
+        $(this).text($(this).text() == "true" ? "false" : "true");
+    });
+            
+    // Remove breakpoint
+    $(document).on("click", ".bp", function () {
+        // when removing, should probably remove all and readd to make sure commas are right & reorder correctly
+        // probably same on ad : order by ascending
+        if (confirm("Remove this breakpoint ?")) {
+            $(this).parent().remove();
+        }                    
+    });
+            
+    // Cycle through breakpoints
+    //$(".bps").on("dblclick", function () {
+    //    $(this).find(".bp").each(function() {
+    //        console.log($(this).text());
+    //    });
+    //});
+</script>
+                
+<script src="/site/assets/libs/packer/base2.min.js"></script>
+<script src="/site/assets/libs/packer/words.min.js"></script>
+<script src="/site/assets/libs/packer/packer.min.js"></script>

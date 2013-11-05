@@ -1,0 +1,63 @@
+<h1 id="setup">Setup</h1>
+
+<div class="intro">
+    Adding HeadJS to your site            
+</div>
+
+<div class="code-example" data-title="Setup">
+    <p>The most common way to include HeadJS on your site will be to include it in the &lt;head&gt;</p>
+
+{% highlight html %}
+<html>
+    <head>
+        <script src="head.min.js"></script>
+        <script>
+            head.load("file1.js", "file2.js");
+        </script>
+    </head>
+    <body>
+        <!-- my content-->
+
+        <script>
+            head.ready(function () {
+                // some callback stuff
+            });
+        </script>
+    </body>
+</html>
+{% endhighlight %}
+
+    <p>But sometimes you might want it to load up a bunch of code right away, without having to declare that code in a new &lt;script&gt; tag. This can be very useful when using code-generation, or even if you just want to stick all your code in a centralized place.</p>
+
+{% highlight html %}
+<html>
+    <head>
+        <script src="head.min.js" data-headjs-load="init.js"></script>
+    </head>
+    <body>
+        <!-- my content-->
+
+        <script>
+            head.ready(function () {
+                // some callback stuff
+            });
+        </script>
+    </body>
+</html>
+{% endhighlight %}
+
+    <p>In the above example you would put your code in init.js, which would be called automagically</p>
+
+{% highlight js %}
+// init.js
+head.load("file1.js", "file2.js");
+{% endhighlight %}
+
+    <p>Note: Only the first detected instance of data-headjs-load will be used, so make sure there is only one on the page.</p>
+    
+    <div style="width:100%;">                            
+        <div onclick="blog.loadComments(this, 'api/1.0.0/setup', 'Leave a comment')" style="cursor: pointer;">
+            <h2>Show Comments</h2>
+        </div>
+    </div>
+</div>

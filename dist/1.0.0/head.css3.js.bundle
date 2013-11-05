@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bundle minify="true" runOnBuild="true" output="head.css3.js">
+  <!--The order of the <file> elements determines the order of them when bundled.-->
+  <file>/src/1.0.0/core.js</file>
+  <file>/src/1.0.0/css3.js</file>
+</bundle>
