@@ -65,6 +65,15 @@
   display: inline;
   display: inline-block;
 }
+/* Flattr
+ *********/
+.flattr {
+  position: absolute;
+  margin: 10px 5px 0;
+}
+.lt-1280 .flattr {
+  display: none;
+}
 /* Responsive Shortcuts
  ***********************/
 .mobile .mobile-hidden {
