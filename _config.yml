@@ -1,0 +1,12 @@
+# GitHub Defaults
+lsi: false
+pygments: true
+safe: true
+
+# UTF-8 & parse errors fix
+markdown: redcarpet
+
+# Custom Variables
+head:
+  major: 1.0.0
+  minor: 1.0.1
