@@ -16,7 +16,7 @@ title: Head.JS, the only script in your HEAD
         <li>Use cross-browser/device compatible CSS (pseudo media-queries) to code for different resolutions & devices</li>
         <li>Fix quirks in specific browsers by quickly applying dedicated CSS/JS automatically</li>
         <li>Detect browsers & their versions</li>
-        <li>Check if a client supports a certain Browser, HTML5 and CSS3 features</li>
+        <li>Check if a client supports a certain Browser, HTML5 or CSS3 features</li>
         <li>Generate JS and CSS classes automatically for detected browsers & features</li>
         <li>Generate CSS classes automatically depending on which page or section a user is on</li>
         <li>Know if a user is in landscape or portrait mode</li>
@@ -67,7 +67,7 @@ if (head.screen.innerWidth > 800) {
 
 {% highlight css %}   
 /* Add a custom feature yourself */
-head.feature(member, true);
+head.feature("member", true);
 
 /* Now use it */        
 if (head.member) {
