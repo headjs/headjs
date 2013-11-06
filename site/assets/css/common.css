@@ -100,6 +100,12 @@
 
   display: inline-block;
 }
+.authors {
+  width: 200px;
+}
+.lt-800 .authors {
+  display: none;
+}
 /* quick hide elements
  **********************/
 .lt-1440 .hide-1440 {
