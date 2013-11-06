@@ -1,6 +1,7 @@
 ---
 layout: main
 title: Resources
+scripts: ["/site/assets/libs/jquery/jquery.min.js", "https://cdn.moot.it/latest/moot.min.js", "/site/assets/js/comments.min.js"]
 ---
 
 <div style="min-height:600px">
@@ -80,8 +81,20 @@ title: Resources
 </div>
 
 <div class="intro">    
+    Got some cool resource to share ?
+</div>  
+
+<div style="width:100%;">                        
+    <div onclick="blog.loadComments(this, 'resources', 'Leave a comment')" style="cursor: pointer;">
+        <h2>-> Share it!</h2>
+    </div>
+</div>
+
+<div class="intro">    
     <strong>Make it the only script in your HEAD.</strong>
     &laquo; A concise solution to universal problems &raquo;
 </div>  
 
 {% include sections/download.html %}
+
+<div id="moot">&nbsp;</div>
