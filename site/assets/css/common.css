@@ -65,6 +65,20 @@
   display: inline;
   display: inline-block;
 }
+/* Responsive Shortcuts
+ ***********************/
+.mobile .mobile-hidden {
+  display: none !important;
+}
+.no-mobile .mobile-hidden {
+  display: normal !important;
+}
+.mobile .mobile-visible {
+  display: normal !important;
+}
+.no-mobile .mobile-visible {
+  display: none !important;
+}
 /* Trick for centering objects
  * http://css-tricks.com/equidistant-objects-with-css/
  ******************************************************/
