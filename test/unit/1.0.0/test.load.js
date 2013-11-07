@@ -152,7 +152,6 @@ asyncTest("load({ label: jsFilePath }, { label: jsFilePath }, callback).ready(la
         .ready("knockout", function () {
             ok(!!ko, "Ready: knockout");
             assert.step(3, "Step 3: knockout");
-        
         })
         .ready(function () {
             // If start() is moved to above CallBack(), Travis-CI fails ...why ? Locally it works..
