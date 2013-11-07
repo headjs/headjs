@@ -6,11 +6,11 @@ asyncTest("head_conf", function () {
     expect(1);
 
     head_conf = { head: "headJS" };
-    head.load({ head: libs.head() }, function () {
-        ok(!!headJS, "Callback: headJS");
+    head.load(libs.head(), function () {
+        ok(!!headJS, "callback: headJS");
 
         // reset
-        head_conf = undefined;
+        head = headJS;
 
         start();
     });
