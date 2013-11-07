@@ -47,7 +47,7 @@
         <script>
             // schedule the execution of the function for later
             // when the rest of the document has finished loading
-            head.ready(function () {
+            head.ready(document, function () {
                 // some big function
             });
         </script>
@@ -60,9 +60,12 @@
     <h3>head.ready() takes the following arguments</h3>
 
 {% highlight js %}
+// Attention: subtility here
 head.ready(function() {
     // push a function to the end of the page for later execution
-    // runs once the document is ready, and all other files have finished loading
+    // runs once all files have finished loading
+    
+    // WARNING: if no files are cued for loading this will NOT trigger !
 });
 
 head.ready(document, function() {
