@@ -101,9 +101,9 @@
         {% include sections/footer.html %}
         
         {% include scripts/analytics.html %}                
-        <script src="//platform.linkedin.com/in.js" async></script>
-        <script src="//platform.twitter.com/widgets.js" async></script>
-        <script src="//apis.google.com/js/plusone.js" async></script>    
+        <script src="//platform.linkedin.com/in.js" defer></script>
+        <script src="//platform.twitter.com/widgets.js" defer></script>
+        <script src="//apis.google.com/js/plusone.js" defer></script>    
 
         {% for item in page.scripts %}
         <script src="{{ item }}"></script>
