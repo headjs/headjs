@@ -6,7 +6,8 @@
  * License    MIT / http://bit.ly/mit-license
  * WebSite    http://headjs.com
  */
-/* TODO
+/* Feature List
+ *
  * HashChange handling
  * lt/gt handling for browser versions, viewport width, and viewport height
  * Event handling: head.on(), based on MinPubSub
@@ -34,15 +35,15 @@
             heights   : [480, 600, 768, 800, 900, 1050],
             widthCss  : { "gt": true, "lt": true },
             heightCss : { "gt": true, "lt": true },
-            browsers  : [
-                          { ie     : [7,11] }
-                         //,{ chrome : [23,24] }
-                         ,{ ff     : [4,26] }
-                         //,{ ios    : [4,7] }
-                         //,{ android: [2,4] }
-                         //,{ webkit : [10,12] }
-                         //,{ opera  : [10,12] }
-                        ],
+            browsers  : {
+                          "ie"     : [7, 11]
+                         ,"ff"     : [4, 26]
+                         //,"chrome" : [23, 24]                         
+                         //,"ios"    : [4, 7]
+                         //,"android": [2, 4]
+                         //,"webkit" : [10, 12]
+                         //,"opera"  : [10, 12]
+                        },
             browserCss: { "gt": true, "lt": true },
             html5     : true,
             hashtags  : true,
@@ -235,46 +236,31 @@
     };
     api.browser[browser] = true;
 
-    // Array caching performance: http://bonsaiden.github.com/JavaScript-Garden/#array.general
-    for (var i = 0, l = conf.browsers.length; i < l; i++) {
+    for (var key in conf.browsers) {
+        if (browser === key) {
+            // is this usefull ?
+            // we have the exact browser version below
+            // but this also applies to other browsers, so we could have .ff and .ie-false
+            pushClass(key + "-true");
 
-        // INFO: could we reduce this logic to 2 loops instead of 3 ???????
-        /*
-            // currently
-            conf.browsers = [ { ie: [ 7, 11 ] }, { ff: [ 10, 25 ] } ]
+            // Array caching performance: http://bonsaiden.github.com/JavaScript-Garden/#array.general
+            for (var i = 0, l = conf.browsers[key].length; i < l; i++) {
+                var supported = conf.browsers[key][i];
+                if (conf.browserCss.gt && (version > supported)) {
+                    pushClass(key + "-gt" + supported);
+                }
 
-            // hmm, i think we could simpify to
-            conf.browsers = {
-                                ie: [ 10, 11 ],
-                                ff: [ 10, 25 ]
-                            };
-        */
-        for (var key in conf.browsers[i]) {
-            if (browser === key) {
-                // is this usefull ?
-                // we have the exact browser version below
-                // but this also applies to other browsers, so we could have .ff and .ie-false
-                pushClass(key + "-true");
-
-                // Array caching performance: http://bonsaiden.github.com/JavaScript-Garden/#array.general
-                for (var ii = 0, ll = conf.browsers[i][key].length; ii < ll; ii++) {
-                    var supported = conf.browsers[i][key][ii];
-                    if (conf.browserCss.gt && (version > supported)) {
-                        pushClass(key + "-gt" + supported);
-                    }
-
-                    else if (conf.browserCss.lt && (version < supported)) {
-                        pushClass(key + "-lt" + supported);
-                    }
+                else if (conf.browserCss.lt && (version < supported)) {
+                    pushClass(key + "-lt" + supported);
                 }
             }
+        }
 
-            else {
-                // is this usefull ?
-                // we have the exact browser version below
-                // but this also applies to other browsers, so we could have .ie and .ff-false
-                pushClass(key + "-false");
-            }
+        else {
+            // is this usefull ?
+            // we have the exact browser version below
+            // but this also applies to other browsers, so we could have .ie and .ff-false
+            pushClass(key + "-false");
         }
     }
 

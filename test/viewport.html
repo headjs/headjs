@@ -13,8 +13,9 @@
     <ul>
         <li>1) Prefered: Inner browser surface/viewport. Excludes toolbars & scrollbars.</li>
         <li>2) Fallback: Like 1, but not supported everywhere.</li>
-        <li>3) Prefered: Current browser size. Also takes into account a resized browser window.</li>
-        <li>4) Fallback: Measures the entire screen resolution.</li>
+        <li>3) Experimental: Just testing accuracy here.</li>
+        <li>4) Prefered: Current browser size. Also takes into account a resized browser window.</li>
+        <li>5) Fallback: Measures the entire screen resolution.</li>
         <li><a href="http://www.browserscope.org/user/tests/table/agt1YS1wcm9maWxlcnIRCxIEVGVzdBiAgICA-dvoCQw?v=3&layout=simple" target="results">BrowserScope Results</a></li>
     </ul> 
    
@@ -100,14 +101,21 @@
             newResult.appendChild(addResult("landscape (cwh)", (document.documentElement.clientWidth > document.documentElement.clientHeight).toString()));
 
             newResult.appendChild(addResult("<br/>", false));
-            newResult.appendChild(addResult("3) OUTER measurements", false));
+            newResult.appendChild(addResult("3) INNER measurements", false));
+
+            newResult.appendChild(addResult("availWidth", window.screen.availWidth));
+            newResult.appendChild(addResult("availHeight", window.screen.availHeight));
+            newResult.appendChild(addResult("landscape (awh)", (window.screen.availWidth > window.screen.availHeight).toString()));
+
+            newResult.appendChild(addResult("<br/>", false));
+            newResult.appendChild(addResult("4) OUTER measurements", false));
 
             newResult.appendChild(addResult("outerWidth" , window.outerWidth));
             newResult.appendChild(addResult("outerHeight", window.outerHeight));
             newResult.appendChild(addResult("landscape (owh)", (window.outerWidth > window.outerHeight).toString()));
 
             newResult.appendChild(addResult("<br/>", false));
-            newResult.appendChild(addResult("4) OUTER measurements", false));
+            newResult.appendChild(addResult("5) OUTER measurements", false));
 
             newResult.appendChild(addResult("screen.width" , window.screen.width));
             newResult.appendChild(addResult("screen.height", window.screen.height));
