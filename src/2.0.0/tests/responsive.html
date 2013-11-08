@@ -2,13 +2,75 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <meta name="viewport" content="initial-scale=1.0" /> 
+    <title>Responsive 2.0</title>
 
-    <link href="test.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: white;
+            font-size: 16px;
+        }
+        .container {
+            max-width: 1024px;
+            margin: 0 auto;
+        }
+        li {
+            margin: 0 0 5px 0;
+        }
+    </style>
     <script src="../responsive.js"></script>
    
 </head>
-<body>
+    <body>
+        <div class="container">
+            <h1>Head.Responsive() v2.0.0-alpha</h1>
+            
+            
+            <ul>
+                <li>
+                    <a href="#profile">Change hash to: #profile</a>        
+                </li>
+                <li>
+                    <a href="#user/update">Change hash to: #user/update</a>        
+                </li>
+            </ul>    
+            
+            Please read the comments in the <a href="../responsive.js" target="_blank">source-code</a>, and leave your impressions <a href="" target="_blank">here</a>. Thanks !
+            
+            
+            <hr/>
+            
+            <h2>Changes (in flux)</h2>
 
-</body>
+            <ul>
+                <li>
+                    We can now detect #hashChange just like pages & sections, great for emulating the CSS3 :target pseudo-selector. Actually we can do much more because paths like #user/profile/update are supported, which is great for SPA applications.
+                </li>                    
+                <li>
+                    The prefix h- and w- has been introduced for measuring both viewport height & width. ex. h-lt800, w-gt1680
+                </li>
+                <li>
+                    Browsers are no longer declared with min/max, instead we can now declare each browser version individually.
+                    This was needed because FF is now at version 26 and Chrome at 33 !
+                    Now it's a simple matter of choosing the browser, for example { ie: [6,7,8,11] }
+                </li>
+                <li>
+                    Prefixes for browser detections have been changed for better readability, and follow the height/width syntax: .ie, .ie-lt6, .ff-gt25
+                </li>
+                <li>
+                    Prefixes for pages/sections have been inverted for better readability in stylesheets: #page-*, .section-*, .hash-*
+                </li>
+                <li>
+                    Prefixes for detections have been promoted to boolean suffixes, which makes it easier to concatenate with server or client side scripts: .mobile-true, .landscape-false
+                </li>
+                <li>
+                    gte/lte/eq where never activated in the first place, and have been removed for the sake of simplicity and performance
+                </li>
+                <li>
+                    Feature detection variables have been moved to their own namespaces instead of polluting the base head.* namespace: head.features.*, head.browser.*, head.viewport.*, head.screen.*
+                </li>
+            </ul>               
+        </div>
+
+    </body>
 </html>

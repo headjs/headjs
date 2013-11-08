@@ -1,4 +1,4 @@
-/*! head.responsive - v2.0.0 */
+/*! head.responsive - v2.0.0-alpha */
 /*
  * HeadJS     The only script in your <HEAD>
  * Author     Tero Piirainen  (tipiirai)
@@ -8,17 +8,22 @@
  */
 /* TODO
  * HashChange handling
- * Decide between lt/lte & gt/gte
- * Event handling: head.on()
+ * lt/gt handling for browser versions, viewport width, and viewport height
+ * Event handling: head.on(), based on MinPubSub
  * Make as many variables as possible availiable in css AND js
+ * Detect phone, tablet, mobile, desktop
+ * We could detect phone/tablet by measuring the aspect ratio of the screen resolution (not viewport) and making sure it's .mobile-true
+ * Move all features to api.features[]
+ * Make groups: api.viewport, api.screen, api.browser, api.features, api.page, api.section[], api.hash[]
+ * Maybe move api.features.landscape/portrait to api.viewport ..it is more related to that than an actual feature
+ * Maybe move api.features.mobile/desktop/touch to api.browser ..it is more related to that than an actual feature
+ * We no longer declare min/max versions of browsers (too many out there), instead each version we wish to generate lt/gt for
+ * Someone proposed to add operating system detection: window, linux, ios, mac, etc ..i'm doubtful to being able to detect that consistently with a minimal amount of regexp
  */
 (function(win, undefined) {
     "use strict";
 
     //#region Variables
-    // gt, gte, lt, lte, eq breakpoints would have been more simple to write as ['gt','gte','lt','lte','eq']
-    // but then we would have had to loop over the collection on each resize() event,
-    // a simple object with a direct access to true/false is therefore much more efficient
     var doc   = win.document,
         nav   = win.navigator,
         loc   = win.location,
@@ -27,8 +32,8 @@
         conf  = {
             widths    : [240, 320, 480, 640, 768, 800, 1024, 1280, 1366, 1440, 1680, 1920],
             heights   : [480, 600, 768, 800, 900, 1050],
-            widthCss  : { "gte": true, "lte": true },
-            heightCss : { "gte": true, "lte": true },
+            widthCss  : { "gt": true, "lt": true },
+            heightCss : { "gt": true, "lt": true },
             browsers  : [
                           { ie     : [7,11] }
                          //,{ chrome : [23,24] }
@@ -38,8 +43,8 @@
                          //,{ webkit : [10,12] }
                          //,{ opera  : [10,12] }
                         ],
-            browserCss: { "gte": true, "lte": true },
-            html5     : false,
+            browserCss: { "gt": true, "lt": true },
+            html5     : true,
             hashtags  : true,
             page      : "page",
             section   : "section",
@@ -55,20 +60,14 @@
         }
     }
 
-    /*** public API ***/
     var head = conf.head || "head";
     var api  = win[head] = (win[head] || {});
-
-    //var headVar = conf.head || "head",
-    //    api = win[headVar] = (win[headVar] || function () {
-    //        // so wtf does this do ?
-    //        console.log("setup empty");
-    //        api.ready.apply(null, arguments);
-    //    });
     //#endregion
 
-    //#region Internal Functions
+    //#region Experimental
     // INFO: not sure if this is needed
+    // In anycase it allows you to create namespaces on the fly without declaring a bunck of multiple objects
+    // makeNameSpace("head.viewport.height");
     function makeNameSpace() {
         var a = arguments, o = api, j, d, arg;
         // Array caching performance: http://bonsaiden.github.com/JavaScript-Garden/#array.general
@@ -77,47 +76,40 @@
             arg = a[i];
             if (arg.indexOf(".") > -1) { //Skip this if no "." is present
                 d = arg.split(".");
-                for (j = (d[0] === headVar) ? 1 : 0; j < d.length; j++) {
-                    o[d[j]] = o[d[j]] || { };
+                for (j = (d[0] === head) ? 1 : 0; j < d.length; j++) {
+                    o[d[j]] = o[d[j]] || {};
                     o = o[d[j]];
                 }
             } else {
-                o[arg] = o[arg] || { };
+                o[arg] = o[arg] || {};
                 o = o[arg]; //Reset base object to the new object so it's returned
             }
         }
         return o;
     }
 
-    function each(arr, fn) {
-        // Array caching performance: http://bonsaiden.github.com/JavaScript-Garden/#array.general
-        for (var i = 0, l = arr.length; i < l; i++) {
-            fn.call(arr, arr[i], i);
+    // get the value closest to num from an array of numbers
+    // this can be used for determining a height/width breakpoint
+    // still, is it usefull to determine exact/closest breakpoint when we already have lt/gt
+    function closest(num, arrNum) {
+        var c = null;
+
+        for (var i = 0, l = arrNum.length; i < l; i++) {
+            if (c == null || Math.abs(arrNum[i] - num) < Math.abs(c - num)) {
+                c = arrNum[i];
+            }
         }
+
+        return c;
     }
 
-    function pushClass(name) {
-        klass[klass.length] = name;
-    }
+    // NEEDED ?
+    function push(name, value, isCss) {
+        // INFO: the idea is to be able to push a value to a specific namespace (api.browser, api.viewport, ..)
+        // we need a clean way to push values to CSS as well as to JS
+        // we also need to be able to add, update, and remove those values
+        // ...still figuring this out
 
-    var removeCounter = 1;
-    function removeClass(name) {
-        var re = new RegExp(" \\b" + name + "\\b");
-        html.className = html.className.replace(re, "");
-
-        console.log("removeClass", name, removeCounter++);
-    }
-
-    //#endregion
-
-    api.namespace = makeNameSpace;
-
-    // INFO: NEEDED ?
-    api.push = function (name, value, isCss) {
-        // INFO: the idea is to be able to push a value to a specific namespace
-
-        // viewport.height = ih;
-        // .h-600
         // push("h", ih, css);
         // push(api.viewport.height, ih, js);
         // push("viewport", "height", value);
@@ -132,21 +124,33 @@
 
         api.setFeature();
     };
+    //#endregion
 
-    function remove(name, value) {
-        //
-        //
+    //#region Internal Functions
+    function each(arr, fn) {
+        // Array caching performance: http://bonsaiden.github.com/JavaScript-Garden/#array.general
+        for (var i = 0, l = arr.length; i < l; i++) {
+            fn.call(arr, arr[i], i);
+        }
+    }
+
+    function pushClass(name) {
         klass[klass.length] = name;
     }
 
-    var addCounter = 1;
+    function removeClass(name) {
+        var re = new RegExp(" \\b" + name + "\\b");
+        html.className = html.className.replace(re, "");
+    }
+    //#endregion
+
     api.features = {};
     api.setFeature = function (key, enabled, queue) {
         // internal: apply all classes
         if (!key) {
             html.className += " " + klass.join(" ");
-            console.log("feature", key, addCounter++);
             klass = [];
+
             return api;
         }
 
@@ -159,20 +163,18 @@
 
         // apply class to HTML element
         if (!queue) {
+            // don't really like the idea of doing 3 operations in a row here
             removeClass(key + "-true");
             removeClass(key + "-false");
             removeClass(key);
+
             api.setFeature();
         }
 
         return api;
     };
 
-    // INFO: NEEDED ?
-    api.removeFeature = function () {
-        // is this usefull ?
-    };
-
+    //#region Quick Features
     // we support js, we got here !
     api.setFeature("js", true, true);
 
@@ -189,7 +191,7 @@
 
     // used by css router
     api.setFeature("hashchange", "onhashchange" in win, true);
-
+    //#endregion
 
     //#region Browser Detection
     // http://www.zytrax.com/tech/web/browser_ids.htm
@@ -235,42 +237,42 @@
 
     // Array caching performance: http://bonsaiden.github.com/JavaScript-Garden/#array.general
     for (var i = 0, l = conf.browsers.length; i < l; i++) {
+
+        // INFO: could we reduce this logic to 2 loops instead of 3 ???????
+        /*
+            // currently
+            conf.browsers = [ { ie: [ 7, 11 ] }, { ff: [ 10, 25 ] } ]
+
+            // hmm, i think we could simpify to
+            conf.browsers = {
+                                ie: [ 10, 11 ],
+                                ff: [ 10, 25 ]
+                            };
+        */
         for (var key in conf.browsers[i]) {
             if (browser === key) {
-                // this usefull ?
+                // is this usefull ?
+                // we have the exact browser version below
+                // but this also applies to other browsers, so we could have .ff and .ie-false
                 pushClass(key + "-true");
-                // api.browser.ie = version;
-                // .ie
 
                 // Array caching performance: http://bonsaiden.github.com/JavaScript-Garden/#array.general
                 for (var ii = 0, ll = conf.browsers[i][key].length; ii < ll; ii++) {
                     var supported = conf.browsers[i][key][ii];
-                    if (version > supported) {
-                        if (conf.browserCss.gte) {
-                            pushClass(key + "-gte" + supported);
-                        }
+                    if (conf.browserCss.gt && (version > supported)) {
+                        pushClass(key + "-gt" + supported);
                     }
 
-                    else if (version < supported) {
-                        if (conf.browserCss.lte) {
-                            pushClass(key + "-lte" + supported);
-                        }
-                    }
-
-                    // INFO: can be removed if we only use lt/gt
-                    else if (version === supported) {
-                        if (conf.browserCss.lte) {
-                            pushClass(key + "-lte" + supported);
-                        }
-
-                        if (conf.browserCss.gte) {
-                            pushClass(key + "-gte" + supported);
-                        }
+                    else if (conf.browserCss.lt && (version < supported)) {
+                        pushClass(key + "-lt" + supported);
                     }
                 }
             }
+
             else {
-                // this usefull ?
+                // is this usefull ?
+                // we have the exact browser version below
+                // but this also applies to other browsers, so we could have .ie and .ff-false
                 pushClass(key + "-false");
             }
         }
@@ -283,14 +285,14 @@
     //#region HTML5 Shim
     if (conf.html5 && browser === "ie" && version < 9) {
         // HTML5 support : you still need to add html5 css initialization styles to your site
-        // See: assets/html5.css
+        // See: /site/assets/css/html5.min.css
         each("abbr|article|aside|audio|canvas|details|figcaption|figure|footer|header|hgroup|main|mark|meter|nav|output|progress|section|summary|time|video".split("|"), function (el) {
             doc.createElement(el);
         });
     }
     //#endregion
 
-    //#region CSS Router
+    //#region CSS Router: Page/Section
     function buildRoute(path) {
         /// <summary>can be used to emulate hashchange event by subscribing to win/doc onclick and testing if url has changed</summary>
         var items = loc.pathname.split("/");
@@ -318,43 +320,45 @@
     }
 
     buildRoute(loc.pathname);
+    //#endregion
 
-
+    //#region CSS Router: HasChange
+    // contains current hashes, so we can remove them when a change occurs
+    var hashCache = [];
     function onhashChange() {
+        // remove old values
+        each(hashCache, function (el) {
+            removeClass(el);
+        });
+
+        // get current hash
         var items = loc.hash.replace(/(!|#)/g, "").split("/");
 
-        each(items, function (el, i) {
-            console.log(el, i, this.length, this[i + 1]);
-
-            if (this.length > 2 && this[i + 1] !== undefined) {
-                if (i) {
-                    console.log("pushing !! ", el);
-                    pushClass(conf.hash + "-" + this.slice(i, i + 1).join("-").toLowerCase().replace(/\./g, "-"));
-                }
+        // add new values
+        each(items, function (el) {
+            if (!!el) {
+                var name = conf.hash + "-" + el.toLowerCase().replace(/\./g, "-");
+                hashCache.push(name);
+                pushClass(name);
             }
         });
 
-        api.setFeature("hash");
+        // commit changes
+        api.setFeature();
     }
     //#endregion
 
-    // basic screen info
-    api.screen = {
-        height: win.screen.height,
-        width : win.screen.width
-    };
+    //#region Screen Detection
+    // screen information placeholder
+    api.screen = {};
 
-    api.viewport = {
-        height: win.innerHeight || html.clientHeight,
-        width : win.innerWidth  || html.clientWidth
-    };
+    // viewport information placeholder
+    api.viewport = {};
 
     // viewport resolutions: w-100, lt-480, lt-1024 ...
-    var screenCounter = 1;
     function screenSize() {
         // remove earlier sizes
-        html.className = html.className.replace(/ (w-|w-gte|w-lte|h-|h-gte|h-lte)\d+/g, "");
-        console.log("screenSize", screenCounter++);
+        html.className = html.className.replace(/ (w-|w-gt|w-lt|h-|h-gt|h-lt)\d+/g, "");
 
         // Viewport width
         var iw = win.innerWidth || html.clientWidth,
@@ -363,32 +367,17 @@
         api.viewport.width = iw;
         api.browser.width  = ow;
 
-        // for debugging purposes, not really useful for anything else
-        // INFO: Maybe we can round to closest breakpoint ?
-        pushClass("w-" + iw);
+        // INFO: See comment on function closest()
+        //pushClass("w-" + iw);
+        pushClass("w-" + closest(iw, conf.widths));
 
         each(conf.widths, function (width) {
-            if (iw > width) {
-                if (conf.widthCss.gte) {
-                    pushClass("w-gte" + width);
-                }
+            if (conf.widthCss.gt && (iw > width)) {
+                pushClass("w-gt" + width);
             }
 
-            else if (iw < width) {
-                if (conf.widthCss.lte) {
-                    pushClass("w-lte" + width);
-                }
-            }
-
-            // INFO: can be removed if we only use lt/gt
-            else if (iw === width) {
-                if (conf.widthCss.lte) {
-                    pushClass("w-lte" + width);
-                }
-
-                if (conf.widthCss.gte) {
-                    pushClass("w-gte" + width);
-                }
+            else if (conf.widthCss.lt && (iw < width)) {
+                pushClass("w-lt" + width);
             }
         });
 
@@ -399,60 +388,52 @@
         api.viewport.height = ih;
         api.browser.height  = oh;
 
-        // for debugging purposes, not really useful for anything else
-        // INFO: Maybe we can round to closest breakpoint ?
-        pushClass("h-" + ih);
-
-        // viewport.height = ih;
-        // .h-600
-        // pushCss("h", ih);
-        // pushJs(viewport, "height", ih);
-
+        // INFO: See comment on function closest()
+        //pushClass("h-" + ih);
+        pushClass("h-" + closest(ih, conf.heights));
+        
         each(conf.heights, function (height) {
-            if (ih > height) {
-                if (conf.heightCss.gte) {
-                    pushClass("h-gte" + height);
-                }
+            if (conf.heightCss.gt && (ih > height)) {
+                pushClass("h-gt" + height);
             }
 
-            else if (ih < height) {
-                if (conf.heightCss.lte) {
-                    pushClass("h-lte" + height);
-                }
-            }
-
-            // INFO: can be removed if we only use lt/gt
-            else if (ih === height) {
-                if (conf.heightCss.lte) {
-                    pushClass("h-lte" + height);
-                }
-
-                if (conf.heightCss.gte) {
-                    pushClass("h-gte" + height);
-                }
+            else if (conf.heightCss.lt && (ih < height)) {
+                pushClass("h-lt" + height);
             }
         });
 
-        // no need for onChange event to detect this
+        // INFO: maybe we should detect and take the aspect ratio into account too ?
+        // A desktop browser whose window can be resized, might give weird results (on a responsive site) if it reports portrait mode, when in reality it's just a few pixels less than landscape
+        // For example:
+        // Detect based on Ratio. 0.8-0.9 seem like a good threshhold compromise, even if in reality 0.99 can be considered as portrait too.
+        // Common mobile ratios are: 0.56: 720x1280, 0.6: 480x800, 0.66: 320x480 640x960, 0.75: 600x800 768x1024
+        // Galaxy S 1/2 480x800 3 720x1280, IPhone 4/4S 640×960, IPhone 5 640×1136 ..seems like 480 is a good target
+        // var portrait  = ((iw / ih) <= 0.85);
+        // var landscape = !portrait;
         api.setFeature("portrait" , (ih > iw));
         api.setFeature("landscape", (ih < iw));
     }
 
     screenSize();
-    //api.feature();
+    //api.setFeature();
 
     // Throttle navigators from triggering too many resize events
     var resizeId = 0;
-
     function onResize() {
         win.clearTimeout(resizeId);
         resizeId = win.setTimeout(screenSize, 50);
     }
+    //#endregion
 
+
+    //#region EventHandlers
     // Manually attach, as to not overwrite existing handler
     if (win.addEventListener) {
-        if (conf.hashtags && api.features.hashchange) {
+        if (conf.hashtags && api.features.hashchange) {            
             win.addEventListener("hashchange", onhashChange, false);
+
+            // first load
+            onhashChange();
         }
 
         win.addEventListener("resize", onResize, false);
@@ -461,12 +442,16 @@
         // IE8 and less
         if (conf.hashtags && api.features.hashchange) {
             win.attachEvent("onhashchange", onhashChange);
+
+            // first load
+            onhashChange();
         }
 
         win.attachEvent("onresize", onResize);
     }
+    //#endregion
 
     //#region Public Exports
-
+    // we should probably stop declaring public stuff above and make a "exports" section here
     //#endregion
 }(window));
