@@ -140,7 +140,10 @@
     }
 
     function removeClass(name) {
-        var re = new RegExp(" \\b" + name + "\\b");
+        // need to test for both space and no space
+        // https://github.com/headjs/headjs/issues/270
+        // https://github.com/headjs/headjs/issues/226
+        var re = new RegExp(" ?\\b" + name + "\\b");
         html.className = html.className.replace(re, "");
     }
     //#endregion

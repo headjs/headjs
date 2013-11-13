@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>HeadJS</id>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
         <title>HeadJS</title>
         <authors>Robert Hoffmann,Tero Piirainen</authors>
         <owners>itechnology</owners>
@@ -44,7 +44,8 @@ head.ready(function() { imReady(); })
         <tags>javascript, html, html5, css, css3, loader, responsive design, media queries, feature detection, dependency loading, mobile, tablet</tags>
     </metadata>
     <files>
-        <file src="head.js" target="Content\Scripts\head-1.0.1.js" />
-        <file src="head.min.js" target="Content\Scripts\head-1.0.1.min.js" />
+        <file src="head.js" target="Content\Scripts\head-1.0.2.js" />
+        <file src="head.min.js" target="Content\Scripts\head-1.0.2.min.js" />
+        <file src="changelog.txt" target="Content\Scripts\head-changelog.txt" />
     </files>
 </package>

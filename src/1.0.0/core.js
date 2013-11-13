@@ -1,4 +1,4 @@
-/*! head.core - v1.0.0 */
+/*! head.core - v1.0.2 */
 /*
  * HeadJS     The only script in your <HEAD>
  * Author     Tero Piirainen  (tipiirai)
@@ -49,7 +49,10 @@
     }
 
     function removeClass(name) {
-        var re = new RegExp(" \\b" + name + "\\b");
+        // need to test for both space and no space
+        // https://github.com/headjs/headjs/issues/270
+        // https://github.com/headjs/headjs/issues/226
+        var re = new RegExp(" ?\\b" + name + "\\b");
         html.className = html.className.replace(re, "");
     }
 
@@ -70,6 +73,7 @@
         if (!key) {
             html.className += " " + klass.join(" ");
             klass = [];
+
             return api;
         }
 
