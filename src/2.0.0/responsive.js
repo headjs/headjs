@@ -32,13 +32,13 @@
         klass = [],
         conf  = {
             widths    : [240, 320, 480, 640, 768, 800, 1024, 1280, 1366, 1440, 1680, 1920],
-            heights   : [480, 600, 768, 800, 900, 1050],
+            heights   : [320, 480, 600, 768, 800, 900, 1050],
             widthCss  : { "gt": true, "lt": true },
             heightCss : { "gt": true, "lt": true },
             browsers  : {
                           "ie"     : [7, 11]
                          ,"ff"     : [4, 26]
-                         //,"chrome" : [23, 24]                         
+                         //,"chrome" : [23, 31]                         
                          //,"ios"    : [4, 7]
                          //,"android": [2, 4]
                          //,"webkit" : [10, 12]

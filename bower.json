@@ -1,7 +1,7 @@
 {
   "name": "headjs",
-  "version": "1.0.1",
-  "main": ["./dist/1.0.1/head.min.js","./dist/1.0.1/head.min.js.map","./dist/1.0.1/changelog.txt"],
+  "version": "1.0.2",
+  "main": ["./dist/1.0.0/head.min.js","./dist/1.0.0/head.min.js.map","./dist/1.0.0/changelog.txt"],
   "ignore": [
     "*.*"
   ]

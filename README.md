@@ -28,6 +28,10 @@ This project was never announced. `git push` and it was all viral.
 
 ##Updates
 
+###1.0.2 (2013-11-13)
+	 - Fix: no-js class not being removed
+	   - https://github.com/headjs/headjs/issues/270
+
 ###1.0.1 (2013-11-05)
 	 - Fix: Old IE's can trigger ready too soon
 	   - https://github.com/headjs/headjs/issues/203

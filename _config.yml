@@ -9,4 +9,4 @@ markdown: redcarpet
 # Custom Variables
 head:
   major: 1.0.0
-  minor: 1.0.1
+  minor: 1.0.2
