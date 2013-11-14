@@ -1,0 +1,98 @@
+<h1 id="configuration">Configuration</h1>
+
+<div class="intro">
+    Sometimes you will want to change how HeadJS behaves by enabling or disabling certain features.           
+</div>
+
+<div class="code-example" data-title="Configuration">
+    <p>This is the default configuration that HeadJS ships with</p>
+
+{% highlight js %}
+conf  = {
+    widths    : [240, 320, 480, 640, 768, 800, 1024, 1280, 1366, 1440, 1680, 1920],
+    heights   : [320, 480, 600, 768, 800, 900, 1050],
+    widthCss  : { "gt": true, "lt": true, },
+    heightCss : { "gt": true, "lt": true, },
+    browsers  : {
+                    "ie"      : [7, 11]
+                    //,"ff"     : [4, 26]
+                    //,"chrome" : [23, 31]                         
+                    //,"ios"    : [4, 7]
+                    //,"android": [2, 4]
+                    //,"webkit" : [10, 12]
+                    //,"opera"  : [10, 12]
+                },
+    browserCss: { "gt": true, "lt": true },
+    html5     : true,
+    hashtags  : true,
+    page      : "page",
+    section   : "section",
+    hash      : "hash",
+    head      : "head"
+};
+{% endhighlight %}
+
+    <p>If you wanted to change what screen-width breakpoints HeadJS uses, then you would do something like this</p>
+
+{% highlight html %}
+<html>
+    <head>
+        <script>
+            var head_conf = {
+                widths: [1024, 1280, 1440, 1680, 1920]
+            };
+        </script>
+        <script src="head.min.js"></script>
+    </head>
+    <body>
+        <!-- my content-->
+    </body>
+</html>
+{% endhighlight %}
+
+    <p>The same goes for all the other configurable variables. Just make sure <strong>var head_conf</strong> is declared BEFORE you include HeadJS.</p>
+
+    <dl>
+        <dt>width</dt>
+        <dd>Width breakpoints for which lt, gt can be generated (.w-gt800, .w-lt1680)</dd>
+
+        <dt>height</dt>
+        <dd>Height breakpoints for which lt, gt can be generated (.h-gt600, .h-lt1050)</dd>
+        
+        <dt>widthCss</dt>
+        <dd>Enables/Disables the actual insertion of those breakpoints into the HTML</dd>
+        
+        <dt>heightCss</dt>
+        <dd>Enables/Disables the actual insertion of those breakpoints into the HTML</dd>
+        
+        <dt>browsers</dt>
+        <dd>Browser version breakpoints for which lt, gt can be generated (.ie-gt8, .ie-lt9)</dd>
+        
+        <dt>browserCss</dt>
+        <dd>Enables/Disables the actual insertion of those breakpoints into the HTML</dd>
+        
+        <dt>html5</dt>
+        <dd>When enabled, IE8 and less will have the &laquo; HTML5 Shim &raquo; injected, which adds compatibility for the following HTML5 elements: abbr, article, aside, audio, canvas, details, figcaption, figure, footer, header, hgroup, main, mark, meter, nav, output, progress, section, summary, time, video</dd>
+        
+        <dt>hashtags</dt>
+        <dd>When enabled, hashchange events will be detected (ie. /home/user#profile) and classes inserted into the HTML</dd>
+
+        <dt>page</dt>
+        <dd>Prefix used by the &laquo; CSS Router &raquo; when detecting pages (#page-user)</dd>
+        
+        <dt>section</dt>
+        <dd>Prefix used by the &laquo; CSS Router &raquo; when detecting page sections (.section-home)</dd>
+        
+        <dt>hash</dt>
+        <dd>Prefix used by the &laquo; CSS Router &raquo; when detecting hashtags (.hash-profile)</dd>
+
+        <dt>head</dt>
+        <dd>Name of the variable that should be used for HeadJS. If set to something else like: test, you would call test.load() instead of head.load()</dd>
+    </dl>
+
+    <div style="width:100%;">                            
+        <div onclick="blog.loadComments(this, 'api/2.0.0/configuration', 'Leave a comment')" style="cursor: pointer;">
+            <h2>Show Comments</h2>
+        </div>
+    </div>
+</div>

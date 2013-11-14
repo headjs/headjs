@@ -1,0 +1,47 @@
+<h2>Achieve responsive design with CSS that targets different screen resolutions, paths, states and browsers</h2>
+<div class="intro">
+    HeadJS will detect screen resolutions, features, browsers and automatically generate dynamic css/javascript classes that you can then target.                
+</div>
+<div class="code-example" data-title="CSS / JavaScript">
+    <p>Often you will need to adapt your design or code logic depending on resolution, where the user is, or what browser he is using.</p>
+
+{% highlight css %}
+/* Only apply margin to IE < 6 */
+.ie-lt6 {
+    margin: 10px;                   
+}                   
+
+/* Resize elements based on resolution */
+.lt-800 .container {
+    width: 600px; 
+}                  
+.gt-1024 .container {
+    width: 1000px; 
+}  
+                    
+/* Change style based on feature support */
+.no-border-radius table {
+    border: 1px dashed black;
+}
+ 
+/* Change elements on individual pages thank's to the CSS Router */                   
+.index-page .ads {
+    display: none;                   
+}
+
+/* Do something if the user is on a mobile device */                    
+if (head.mobile) {
+    head.load("iscroll.js");
+}
+{% endhighlight %}
+
+    <p>
+        All feature detections are both accessible via css classes, and javascript properties.
+    </p>
+    
+    <div style="width:100%;">                            
+        <div onclick="blog.loadComments(this, 'api/2.0.0/responsive', 'Leave a comment')" style="cursor: pointer;">
+            <h2>Show Comments</h2>
+        </div>
+    </div>
+</div>
