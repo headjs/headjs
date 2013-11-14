@@ -1,4 +1,5 @@
 # git ignore file
+node_modules*/
 .idea*/
 _ReSharper.headjs*/
 _site*/
