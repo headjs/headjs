@@ -437,12 +437,18 @@
             ele.href = asset.url;
             
             // fix for browsers which do not fire onload event for stylesheet (e.g. Safari)
-            var cssSize = document.styleSheets.length;
+            var retry = 0;
             var cssLoadInterval = setInterval(function() {
-                if (document.styleSheets.length > cssSize) {
-                    clearInterval(cssLoadInterval);	
-                    process({ "type": "load" });
-                }
+            	if(asset.state === LOADED || retry++ === 100)
+            		return clearInterval(cssLoadInterval);
+            	
+            	for(var i=0;i<document.styleSheets.length;i++) {
+            		var styleSheet = document.styleSheets[i];
+            		if(styleSheet.href === asset.url) {
+            			clearInterval(cssLoadInterval);
+            			process({ "type": "load" });
+            		}
+            	}
             }, 10);
         }
         else {
