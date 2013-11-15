@@ -436,15 +436,14 @@
             ele.rel  = "stylesheet";
             ele.href = asset.url;
             
-            // https://github.com/headjs/headjs/pull/240
-            //if (ele.onload !== null) {   // to support browsers which dont have an onload event on link tags
-            //    var img = document.createElement('img');
-            //    img.onerror = function() {
-            //        process({ "type": "load" });
-            //    };
-            //    img.src = asset.url;
-            //}
-            
+            // fix for browsers which do not fire onload event for stylesheet (e.g. Safari)
+            var cssSize = document.styleSheets.length;
+            var cssLoadInterval = setInterval(function() {
+                if (document.styleSheets.length > cssSize) {
+                    clearInterval(cssLoadInterval);	
+                    process({ "type": "load" });
+                }
+            }, 10);
         }
         else {
             ele      = doc.createElement("script");
