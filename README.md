@@ -3,6 +3,7 @@
 This project was never announced. `git push` and it was all viral.
 
 [![Build Status](https://travis-ci.org/headjs/headjs.png?branch=master)](https://travis-ci.org/headjs/headjs)
+[![Selenium Status](https://saucelabs.com/browser-matrix/itechnology.svg)](https://saucelabs.com/u/itechnology)
 
 ##About
   * _Load scripts and css on demand_
