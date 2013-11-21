@@ -2,11 +2,10 @@
 
 This project was never announced. `git push` and it was all viral.
 
+[![Build Status](https://travis-ci.org/headjs/headjs.png?branch=master)](https://travis-ci.org/headjs/headjs)
+[![Selenium Test Status](https://saucelabs.com/buildstatus/itechnology)](https://saucelabs.com/u/itechnology)
 
-<div>
-	<a href="https://saucelabs.com/u/itechnology"><img src="https://saucelabs.com/browser-matrix/itechnology.svg" alt="Selenium Status" /></a>	
-	<a style="vertical-align:top" href="https://travis-ci.org/headjs/headjs"><img src="https://travis-ci.org/headjs/headjs.png?branch=master" alt="Build Status" /></a>		
-</div>
+[![Selenium Status](https://saucelabs.com/browser-matrix/itechnology.svg)](https://saucelabs.com/u/itechnology)
 
 
 ##About
