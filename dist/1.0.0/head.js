@@ -916,8 +916,8 @@
         }
 
         function isCssLoaded() {
-            // should we test again ?
-            if (asset.state !== LOADED && asset.cssRetries < 30) {
+            // should we test again ? 20 retries = 5secs ..after that, the callback will be triggered by the error handler at 7secs
+            if (asset.state !== LOADED && asset.cssRetries <= 20) {
 
                 // loop through stylesheets
                 for (var i = 0, l = doc.styleSheets.length; i < l; i++) {

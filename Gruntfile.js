@@ -2,7 +2,7 @@ module.exports = function (grunt) {
     //#region Saucelabs Browsers
     // https://saucelabs.com/docs/platforms
     var browsers = [
-                    // sauce says ff25 is availiable, but times out...
+                    // sauce says ff25 is availiable, but times out systematically...
                     {
                         browserName: "firefox",
                         platform   : "Windows 8",
@@ -88,22 +88,19 @@ module.exports = function (grunt) {
                     concurrency  : 3,
                     browsers     : browsers,
                     testname     : "qunit tests",
-                    tags: ["master"]
+                    tags         : ["master"]
                 }
             }
         },
         watch: {},
         //#endregion
 
-
-        // task: unit tests
+        // task: local unit tests
         qunit: {
-            files: ['test/unit/1.0.0/index-travis.html']
+            files: ['test/unit/1.0.0/index.html']
         }
     });
 
-
-    //grunt.loadNpmTasks("grunt-contrib-qunit");
     // Loading dependencies
     for (var key in grunt.file.readJSON("package.json").devDependencies) {
         if (key !== "grunt" && key.indexOf("grunt") === 0) {
@@ -111,8 +108,7 @@ module.exports = function (grunt) {
         }
     }
 
-
-    // register: unit tests
+    // register: local unit tests
     grunt.registerTask("qtest", "qunit");
 
     // register sauce tasks
