@@ -7,7 +7,7 @@ node_js:
 
 # http://about.travis-ci.org/docs/user/build-configuration/#Build-Lifecycle
 # install dependencies 
-install:
+before_script:
   - npm install -g grunt-cli
   - npm install grunt grunt-contrib-qunit
 
