@@ -2,10 +2,11 @@ module.exports = function (grunt) {
     //#region Saucelabs Browsers
     // https://saucelabs.com/docs/platforms
     var browsers = [
+                    // sauce says ff25 is availiable, but times out...
                     {
                         browserName: "firefox",
                         platform   : "Windows 8",
-                        version    : "25"
+                        version    : "19"
                     },
                     {
                         browserName         : "iphone",
@@ -14,11 +15,18 @@ module.exports = function (grunt) {
                         "device-orientation": "portrait"
                     },
                     {
-                        browserName         : "android",
-                        platform            : "Linux",
-                        version             : "4.0",
+                        browserName         : "ipad",
+                        platform            : "OS X 10.8",
+                        version             : "6.1",
                         "device-orientation": "portrait"
                     },
+                    // android emulator does not pass tests, yet on my own phone all browsers pass...
+                    //{
+                    //    browserName         : "android",
+                    //    platform            : "Linux",
+                    //    version             : "4.0",
+                    //    "device-orientation": "portrait"
+                    //},
                     {
                         browserName: "safari",
                         platform   : "OS X 10.8",
