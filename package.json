@@ -1,7 +1,7 @@
 {
   "name": "headjs",
   "description": "HeadJS: Responsive Design, Feature Detections & Asset Loading. The only script in your <HEAD>",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "homepage": "http://headjs.com",
   "author": {
     "name": "Various contributors",
@@ -33,12 +33,8 @@
   "bugs": {
     "url": "https://github.com/headjs/headjs/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/headjs/headjs/blob/master/LICENSE"
-    }
-  ],
+  "license" : "MIT",
+  "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.0",
     "grunt-cli": "~0.1.6",

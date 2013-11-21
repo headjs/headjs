@@ -1,5 +1,5 @@
 ﻿///#source 1 1 /src/1.0.0/load.js
-/*! head.load - v1.0.1 */
+/*! head.load - v1.1.0 */
 /*
  * HeadJS     The only script in your <HEAD>
  * Author     Tero Piirainen  (tipiirai)
@@ -10,13 +10,12 @@
 (function (win, undefined) {
     "use strict";
 
-    var doc = win.document,
+    //#region variables
+    var doc        = win.document,
         domWaiters = [],
-        queue      = [], // waiters for the "head ready" event
         handlers   = {}, // user functions waiting for events
         assets     = {}, // loadable items in various states
         isAsync    = "async" in doc.createElement("script") || "MozAppearance" in doc.documentElement.style || win.opera,
-        isHeadReady,
         isDomReady,
 
         /*** public API ***/
@@ -28,6 +27,7 @@
         PRELOADED  = 2,
         LOADING    = 3,
         LOADED     = 4;
+    //#endregion
 
     //#region PRIVATE functions
 
@@ -126,7 +126,7 @@
             obj.success.push(obj.callback);
             api.load.apply(null, obj.success);
         }
-            // Do we have a fail case
+        // Do we have a fail case
         else if (!passed && !!obj.failure) {
             obj.failure.push(obj.callback);
             api.load.apply(null, obj.failure);
@@ -216,16 +216,19 @@
         /// head.load({ label1: "http://domain.com/file.js" }, { label2: "http://domain.com/file.js" }, callBack)
         /// head.load([{ label1: "http://domain.com/file.js" }, { label2: "http://domain.com/file.js" }], callBack)
         /// </summary>
+        var args     = arguments,
+            callback = args[args.length - 1],
+            rest     = [].slice.call(args, 1),
+            next     = rest[0];
 
-        var args = arguments,
-            rest = [].slice.call(args, 1),
-            next = rest[0];
+        if (!isFunction(callback)) {
+            callback = null;
+        }
 
-        // wait for a while. immediate execution causes some browsers to ignore caching
-        if (!isHeadReady) {
-            queue.push(function () {
-                api.load.apply(null, args);
-            });
+        // if array, repush as args
+        if (isArray(args[0])) {
+            args[0].push(callback);
+            api.load.apply(null, args[0]);
 
             return api;
         }
@@ -266,9 +269,9 @@
         /// head.load({ label1: "http://domain.com/file.js" }, { label2: "http://domain.com/file.js" }, callBack)
         /// head.load([{ label1: "http://domain.com/file.js" }, { label2: "http://domain.com/file.js" }], callBack)
         ///</summary>
-        var args      = arguments,
-             callback = args[args.length - 1],
-             items    = {};
+        var args     = arguments,
+            callback = args[args.length - 1],
+            items    = {};
 
         if (!isFunction(callback)) {
             callback = null;
@@ -352,6 +355,13 @@
         });
     }
 
+    function getExtension(url) {
+        url = url || "";
+
+        var items = url.split("?")[0].split(".");
+        return items[items.length-1].toLowerCase();
+    }
+
     /* Parts inspired from: https://github.com/cujojs/curl
     ******************************************************/
     function loadAsset(asset, callback) {
@@ -416,41 +426,59 @@
 
             // !doc.documentMode is for IE6/7, IE8+ have documentMode
             if (event.type === "load" || (/loaded|complete/.test(ele.readyState) && (!doc.documentMode || doc.documentMode < 9))) {
+                // remove timeouts
+                win.clearTimeout(asset.errorTimeout);
+                win.clearTimeout(asset.cssTimeout);
+
                 // release event listeners
                 ele.onload = ele.onreadystatechange = ele.onerror = null;
 
-                // do callback
+                // do callback   
                 callback();
             }
+        }
 
-            // emulates error on browsers that don't create an exception
-            // INFO: timeout not clearing ..why ?
-            //asset.timeout = win.setTimeout(function () {
-            //    error({ type: "timeout" });
-            //}, 3000);
+        function isCssLoaded() {
+            // should we test again ?
+            if (asset.state !== LOADED && asset.cssRetries < 30) {
+
+                // loop through stylesheets
+                for (var i = 0, l = doc.styleSheets.length; i < l; i++) {
+                    // do we have a match ?
+                    // we need to tests agains ele.href and not asset.url, because a local file will be assigned the full http path on a link element
+                    if (doc.styleSheets[i].href === ele.href) {
+                        process({ "type": "load" });
+                        return;
+                    }
+                }
+
+                // increment & try again
+                asset.cssRetries++;
+                asset.cssTimeout = win.setTimeout(isCssLoaded, 250);
+            }
         }
 
         var ele;
-        if (/\.css[^\.]*$/.test(asset.url)) {
+        var ext = getExtension(asset.url);
+
+        if (ext === "css") {
             ele      = doc.createElement("link");
             ele.type = "text/" + (asset.type || "css");
             ele.rel  = "stylesheet";
             ele.href = asset.url;
-            
-            // https://github.com/headjs/headjs/pull/240
-            //if (ele.onload !== null) {   // to support browsers which dont have an onload event on link tags
-            //    var img = document.createElement('img');
-            //    img.onerror = function() {
-            //        process({ "type": "load" });
-            //    };
-            //    img.src = asset.url;
-            //}
-            
+
+            /* onload supported for CSS on unsupported browsers
+             * Safari windows 5.1.7, FF < 10
+             */
+
+            // Set counter to zero
+            asset.cssRetries = 0;
+            asset.cssTimeout = win.setTimeout(isCssLoaded, 500);         
         }
         else {
             ele      = doc.createElement("script");
             ele.type = "text/" + (asset.type || "javascript");
-            ele.src  = asset.url;
+            ele.src = asset.url;
         }
 
         ele.onload  = ele.onreadystatechange = process;
@@ -467,9 +495,15 @@
         // DEFER: load in parallel but maintain execution order
         ele.defer = false;
 
+        // timout for asset loading
+        asset.errorTimeout = win.setTimeout(function () {
+            error({ type: "timeout" });
+        }, 7e3);
+
         // use insertBefore to keep IE from throwing Operation Aborted (thx Bryan Forbes!)
         var head = doc.head || doc.getElementsByTagName("head")[0];
-        // but insert at end of head, because otherwise if it is a stylesheet, it will not override values
+
+        // but insert at end of head, because otherwise if it is a stylesheet, it will not override values      
         head.insertBefore(ele, head.lastChild);
     }
 
@@ -522,6 +556,7 @@
 
             each(key, function (item) {
                 items[item] = assets[item];
+
                 api.ready(item, function() {
                     if (allLoaded(items)) {
                         one(callback);
@@ -586,7 +621,7 @@
             domReady();
         }
 
-            // IE
+        // IE
         else if (doc.readyState === "complete") {
             // we're here because readyState === "complete" in oldIE
             // which is good enough for us to call the dom ready!
@@ -602,7 +637,7 @@
         domReady();
     }
 
-        // W3C
+    // W3C
     else if (doc.addEventListener) {
         doc.addEventListener("DOMContentLoaded", domContentLoaded, false);
 
@@ -610,7 +645,7 @@
         win.addEventListener("load", domReady, false);
     }
 
-        // IE
+    // IE
     else {
         // Ensure firing before onload, maybe late but safe also for iframes
         doc.attachEvent("onreadystatechange", domContentLoaded);
@@ -650,16 +685,15 @@
 
     //#region Public Exports
     // INFO: determine which method to use for loading
-    api.load = api.js = isAsync ? apiLoadAsync : apiLoadHack;
-    api.test = conditional;
+    api.load  = api.js = isAsync ? apiLoadAsync : apiLoadHack;
+    api.test  = conditional;
     api.ready = ready;
     //#endregion
 
     //#region INIT
     // perform this when DOM is ready
     api.ready(doc, function () {
-        // Fix: https://github.com/headjs/headjs/issues/203
-        if (isHeadReady && allLoaded()) {
+        if (allLoaded()) {
             each(handlers.ALL, function (callback) {
                 one(callback);
             });
@@ -669,18 +703,5 @@
             api.feature("domloaded", true);
         }
     });
-
-    /*
-        We wait for 300 ms before asset loading starts. for some reason this is needed
-        to make sure assets are cached. Not sure why this happens yet. A case study:
-
-        https://github.com/headjs/headjs/issues/closed#issue/83
-    */
-    setTimeout(function () {
-        isHeadReady = true;
-        each(queue, function (fn) {
-            fn();
-        });
-    }, 300);
     //#endregion
 }(window));

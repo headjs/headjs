@@ -3,8 +3,8 @@
     <head>
         <meta charset="utf-8"/>
         <title>Head.JS Unit Tests (1.00)</title>
-        <link rel="stylesheet" type="text/css" href="/site/assets/libs/qunit/qunit.min.css" />
-        <script src="/dist/1.0.0/head.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="../../../site/assets/libs/qunit/qunit.min.css" />
+        <script src="../../../dist/1.0.0/head.min.js"></script>
         <style>
             body {
                 width: 1000px;
@@ -15,7 +15,7 @@
     <body>              
         <div id="qunit"></div>       
         <div id="qunit-userAgent"></div>        
-       <a href="/site/unit.html">&laquo; Back</a> 
+       <a href="../../../site/unit.html">&laquo; Back</a> 
         <ul>
             <li>
                 <h4>
@@ -37,8 +37,8 @@
             </li>
         </ul>
 
-        <script src="/site/assets/libs/qunit/qunit.min.js"></script>
-        <script src="/site/assets/libs/qunit/qunit-assert-step.min.js"></script>
+        <script src="../../../site/assets/libs/qunit/qunit.min.js"></script>
+        <script src="../../../site/assets/libs/qunit/qunit-assert-step.min.js"></script>
         <script>QUnit.config.requireExpects = true;</script>
         
         <!-- Tests -->
@@ -72,7 +72,7 @@
             
             // Send browserscope results
             QUnit.done(function (details) {
-                head.load("http://www.browserscope.org/user/beacon/" + "agt1YS1wcm9maWxlcnINCxIEVGVzdBihusQUDA");
+                //head.load("http://www.browserscope.org/user/beacon/" + "agt1YS1wcm9maWxlcnINCxIEVGVzdBihusQUDA");
             });
         </script>
     </body>

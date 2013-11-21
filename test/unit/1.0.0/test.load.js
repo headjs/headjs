@@ -158,3 +158,67 @@ asyncTest("load({ label: jsFilePath }, { label: jsFilePath }, callback).ready(la
             start();
         });
 });
+
+asyncTest("load([ { label: jsFilePath }, { label: jsFilePath } ], callback).ready(label, callback)", function (assert) {
+    expect(6);
+
+    head
+        .load([
+            { jshint: libs.jshint() },
+            { jquery: libs.jquery() },
+            { knockout: libs.knockout() }],
+            function () {
+                // we could run a CallBack() here
+            }
+        )
+
+        .ready("jshint", function () {
+            ok(!!JSHINT, "Ready: jshint");
+            assert.step(1, "Step 1: jshint");
+        })
+
+        .ready("jquery", function () {
+            ok(!!jQuery, "Ready: jquery");
+            assert.step(2, "Step 2: jquery");
+        })
+
+        .ready("knockout", function () {
+            ok(!!ko, "Ready: knockout");
+            assert.step(3, "Step 3: knockout");
+        })
+        .ready(function () {
+            // If start() is moved to above CallBack(), Travis-CI fails ...why ? Locally it works..
+            start();
+        });
+});
+
+
+asyncTest("test(bool, [ { label: jsFilePath }, { label: jsFilePath } ], [ { label: jsFilePath }, { label: jsFilePath } ], callback).ready(callback)", function (assert) {
+    expect(2);
+
+    head
+        .test(head.browser.ie,
+            [
+                { jshint: libs.jshint() },
+                { jquery: libs.jquery() }
+            ],
+            [
+                { jshint: libs.jshint() },
+                { knockout: libs.knockout() }
+            ],
+            function () {
+                // we could run a CallBack() here
+            }
+        )
+
+        .ready( function () {
+            ok(((!!JSHINT && !!jQuery) || (!!JSHINT && !!ko)), "Ready: jshint & (jquery || knockout)");
+
+            assert.step(1, "Step 1: if else worked");
+        })
+
+        .ready(function () {
+            // If start() is moved to above CallBack(), Travis-CI fails ...why ? Locally it works..
+            start();
+        });
+});
