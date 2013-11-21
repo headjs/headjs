@@ -1,8 +1,7 @@
-/**
- * Unittests: javascript loader
- */
-
 module("Responsive");
+
+// only sync tests use expect()
+// http://qunitjs.com/cookbook/#synchronous-callbacks
 
 test("head.touch, head.screen.width, ...", function () {
     expect(7);
