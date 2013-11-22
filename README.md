@@ -12,11 +12,11 @@ This project was never announced. `git push` and it was all viral !
 [![Selenium Status](https://saucelabs.com/browser-matrix/itechnology.svg)](https://saucelabs.com/u/itechnology)
 
 
-###Responsive Design, Feature Detections, and Asset Loading
+###Responsive Design, Feature Detections, and Resource Loading
   * Speed up your pageload: Load JS & CSS asyncronously and in parallel
   * Load one asset if a condition is met, else fallback and load another one
   * Manage script dependencies, and execute callbacks once they are loaded
-  * Use cross-browser/device compatible CSS (pseudo media-queries) to code against different resolutions & devices
+  * Cross-browser compatible CSS (pseudo media-queries), to code against different resolutions & devices
   * Fix quirks in specific browsers by quickly applying dedicated CSS/JS automatically
   * Detect browsers & their versions
   * Check if a client supports a certain Browser, HTML5 or CSS3 features

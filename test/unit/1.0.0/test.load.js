@@ -207,7 +207,5 @@ asyncTest("test(bool, [ { label: jsFilePath }, { label: jsFilePath } ], [ { labe
 
             // If start() is moved to above CallBack(), Travis-CI fails ...why ? Locally it works..
             start();
-
-        console.log("yup");
     });
 });
