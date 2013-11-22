@@ -39,11 +39,9 @@ head.ready("file1.js", function() {
 });
 {% endhighlight %}
 
-    <p>All the above examples also work with CSS files. However since some browsers are broken when it comes to triggering ready on CSS, you should probably never mix JS and CSS loading, and also probably not use callbacks on CSS files</p>
+    <p>All the above examples also work with CSS files.</p>
 
 {% highlight js %}
-// to mitigate problems with browsers that do not support callbacks with CSS, you should probably use CSS loading as a fire & forget way
-
 // queue scripts and fire a callback when loading is finished
 head.load("file1.css", "file2.css");
 

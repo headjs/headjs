@@ -6,7 +6,7 @@ module.exports = function (grunt) {
                     {
                         browserName: "firefox",
                         platform   : "Windows 8",
-                        version    : "19"
+                        version    : "22"
                     },
                     {
                         browserName         : "iphone",
@@ -20,8 +20,6 @@ module.exports = function (grunt) {
                         version             : "6.1",
                         "device-orientation": "portrait"
                     },
-                    // android emulator does not pass tests, yet on my own phone all browsers pass...
-                    // ..ok, was actually android < 4.1
                     {
                         browserName         : "android",
                         platform            : "Linux",
@@ -48,22 +46,21 @@ module.exports = function (grunt) {
                         platform   : "Windows 8.1",
                         version    : "11"
                     },
-                    // Seems like the max amout of browsers on the badge is 3 ..so deactivate similar ones
-                    //{
-                    //    browserName: "internet explorer",
-                    //    platform   : "Windows 8",
-                    //    version    : "10"
-                    //},                    
+                    {
+                        browserName: "internet explorer",
+                        platform   : "Windows 8",
+                        version    : "10"
+                    },                    
                     {
                         browserName: "internet explorer",
                         platform   : "Windows 7",
                         version    : "9"
                     },
-                    //{
-                    //    browserName: "internet explorer",
-                    //    platform   : "Windows XP",
-                    //    version    : "8"
-                    //},
+                    {
+                        browserName: "internet explorer",
+                        platform   : "Windows XP",
+                        version    : "8"
+                    },
                     {
                         browserName: "internet explorer",
                         platform   : "Windows XP",
@@ -74,9 +71,6 @@ module.exports = function (grunt) {
 
     // Project configuration
     grunt.initConfig({
-        // load package information
-        //pkg: grunt.file.readJSON("package.json"),
-
         //#region Saucelabs
         connect: {
             server: {
@@ -101,6 +95,9 @@ module.exports = function (grunt) {
         },
         watch: {},
         //#endregion
+
+        // load package information ..use later for building via grunt...
+        //pkg: grunt.file.readJSON("package.json"),
 
         // task: local unit tests
         qunit: {

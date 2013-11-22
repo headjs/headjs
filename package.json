@@ -19,12 +19,12 @@
   ],
   "keywords": [
     "loader",
-	"require",
-	"polyfill",
-	"html5",
-	"css3",
-	"feature",
-	"responsive"
+    "require",
+    "polyfill",
+    "html5",
+    "css3",
+    "feature",
+    "responsive"
   ],
   "repository": {
     "type": "git",
@@ -41,7 +41,7 @@
     "grunt-saucelabs": "~4.0.2",
     "grunt-contrib-connect": "~0.1.2",
     "grunt-contrib-watch": "~0.2.0",
-	"grunt-contrib-qunit": "~0.3.0"
+    "grunt-contrib-qunit": "~0.3.0"
   },
   "scripts": {
     "test": "grunt test"

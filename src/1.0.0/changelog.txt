@@ -1,9 +1,9 @@
-1.0.3 (2013-11-xx)
+1.0.3 (2013-11-22)
  - New: Timeout added to resource loading
  - New: CSS callbacks now executed for all browsers
    - https://github.com/headjs/headjs/pull/273
  - New: Changed how file extensions are parsed for detecting css files
-   - in the future, we will need to add a way to supply a filetype, for when loading resources via scripts like style.php
+   - in the future, we will need to add a way to supply a filetype when loading resources via scripts like: style.aspx, style.php
  - Fix: Array loading & trigger not functioning correctly on old browsers
    - https://github.com/headjs/headjs/issues/274
  - Fix: ready() sometimes does not trigger if assets are loaded too fast

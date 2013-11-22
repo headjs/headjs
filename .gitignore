@@ -5,4 +5,5 @@ _site/
 *.suo
 *.config
 *.bundle
+sauce_connect.*
 node_modules/
