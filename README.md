@@ -2,13 +2,13 @@
 
 This project was never announced. `git push` and it was all viral !
 
-##Latest Version: 1.0.2 / [Download](http://headjs.com/site/download.html)
+###Latest Version: 1.0.2 / [Download](http://headjs.com/site/download.html)
 
-####Status
+#####Status
 [![Build Status](https://travis-ci.org/headjs/headjs.png?branch=master)](https://travis-ci.org/headjs/headjs)
 
 
-####Tested with (..amongst others)
+#####Tested with (..amongst others)
 [![Selenium Status](https://saucelabs.com/browser-matrix/itechnology.svg)](https://saucelabs.com/u/itechnology)
 
 
