@@ -1,7 +1,29 @@
+# define language used
 language: node_js
+
+# configure node version
 node_js:
   - "0.11"
+
+# http://about.travis-ci.org/docs/user/build-configuration/#Build-Lifecycle
+# install dependencies 
 before_script:
   - npm install -g grunt-cli
   - npm install grunt grunt-contrib-qunit
+
+# run
 script: grunt test -v -d
+
+
+# Run tests using Travis CI and Sauce Labs
+# https://saucelabs.com/opensource/travis
+#
+# Secure environment variables
+# http://about.travis-ci.org/docs/user/build-configuration/#Secure-environment-variables
+#
+# Extra links
+# https://github.com/axemclion/grunt-saucelabs
+env:
+  global:
+    - secure: "i8xVOci13yViGd+vqpiM0P2kL4qayAOOd80jmlOOKHu7tCMEF6EvkJBOwALVx+LDRFnyg/4iP0drQSMYztiF5ZTnEcbh+EknltKAA3ygI/d2RUDhB7Cn7Knu3baqE1By3BXHbVlhOZ0zTZUbwrGcnzxnBHec5mvISw9Y1dIaz94="
+    - secure: "M7lJ0WoAcSACTUJGHRuTcUzGrvo806mJ5UCJ3MjttL4DPz+kxeO2zLPCLff12zmv1x97lRjKtY7zJJei8ZkGgEQfLLlz5I3Hg7yJ2dSqTxGiKpr7vlipDZq6+ZPpHo3kElsGIy5ue/rVKNS/8l8I5zYRdNpWkwztLJvj6nHfxIo="

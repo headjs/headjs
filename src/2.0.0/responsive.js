@@ -38,7 +38,7 @@
             browsers  : {
                           "ie"     : [7, 11]
                          ,"ff"     : [4, 26]
-                         //,"chrome" : [23, 31]                         
+                         //,"chrome" : [23, 33]                         
                          //,"ios"    : [4, 7]
                          //,"android": [2, 4]
                          //,"webkit" : [10, 12]
@@ -67,7 +67,7 @@
 
     //#region Experimental
     // INFO: not sure if this is needed
-    // In anycase it allows you to create namespaces on the fly without declaring a bunck of multiple objects
+    // In anycase it allows you to create namespaces on the fly without declaring a bunch of multiple objects
     // makeNameSpace("head.viewport.height");
     function makeNameSpace() {
         var a = arguments, o = api, j, d, arg;

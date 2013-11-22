@@ -1,0 +1,63 @@
+<h1 id="html5">HTML5 Shim</h1>
+
+<h2>Target HTML5 and CSS3 elements safely</h2>
+<div class="intro">
+    Want to start using HTML5 semantics but are put off by it because you still have a large audience of users using non compatible browsers ?               
+</div>
+<div class="code-example" data-title="HTML5 & CSS3">
+    <p>DIV's are good, but HeadJS let's you be semantic and futuristic</p>
+
+{% highlight html %}
+/* Use CSS3 semantics */
+<style>
+    article { text-shadow:0 0 1px #ccc; }
+</style>
+ 
+<!-- works in IE too -->
+<article>
+    <header></header>
+    <section></section>
+    <footer></footer>
+</article>
+{% endhighlight %}
+
+    <p>HeadJS will detect if IE < 9 is present, and inject the necessary HTML5 Shim for you.</p>
+    <p>You will still need to use a HTML5 enabling stylesheet for it to work like <a href="http://necolas.github.io/normalize.css/" target="_blank">Normalize.css</a>, or just <a href="/site/assets/css/html5.min.css" target="_blank">download our file</a> and reference it in your HEAD.</p>
+
+{% highlight html %}
+<html>
+    <head>
+        <link rel="stylesheet" href="html5.min.css" />
+        <script src="head.min.js"></script>
+
+        /* Use CSS3 semantics */
+        <style>
+            article { text-shadow:0 0 1px #ccc; }
+        </style>
+    </head>
+    <body>
+        <!-- works in IE too -->
+        <article>
+            <header></header>
+            <section></section>
+            <footer></footer>
+        </article>
+    </body>
+</html>
+{% endhighlight %}
+
+    <p>You can also enable/disable the injection via the <a href="#configuration">configuration</a> section.</p>
+    ---
+    <p><em>But before you start believing all the hype around HTML5, be sure to give this a read ..you'll be surprised !</em></p>
+    <figure>
+      <a href="http://www.truthabouthtml5.com/#fivereasons" target="_blank"><img src="/site/assets/img/truth-about-html5.jpg" alt="The Truth About HTML5" width="51" height="81"></a>
+      <figcaption><em>The Truth About HTML5</em></figcaption>
+    </figure> 
+
+
+    <div style="width:100%;">                            
+        <div onclick="blog.loadComments(this, 'api/2.0.0/html5', 'Leave a comment')" style="cursor: pointer;">
+            <h2>Show Comments</h2>
+        </div>
+    </div>
+</div>

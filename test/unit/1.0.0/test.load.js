@@ -54,7 +54,7 @@ var libs = (function(window, undefined) {
     }
     function headjs() {
         window.head = undefined;
-        return "http://cdnjs.cloudflare.com/ajax/libs/headjs/1.0.2/head.min.js?" + count("head");
+        return "http://cdnjs.cloudflare.com/ajax/libs/headjs/1.0.3/head.min.js?" + count("head");
     }
 
     // Exports
@@ -72,9 +72,10 @@ var libs = (function(window, undefined) {
     };
 })(window);
 
-asyncTest("load(jsFilePath, jsFilePath, callback)", function() {
-    expect(2);
+// only sync tests use expect()
+// http://qunitjs.com/cookbook/#synchronous-callbacks
 
+asyncTest("load(jsFilePath, jsFilePath, callback)", 2, function() {
     head.load(
         libs.mootools(),
         libs.jquery(),
@@ -90,9 +91,7 @@ asyncTest("load(jsFilePath, jsFilePath, callback)", function() {
     );
 });
 
-asyncTest("ready(jsFileName).load(jsFilePath)", function () {
-    expect(1);
-
+asyncTest("ready(jsFileName).load(jsFilePath)", 1, function () {
     head.ready("jquery.min.js", function() {
         ok(!!jQuery, "Ready: jquery.min.js");
 
@@ -102,9 +101,7 @@ asyncTest("ready(jsFileName).load(jsFilePath)", function () {
     .load(libs.jquery());
 });
 
-asyncTest("load([ jsFilePath, jsFilePath ], callback).ready(jsFileName, callback)", function (assert) {
-    expect(4);
-
+asyncTest("load([ jsFilePath, jsFilePath ], callback).ready(jsFileName, callback)", 4, function (assert) {
     head
         .load([libs.jshint(), libs.knockout()], function () {
             //  we could run a CallBack() here
@@ -126,9 +123,7 @@ asyncTest("load([ jsFilePath, jsFilePath ], callback).ready(jsFileName, callback
 });
 
 
-asyncTest("load({ label: jsFilePath }, { label: jsFilePath }, callback).ready(label, callback)", function (assert) {
-    expect(6);
-
+asyncTest("load({ label: jsFilePath }, { label: jsFilePath }, callback).ready(label, callback)", 6, function (assert) {
     head
         .load(
             { jshint  : libs.jshint() },
@@ -157,4 +152,60 @@ asyncTest("load({ label: jsFilePath }, { label: jsFilePath }, callback).ready(la
             // If start() is moved to above CallBack(), Travis-CI fails ...why ? Locally it works..
             start();
         });
+});
+
+asyncTest("load([ { label: jsFilePath }, { label: jsFilePath } ], callback).ready(label, callback)", 6, function (assert) {
+    head
+        .load([
+            { jshint: libs.jshint() },
+            { jquery: libs.jquery() },
+            { knockout: libs.knockout() }],
+            function () {
+                // we could run a CallBack() here
+            }
+        )
+
+        .ready("jshint", function () {
+            ok(!!JSHINT, "Ready: jshint");
+            assert.step(1, "Step 1: jshint");
+        })
+
+        .ready("jquery", function () {
+            ok(!!jQuery, "Ready: jquery");
+            assert.step(2, "Step 2: jquery");
+        })
+
+        .ready("knockout", function () {
+            ok(!!ko, "Ready: knockout");
+            assert.step(3, "Step 3: knockout");
+        })
+        .ready(function () {
+            // If start() is moved to above CallBack(), Travis-CI fails ...why ? Locally it works..
+            start();
+        });
+});
+
+
+asyncTest("test(bool, [ { label: jsFilePath }, { label: jsFilePath } ], [ { label: jsFilePath }, { label: jsFilePath } ], callback).ready(callback)", 1, function (assert) {
+    head
+        .test(head.browser.ie,
+            [
+                { jshint: libs.jshint() },
+                { jquery: libs.jquery() }
+            ],
+            [
+                { jshint: libs.jshint() },
+                { knockout: libs.knockout() }
+            ],
+            function () {
+                // we could run a CallBack() here
+            }
+        )
+
+        .ready(function () {
+            ok(((!!JSHINT && !!jQuery) || (!!JSHINT && !!ko)), "Ready: jshint & (jquery || knockout)");
+
+            // If start() is moved to above CallBack(), Travis-CI fails ...why ? Locally it works..
+            start();
+    });
 });

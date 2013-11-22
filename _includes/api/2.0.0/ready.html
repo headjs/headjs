@@ -1,0 +1,103 @@
+<h1 id="ready">Document Ready</h1>
+<div class="intro">    
+    Know when the document or various files have finished loading         
+</div>
+<div class="code-example" data-title="head.ready()">
+    <p>The best way to not block rendering of a page is to not put JS all over the page. The best practice is to put all your CSS in the &lt;head&gt; and all your JS right before the &lt;/body&gt;</p>
+
+    <p>Unfortunately this is not always possible, since often various elements depend on certain JS before getting to the &lt;/body&gt;. To work around this we can push functions downwards to be able to execute them later when all the JS has finished loading.</p>
+
+{% highlight html %}
+<html>
+    <head>
+        <script src="head.min.js"></script>
+        <script>
+            // this loads jquery asyncrounously & in parallel
+            head.load("jquery.min.js");
+        </script>
+    </head>
+    <body>
+        <!-- some content-->
+
+        <!-- injected via a module or an include -->
+        <script>
+            // some function that depends on jquery
+            head.ready("jquery.min.js", function () {
+                // this will only be executed once jquery has finished loading
+                $(".main").hide();
+            });
+        </script>
+
+        <!-- some content-->
+    </body>
+</html>
+{% endhighlight %}
+
+    <p>Even when not depending on something like jQuery, if we should have inline scripts, it is always faster and safer to push the execution of those scripts to the bottom.</p>
+
+{% highlight html %}
+<html>
+    <head>
+        <script src="head.min.js"></script>
+    </head>
+    <body>
+        <!-- some content-->
+
+        <!-- injected via a module or an include -->
+        <script>
+            // schedule the execution of the function for later
+            // when the rest of the document has finished loading
+            head.ready(document, function () {
+                // some big function
+            });
+        </script>
+
+        <!-- some content-->
+    </body>
+</html>
+{% endhighlight %}
+
+    <h3>head.ready() takes the following arguments</h3>
+
+{% highlight js %}
+// Attention: subtility here
+head.ready(function() {
+    // push a function to the end of the page for later execution
+    // runs once all files have finished loading
+    
+    // WARNING: if no files are cued for loading this will NOT trigger !
+});
+
+head.ready(document, function() {
+    // push a function to the end of the page for later execution
+    // runs as soon as the document is ready
+});
+
+head.ready("file1.js", function() {
+    // execute this function, only when file1.js has finished loading
+    // used in conjunction with head.load("file1.js");
+});
+
+head.ready(["file1.js", "file2.js"], function() {
+    // execute this function, only when file1.js AND file2.js has finished loading
+    // used in conjunction with head.load("file1.js", "file2.js");
+});
+
+head.ready("label1", function() {
+    // execute this function, only when label1 has finished loading
+    // used in conjunction with head.load({ label1: "file1.js" });
+});
+
+head.ready(["label1", "label2"], function() {
+    // execute this function, only when label1 AND label2 has finished loading
+    // used in conjunction with head.load([{ label1: "file1.js" }, { label2: "file2.js" }]);
+});
+{% endhighlight %}
+
+
+    <div style="width:100%;">                        
+        <div onclick="blog.loadComments(this, 'api/2.0.0/ready', 'Leave a comment')" style="cursor: pointer;">
+            <h2>Show Comments</h2>
+        </div>
+    </div>
+</div>   

@@ -1,7 +1,7 @@
-/**
- * Test Feature Detection
- */
 module("Features");
+
+// only sync tests use expect()
+// http://qunitjs.com/cookbook/#synchronous-callbacks
  
 var classes = " " + document.documentElement.className;
 

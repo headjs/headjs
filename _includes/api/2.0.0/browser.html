@@ -1,0 +1,49 @@
+<h2 id="browser">Browser Information</h2>
+
+<div class="intro">
+    HeadJS knows certain information about the browser and exposes that information via CSS & JS
+</div>
+
+<div class="code-example" data-title="head.browser">
+    <p>These variables are accessible via JavaScript (all the time) so you can apply certain logic depending on specific use-cases</p>
+
+    <ul>
+        <li>head.browser.name (string)</li>
+        <li>head.browser.version (float)</li>
+        <li>head.browser.ie (bool)</li>
+        <li>head.browser.ff (bool)</li>
+        <li>head.browser.chrome (bool)</li>
+        <li>head.browser.ios (bool)</li>
+        <li>head.browser.android (bool)</li>
+        <li>head.browser.webkit (bool)</li>
+        <li>head.browser.opera (bool)</li>
+    </ul>
+
+{% highlight js %}
+if (head.browser.ie && head.browser.version < 9) {
+    /* code specific to IE but only if IE < 9 */
+}
+{% endhighlight %}
+
+<p>The same information is also exposed via CSS, so that you may apply CSS specific fixes</p>
+
+{% highlight css %}
+.ie8 {
+    /* code specific to IE8 */
+}
+
+.ie-lt9 {
+    /* code specific to IE but only if IE < 9 */
+}
+{% endhighlight %}
+
+    <p>No matter how HeadJS is configured, it will at least generate CSS classes for the current browser & it's version (.ie8, .ff25). Generating classes for (.lt, .gt) including full min/max ranges of browser versions is supported, but not advised since it can generate too much css. By default only current browser + version, and IE6-11 ranges are generated automagically.</p>
+
+    <p>You can select which variables are exposed via CSS in the <a href="#configuration">configuration</a> section.</p>
+
+    <div style="width:100%;">                            
+        <div onclick="blog.loadComments(this, 'api/2.0.0/browser', 'Leave a comment')" style="cursor: pointer;">
+            <h2>Show Comments</h2>
+        </div>
+    </div>
+</div>

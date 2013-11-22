@@ -22,7 +22,7 @@
             screensCss: { "gt": true, "gte": false, "lt": true, "lte": false, "eq": false },
             browsers  : [
                             { ie: { min: 6, max: 11 } }
-                           //,{ chrome : { min: 8, max: 31 } }
+                           //,{ chrome : { min: 8, max: 33 } }
                            //,{ ff     : { min: 3, max: 26 } }
                            //,{ ios    : { min: 3, max:  7 } }
                            //,{ android: { min: 2, max:  4 } }
