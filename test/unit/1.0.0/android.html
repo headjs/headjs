@@ -39,7 +39,10 @@
 
         <script src="../../../site/assets/libs/qunit/qunit.js"></script>
         <script src="../../../site/assets/libs/qunit/qunit-assert-step.js"></script>
-        <script>QUnit.config.requireExpects = true;</script>
+        <script>
+            QUnit.config.requireExpects = true;
+            QUnit.config.reorder        = false;
+        </script>
         
         <!-- Tests -->
         <script src="test.responsive.js"></script>
@@ -49,7 +52,7 @@
         <script src="test.conf.js"></script>	
         
         <script>
-			// BrowserScope Results
+            // BrowserScope Results
             var _bTestResults = {};     
             
             function sanitize(msg) {
