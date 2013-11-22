@@ -70,7 +70,7 @@ if (head.screen.innerWidth > 800) {
     <div class="code-example" data-title="head.feature()">
         <p>What about custom detections and device/browser features ?</p>
 
-{% highlight css %}   
+{% highlight css %}
 /* Add a custom feature yourself */
 head.feature("member", true);
 
@@ -138,7 +138,7 @@ head.load("jQuery.js", function() {
 head.load("bootstrap.css");
 {% endhighlight %}
         <h4>How about something crazy like</h4>
-        <p>On DocumentReady, if the user is using IE8, you need to load 2 scripts, otherwise a different script, then fire a callback, and then apply a stylesheet ? Yeah right..</p>
+        <p>On DocumentReady, if the user is using IE8, you need to load 2 scripts, or otherwise load a different script, then wait for them to finish loading, then fire a callback, and then load/apply a stylesheet ? Yeah right..</p>
         <p>Easy.</p>
 
 {% highlight js %}
