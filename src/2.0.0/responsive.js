@@ -67,7 +67,7 @@
 
     //#region Experimental
     // INFO: not sure if this is needed
-    // In anycase it allows you to create namespaces on the fly without declaring a bunck of multiple objects
+    // In anycase it allows you to create namespaces on the fly without declaring a bunch of multiple objects
     // makeNameSpace("head.viewport.height");
     function makeNameSpace() {
         var a = arguments, o = api, j, d, arg;
