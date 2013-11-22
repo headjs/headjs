@@ -142,10 +142,10 @@ head.load("bootstrap.css");
         <p>Easy.</p>
 
 {% highlight js %}
-// head.ready(callback)
+// head.ready(document, callback)
 // head.test(test, success, failure, callback)
 
-head.ready(function() {
+head.ready(document, function() {
     head.test(
         (head.browser.ie && head.browser.version === 8),
         ["file1.js", "file2.js"],

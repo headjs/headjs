@@ -28,13 +28,13 @@ module.exports = function (grunt) {
                     },
                     {
                         browserName: "safari",
-                        platform   : "OS X 10.8",
-                        version    : "6"
+                        platform: "OS X 10.6",
+                        version: "5"
                     },
                     {
                         browserName: "safari",
-                        platform   : "OS X 10.6",
-                        version    : "5"
+                        platform   : "OS X 10.8",
+                        version    : "6"
                     },
                     {
                         browserName: "chrome",
@@ -43,18 +43,8 @@ module.exports = function (grunt) {
                     },
                     {
                         browserName: "internet explorer",
-                        platform   : "Windows 8.1",
-                        version    : "11"
-                    },
-                    {
-                        browserName: "internet explorer",
-                        platform   : "Windows 8",
-                        version    : "10"
-                    },                    
-                    {
-                        browserName: "internet explorer",
-                        platform   : "Windows 7",
-                        version    : "9"
+                        platform   : "Windows XP",
+                        version    : "7"
                     },
                     {
                         browserName: "internet explorer",
@@ -63,9 +53,19 @@ module.exports = function (grunt) {
                     },
                     {
                         browserName: "internet explorer",
-                        platform   : "Windows XP",
-                        version    : "7"
-                    }
+                        platform   : "Windows 7",
+                        version    : "9"
+                    },
+                    {
+                        browserName: "internet explorer",
+                        platform   : "Windows 8",
+                        version    : "10"
+                    },   
+                    {
+                        browserName: "internet explorer",
+                        platform   : "Windows 8.1",
+                        version    : "11"
+                    }                 
                 ];
     //#endregion
 
