@@ -2,7 +2,7 @@
 
 This project was never announced. `git push` and it was all viral !
 
-###Latest Version: {{site.head.minor}} / [Download](http://headjs.com/site/download.html)
+###Latest Version: 1.0.3 / [Download](http://headjs.com/site/download.html)
 
 #####Status
 [![Build Status](https://travis-ci.org/headjs/headjs.png?branch=master)](https://travis-ci.org/headjs/headjs)
