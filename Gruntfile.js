@@ -43,17 +43,17 @@ module.exports = function (grunt) {
                         platform   : "Windows 7",
                         version    : "31"
                     },
-                    //{
-                    //    browserName: "internet explorer",
-                    //    platform   : "Windows 8.1",
-                    //    version    : "11"
-                    //},
-                    // Seems like the max amout of browsers on the badge is 3 ..so deactivate similar ones
                     {
                         browserName: "internet explorer",
-                        platform   : "Windows 8",
-                        version    : "10"
-                    },                    
+                        platform   : "Windows 8.1",
+                        version    : "11"
+                    },
+                    // Seems like the max amout of browsers on the badge is 3 ..so deactivate similar ones
+                    //{
+                    //    browserName: "internet explorer",
+                    //    platform   : "Windows 8",
+                    //    version    : "10"
+                    //},                    
                     {
                         browserName: "internet explorer",
                         platform   : "Windows 7",
