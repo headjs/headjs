@@ -21,12 +21,13 @@ module.exports = function (grunt) {
                         "device-orientation": "portrait"
                     },
                     // android emulator does not pass tests, yet on my own phone all browsers pass...
-                    //{
-                    //    browserName         : "android",
-                    //    platform            : "Linux",
-                    //    version             : "4.0",
-                    //    "device-orientation": "portrait"
-                    //},
+                    // ..ok, was actually android < 4.1
+                    {
+                        browserName         : "android",
+                        platform            : "Linux",
+                        version             : "4.0",
+                        "device-orientation": "portrait"
+                    },
                     {
                         browserName: "safari",
                         platform   : "OS X 10.8",
@@ -47,20 +48,26 @@ module.exports = function (grunt) {
                         platform   : "Windows 8.1",
                         version    : "11"
                     },
-                    {
-                        browserName: "internet explorer",
-                        platform   : "Windows 8",
-                        version    : "10"
-                    },
+                    // Seems like the max amout of browsers on the badge is 3 ..so deactivate similar ones
+                    //{
+                    //    browserName: "internet explorer",
+                    //    platform   : "Windows 8",
+                    //    version    : "10"
+                    //},                    
                     {
                         browserName: "internet explorer",
                         platform   : "Windows 7",
                         version    : "9"
                     },
+                    //{
+                    //    browserName: "internet explorer",
+                    //    platform   : "Windows XP",
+                    //    version    : "8"
+                    //},
                     {
                         browserName: "internet explorer",
                         platform   : "Windows XP",
-                        version    : "8"
+                        version    : "7"
                     }
                 ];
     //#endregion
