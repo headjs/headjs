@@ -186,7 +186,7 @@ asyncTest("load([ { label: jsFilePath }, { label: jsFilePath } ], callback).read
 });
 
 
-asyncTest("test(bool, [ { label: jsFilePath }, { label: jsFilePath } ], [ { label: jsFilePath }, { label: jsFilePath } ], callback).ready(callback)", 2, function (assert) {
+asyncTest("test(bool, [ { label: jsFilePath }, { label: jsFilePath } ], [ { label: jsFilePath }, { label: jsFilePath } ], callback).ready(callback)", 1, function (assert) {
     head
         .test(head.browser.ie,
             [
@@ -202,13 +202,9 @@ asyncTest("test(bool, [ { label: jsFilePath }, { label: jsFilePath } ], [ { labe
             }
         )
 
-        .ready( function () {
+        .ready(function () {
             ok(((!!JSHINT && !!jQuery) || (!!JSHINT && !!ko)), "Ready: jshint & (jquery || knockout)");
 
-            assert.step(1, "Step 1: if else worked");
-        })
-
-        .ready(function () {
             // If start() is moved to above CallBack(), Travis-CI fails ...why ? Locally it works..
             start();
         });
