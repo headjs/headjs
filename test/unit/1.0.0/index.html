@@ -1,5 +1,5 @@
 <!doctype html>
-<html class=" no-js">
+<html class="no-js">
     <head>
         <meta charset="utf-8"/>
         <title>Head.JS Unit Tests (1.00)</title>
@@ -39,7 +39,10 @@
 
         <script src="../../../site/assets/libs/qunit/qunit.min.js"></script>
         <script src="../../../site/assets/libs/qunit/qunit-assert-step.min.js"></script>
-        <script>QUnit.config.requireExpects = true;</script>
+        <script>
+            QUnit.config.requireExpects = true;
+            QUnit.config.reorder        = false;
+        </script>
         
         <!-- Tests -->
         <script src="test.responsive.js"></script>
@@ -49,7 +52,7 @@
         <script src="test.conf.js"></script>	
         
         <script>
-			// BrowserScope Results
+            // BrowserScope Results
             var _bTestResults = {};     
             
             function sanitize(msg) {
