@@ -1,5 +1,6 @@
-/*!
- * HeadJS     The only script in your <HEAD>
+/*! head.css3 v0.99 */
+/*
+ * HeadJS     The only script in your <HEAD>    
  * Author     Tero Piirainen  (tipiirai)
  * Maintainer Robert Hoffmann (itechnology)
  * License    MIT / http://bit.ly/mit-license
@@ -7,7 +8,7 @@
  * Version 0.99
  * http://headjs.com
  */
-(function (win, undefined) {
+;(function(win, undefined) {
     "use strict";
 
     var doc = win.document,
@@ -25,15 +26,15 @@
         */
 
         /* CSS modernizer */
-        el       = doc.createElement("i"),
-        style    = el.style,
-        prefs    = " -o- -moz- -ms- -webkit- -khtml- ".split(" "),
-        domPrefs = "Webkit Moz O ms Khtml".split(" "),
-        headVar  = win.head_conf && win.head_conf.head || "head",
-        api      = win[headVar];
+         el       = doc.createElement("i"),
+         style    = el.style,
+         prefs    = ' -o- -moz- -ms- -webkit- -khtml- '.split(' '),
+         domPrefs = 'Webkit Moz O ms Khtml'.split(' '),
 
-    // Thanks Paul Irish!
+         headVar = win.head_conf && win.head_conf.head || "head",
+         api     = win[headVar];
 
+     // Thanks Paul Irish!
     function testProps(props) {
         for (var i in props) {
             if (style[props[i]] !== undefined) {
@@ -47,93 +48,91 @@
 
     function testAll(prop) {
         var camel = prop.charAt(0).toUpperCase() + prop.substr(1),
-            props = (prop + " " + domPrefs.join(camel + " ") + camel).split(" ");
+            props = (prop + ' ' + domPrefs.join(camel + ' ') + camel).split(' ');
 
         return !!testProps(props);
     }
 
     var tests = {
-        // should we seperate linear/radial ? 
-        // seems like some browsers need a test for prefix http://caniuse.com/#feat=css-gradients
-        gradient: function () {
-            var s1 = "background-image:",
-                s2 = "gradient(linear,left top,right bottom,from(#9f9),to(#fff));",
-                s3 = "linear-gradient(left top,#eee,#fff);";
+        gradient: function() {
+            var s1 = 'background-image:',
+                s2 = 'gradient(linear,left top,right bottom,from(#9f9),to(#fff));',
+                s3 = 'linear-gradient(left top,#eee,#fff);';
 
-            style.cssText = (s1 + prefs.join(s2 + s1) + prefs.join(s3 + s1)).slice(0, -s1.length);
+            style.cssText = (s1 + prefs.join(s2 + s1) + prefs.join(s3 + s1)).slice(0,-s1.length);
             return !!style.backgroundImage;
         },
 
-        rgba: function () {
+        rgba: function() {
             style.cssText = "background-color:rgba(0,0,0,0.5)";
             return !!style.backgroundColor;
         },
 
-        opacity: function () {
+        opacity: function() {
             return el.style.opacity === "";
         },
 
-        textshadow: function () {
-            return style.textShadow === "";
+        textshadow: function() {
+            return style.textShadow === '';
         },
 
-        multiplebgs: function () {
-            style.cssText = "background:url(https://),url(https://),red url(https://)";
+        multiplebgs: function() {
+            style.cssText = 'background:url(https://),url(https://),red url(https://)';
 
             // If the UA supports multiple backgrounds, there should be three occurrences
             // of the string "url(" in the return value for elemStyle.background
             var result = (style.background || "").match(/url/g);
 
-            return Object.prototype.toString.call(result) === "[object Array]" && result.length === 3;
+            return Object.prototype.toString.call(result) === '[object Array]' && result.length === 3;
         },
 
-        boxshadow: function () {
+        boxshadow: function() {
             return testAll("boxShadow");
         },
 
-        borderimage: function () {
+        borderimage: function() {
             return testAll("borderImage");
         },
 
-        borderradius: function () {
+        borderradius: function() {
             return testAll("borderRadius");
         },
 
-        cssreflections: function () {
+        cssreflections: function() {
             return testAll("boxReflect");
         },
 
-        csstransforms: function () {
+        csstransforms: function() {
             return testAll("transform");
         },
 
-        csstransitions: function () {
+        csstransitions: function() {
             return testAll("transition");
         },
         touch: function () {
-            return "ontouchstart" in win;
+            return 'ontouchstart' in win;
         },
         retina: function () {
             return (win.devicePixelRatio > 1);
-        },
+        },        
 
         /*
             font-face support. Uses browser sniffing but is synchronous.
             http://paulirish.com/2009/font-face-feature-detection/
         */
-        fontface: function () {
+        fontface: function() {
             var browser = api.browser.name, version = api.browser.version;
 
             switch (browser) {
                 case "ie":
                     return version >= 9;
-                    
+
                 case "chrome":
                     return version >= 13;
-                    
+
                 case "ff":
                     return version >= 6;
-                    
+
                 case "ios":
                     return version >= 5;
 
@@ -142,10 +141,10 @@
 
                 case "webkit":
                     return version >= 5.1;
-                    
+
                 case "opera":
                     return version >= 10;
-                    
+
                 default:
                     return false;
             }
@@ -162,4 +161,4 @@
     // enable features at once
     api.feature();
 
-}(window));
+})(window);
