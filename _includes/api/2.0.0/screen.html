@@ -43,16 +43,16 @@ if (head.screen.innerHeight < 800) {
 <p>Viewport width information is exposed via CSS so you can apply responsive design principles to your website. These have the advantage of working even on browsers that do not support media queries !</p>
 
 {% highlight css %}
-.lt-800 {
-    /* code specific to VIEWPORT < 800 */
+.h-lt1024 {
+    /* code specific to VIEWPORT HEIGHT < 1024 */
 }
 
-.gt-800 {
-    /* code specific to VIEWPORT > 800 */
+.w-gt800 {
+    /* code specific to VIEWPORT WIDTH > 800 */
 }
 {% endhighlight %}
 
-    <p>You can select which variables (lt, lte, gt, gte, eq) and which breakpoints (480, 640, 800, etc) are exposed via CSS in the <a href="#configuration">configuration</a> section.</p>
+    <p>You can select which variables (lt, gt) and which breakpoints (480, 640, 800, etc) are exposed via CSS in the <a href="#configuration">configuration</a> section.</p>
 
     <div style="width:100%;">                            
         <div onclick="blog.loadComments(this, 'api/2.0.0/screen', 'Leave a comment')" style="cursor: pointer;">

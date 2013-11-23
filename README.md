@@ -1,6 +1,6 @@
 [![Head JS](http://headjs.com/site/assets/img/logo-big.png)](http://headjs.com)
 
-###Latest Version: 1.0.3 :: [Downloads](http://headjs.com/site/download.html) | [Docs](http://headjs.com/site/api/v1.00.html) | [News](http://headjs.com/site/blog.html) | [Intro](http://headjs.com)
+###Latest Version: v1.0.3 :: [Downloads](http://headjs.com/site/download.html) | [Docs](http://headjs.com/site/api/v1.00.html) | [News](http://headjs.com/site/blog.html) | [Intro](http://headjs.com)
 
 #####Status
 [![Build Status](https://travis-ci.org/headjs/headjs.png?branch=master)](https://travis-ci.org/headjs/headjs)
