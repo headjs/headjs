@@ -66,15 +66,6 @@
         return is("Array", item);
     }
 
-    function toLabel(url) {
-        ///<summary>Converts a url to a file label</summary>
-        var items = url.split("/"),
-             name = items[items.length - 1],
-             i    = name.indexOf("?");
-
-        return i !== -1 ? name.substring(0, i) : name;
-    }
-
     // INFO: this look like a "im triggering callbacks all over the place, but only wanna run it one time function" ..should try to make everything work without it if possible
     // INFO: Even better. Look into promises/defered's like jQuery is doing
     function one(callback) {
@@ -160,19 +151,15 @@
         }
         else {
             asset = {
-                name: toLabel(item),
+                name: item.split("?")[0],
                 url : item
             };
         }
 
         // is the item already existant
         var existing = assets[asset.name];
-        if (existing && existing.url === asset.url) {
-            return existing;
-        }
 
-        assets[asset.name] = asset;
-        return asset;
+        return existing ? existing : (assets[asset.name] = asset);
     }
 
     function allLoaded(items) {
