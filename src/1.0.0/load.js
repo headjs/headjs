@@ -159,7 +159,7 @@
         // is the item already existant
         var existing = assets[asset.name];
 
-        return existing ? existing : (assets[asset.name] = asset);
+        return existing || (assets[asset.name] = asset);
     }
 
     function allLoaded(items) {
