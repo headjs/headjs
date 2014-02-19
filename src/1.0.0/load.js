@@ -179,7 +179,7 @@
         items = items || assets;
 
         for (var name in items) {
-            if (items.hasOwnProperty(name) && items[name].state !== LOADED) {
+            if (items.hasOwnProperty(name) && items[name] && items[name].state !== LOADED) {
                 return false;
             }
         }
