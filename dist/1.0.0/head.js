@@ -436,6 +436,12 @@
         fontface: function () {
             var browser = api.browser.name, version = api.browser.version;
 
+            var dbody = document.getElementsByTagName("html")[0];
+			if (navigator.appVersion.indexOf("Win")!=-1) dbody.className = dbody.className + " windows";
+			if (navigator.appVersion.indexOf("Mac")!=-1) dbody.className = dbody.className + " macos";
+			if (navigator.appVersion.indexOf("X11")!=-1) dbody.className = dbody.className + " unix";
+			if (navigator.appVersion.indexOf("Linux")!=-1) dbody.className = dbody.className + " linux";
+
             switch (browser) {
                 case "ie":
                     return version >= 9;
