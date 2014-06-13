@@ -11,7 +11,7 @@
 
 
 ###Responsive Design, Feature Detections, and Resource Loading
-  * Speed up your apps: Load JS & CSS asyncronously and in parallel, but execute them in order
+  * Speed up your apps: Load JS & CSS asynchronously and in parallel, but execute them in order
   * Load one asset if a condition is met, else fallback and load a different one
   * Manage script dependencies, and execute callbacks once they are loaded
   * Cross-browser compatible &laquo; pseudo media-queries &raquo; let you code against different resolutions & devices
