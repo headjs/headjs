@@ -209,3 +209,19 @@ asyncTest("test(bool, [ { label: jsFilePath }, { label: jsFilePath } ], [ { labe
             start();
     });
 });
+
+asyncTest("load( {label: jsFilePath, options: { attributes: { data-main: \"loaded1\"} } }, callback)", 1, function(assert) {
+   head
+       .load({
+           label: libs.jquery(),
+           options: {
+               attributes: {
+                   "data-main": "loaded1"
+               }
+           }
+       },function() {
+           ok(jQuery("script[data-main='loaded1']").length === 1, "Loaded with attribute data-main");
+
+           start();
+       });
+});

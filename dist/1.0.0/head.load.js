@@ -70,8 +70,8 @@
     function toLabel(url) {
         ///<summary>Converts a url to a file label</summary>
         var items = url.split("/"),
-             name = items[items.length - 1],
-             i    = name.indexOf("?");
+            name = items[items.length - 1],
+            i    = name.indexOf("?");
 
         return i !== -1 ? name.substring(0, i) : name;
     }
@@ -142,27 +142,30 @@
         ///<summary>
         /// Assets are in the form of
         /// {
-        ///     name : label,
-        ///     url  : url,
-        ///     state: state
+        ///     name   : label,
+        ///     url    : url,
+        ///     options: options,
+        ///     state  : state
         /// }
         ///</summary>
-        var asset = {};
+        var asset = { options: {} };
 
         if (typeof item === "object") {
             for (var label in item) {
-                if (!!item[label]) {
-                    asset = {
-                        name: label,
-                        url : item[label]
-                    };
+                if (!!item[label] && label !== 'options') {
+                    asset.name = label;
+                    asset.url = item[label];
+                }
+                else if (!!item[label] && label === 'options') {
+                    asset.options = item[label];
                 }
             }
         }
         else {
             asset = {
-                name: toLabel(item),
-                url : item
+                name   : toLabel(item),
+                url    : item,
+                options: {}
             };
         }
 
@@ -433,7 +436,7 @@
                 // release event listeners
                 ele.onload = ele.onreadystatechange = ele.onerror = null;
 
-                // do callback   
+                // do callback
                 callback();
             }
         }
@@ -460,6 +463,7 @@
 
         var ele;
         var ext = getExtension(asset.url);
+        var attributes = asset.options && asset.options.attributes || {};
 
         if (ext === "css") {
             ele      = doc.createElement("link");
@@ -473,12 +477,16 @@
 
             // Set counter to zero
             asset.cssRetries = 0;
-            asset.cssTimeout = win.setTimeout(isCssLoaded, 500);         
+            asset.cssTimeout = win.setTimeout(isCssLoaded, 500);
         }
         else {
             ele      = doc.createElement("script");
             ele.type = "text/" + (asset.type || "javascript");
             ele.src = asset.url;
+        }
+
+        for (var item in attributes) {
+            ele.setAttribute(item, attributes[item]);
         }
 
         ele.onload  = ele.onreadystatechange = process;
@@ -503,7 +511,7 @@
         // use insertBefore to keep IE from throwing Operation Aborted (thx Bryan Forbes!)
         var head = doc.head || doc.getElementsByTagName("head")[0];
 
-        // but insert at end of head, because otherwise if it is a stylesheet, it will not override values      
+        // but insert at end of head, because otherwise if it is a stylesheet, it will not override values
         head.insertBefore(ele, head.lastChild);
     }
 
