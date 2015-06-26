@@ -25,8 +25,24 @@
         PRELOADING = 1,
         PRELOADED  = 2,
         LOADING    = 3,
-        LOADED     = 4;
+        LOADED     = 4,
+
+        //localStorage
+        storagePrefix = 'headjs-',
+        listLocalStorage = [];
     //#endregion
+
+    //#region ATTRIBUTES API
+    api.expiration = 1000 * 60 * 60; // 1hour
+
+    // Get all url of assets in localStorage
+    if (typeof(Storage) !== "undefined") {
+        for ( var i = 0, len = localStorage.length; i < len; ++i ) {
+            var k = localStorage.key(i);
+            if (k.indexOf(storagePrefix) != -1)
+                listLocalStorage.push(k.substr(storagePrefix.length, k.length-storagePrefix.length));
+        }
+    }
 
     //#region PRIVATE functions
 
@@ -502,8 +518,57 @@
         // use insertBefore to keep IE from throwing Operation Aborted (thx Bryan Forbes!)
         var head = doc.head || doc.getElementsByTagName("head")[0];
 
-        // but insert at end of head, because otherwise if it is a stylesheet, it will not override values      
-        head.insertBefore(ele, head.lastChild);
+        // If FileReader and localStorage is enable on browser
+        if (FileReader && typeof(Storage) !== "undefined") {
+            //Create fragment
+            var fileReader = new FileReader();
+            var defaultExpiration = api.expiration; // ms
+            // Check assets stored is already used, else remove it
+            function wrapStoreData (result) {
+                var now = +new Date();
+                return {
+                    expire: now + defaultExpiration,
+                    data: result
+                }
+            }
+
+            function getData (url, callback) {
+                console.log('getData');
+                // Get content of file
+                var ajax = new XMLHttpRequest();
+
+                ajax.open("GET", url, true);
+                ajax.responseType = "blob";
+                ajax.send();
+
+                ajax.addEventListener("load", function (e) {
+                    var result = ajax.response;
+                    localStorage.setItem(storagePrefix + url, JSON.stringify(wrapStoreData(result)));
+                    listLocalStorage.splice(listLocalStorage.indexOf(url),1);
+                    fileReader.readAsDataURL(result);
+                });
+            }
+
+            // Check if URL key exist, if not we get by AJAX content of files
+            if (localStorage.getItem(storagePrefix + asset.url) === null) {
+                getData(asset.url);
+            } else {
+                var now = +new Date();
+                // Else we get data from Storage and eval() it
+                if (JSON.parse(localStorage.getItem(storagePrefix + asset.url)).expire < now) {
+                    localStorage.removeItem(storagePrefix + asset.url);
+                    getData(asset.url);
+                } else {
+                    var blob = new Blob([JSON.parse(localStorage.getItem(storagePrefix + asset.url)).data], {type: "text/javascript"});
+                    listLocalStorage.splice(listLocalStorage.indexOf(asset.url),1);
+                    fileReader.readAsDataURL(blob);
+                }
+            }
+        } else {
+            // but insert at end of head, because otherwise if it is a stylesheet, it will not override values      
+            head.insertBefore(ele, head.lastChild);
+        }
+
     }
 
     /* Parts inspired from: https://github.com/jrburke/requirejs
@@ -586,6 +651,13 @@
         }
         else {
             arr.push(callback);
+        }
+
+        // Clean the localStorage depriecied/unused assets
+        if (typeof(Storage) !== "undefined") {
+            for (var o in listLocalStorage) {
+                localStorage.removeItem(listLocalStorage[o]);
+            }
         }
 
         return api;
