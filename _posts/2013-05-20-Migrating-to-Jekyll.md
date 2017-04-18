@@ -5,7 +5,7 @@ excerpt: Now testing Jekyll for static stite generation, including blog & commen
 scripts: ["/site/assets/libs/jquery/jquery.min.js", "https://cdn.moot.it/latest/moot.min.js", "/site/assets/js/comments.min.js"]
 ---
 
-#{{ page.title }} ({{ page.date | date_to_string }})
+# {{ page.title }} ({{ page.date | date_to_string }})
 
 <hr />
 
