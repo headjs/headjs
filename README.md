@@ -1,16 +1,16 @@
 [![Head JS](http://headjs.com/site/assets/img/logo-big.png)](http://headjs.com)
 
-###Latest Version: v1.0.3 :: [Downloads](http://headjs.com/site/download.html) | [Docs](http://headjs.com/site/api/v1.00.html) | [News](http://headjs.com/site/blog.html) | [Intro](http://headjs.com)
+### Latest Version: v1.0.3 :: [Downloads](http://headjs.com/site/download.html) | [Docs](http://headjs.com/site/api/v1.00.html) | [News](http://headjs.com/site/blog.html) | [Intro](http://headjs.com)
 
-#####Status
+##### Status
 [![Build Status](https://travis-ci.org/headjs/headjs.png?branch=master)](https://travis-ci.org/headjs/headjs)
 
 
-#####Tested with (..amongst others)
+##### Tested with (..amongst others)
 [![Selenium Status](https://saucelabs.com/browser-matrix/itechnology.svg)](https://saucelabs.com/u/itechnology)
 
 
-###Responsive Design, Feature Detections, and Resource Loading
+### Responsive Design, Feature Detections, and Resource Loading
   * Speed up your apps: Load JS & CSS asyncronously and in parallel, but execute them in order
   * Load one asset if a condition is met, else fallback and load a different one
   * Manage script dependencies, and execute callbacks once they are loaded
@@ -28,7 +28,7 @@
     * ___A concise solution to universal problems___
 
 
-###Resources
+### Resources
 - __WebSite__
   - [http://headjs.com](http://headjs.com)
 - __Bugs__
