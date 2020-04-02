@@ -313,7 +313,7 @@
             };
         }
 
-        // is the item already existant
+        // is the item already existent
         var existing = assets[asset.name];
         if (existing && existing.url === asset.url) {
             return existing;

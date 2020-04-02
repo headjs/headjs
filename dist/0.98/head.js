@@ -771,7 +771,7 @@
             };
         }
 
-        // is the item already existant
+        // is the item already existent
         var existing = scripts[script.name];
         if (existing && existing.url === script.url) {
             return existing;
