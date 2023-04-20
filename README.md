@@ -1,3 +1,5 @@
+### This project is no longer maintained, but was the only solution back in the day, to do responsive design with IE6 & co ^^
+
 ### Latest Version: v1.0.3 :: [Downloads](https://headjs.github.io/#download) | [Docs](https://headjs.github.io)
 
 ### Responsive Design, Feature Detections, and Resource Loading
@@ -26,5 +28,3 @@
 - __Community Support__
   - [http://stackoverflow.com](http://stackoverflow.com/questions/tagged/head.js)
   - _Remember to tag your questions with_: ___head.js___
-- __Feature Requests/Suggestions__
-  - [http://headjs.uservoice.com](http://headjs.uservoice.com/forums/182905-headjs-feature-suggestions)
