@@ -1,6 +1,6 @@
 ### This project is no longer maintained, but was the only solution back in the day, to do responsive design with IE6 & co ^^
 
-### Latest Version: v1.0.3 :: [Downloads](https://headjs.github.io/#download) | [Docs](https://headjs.github.io)
+### Latest Version: v1.0.3 :: [Docs](https://headjs.github.io) | [Downloads](https://headjs.github.io/#download)
 
 ### Responsive Design, Feature Detections, and Resource Loading
   * Speed up your apps: Load JS & CSS asyncronously and in parallel, but execute them in order
