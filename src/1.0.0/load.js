@@ -122,16 +122,14 @@
 
         // Do we have a success case
         if (passed && !!obj.success) {
-            obj.success.push(obj.callback);
             api.load.apply(null, obj.success);
         }
         // Do we have a fail case
         else if (!passed && !!obj.failure) {
-            obj.failure.push(obj.callback);
             api.load.apply(null, obj.failure);
         }
         else {
-            callback();
+            obj.callback();
         }
 
         return api;
